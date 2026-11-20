@@ -1,0 +1,139 @@
+{
+  "_note": "synthetic placeholder fixture, no real data",
+  "principal": "{principal}",
+  "grants": [
+    {
+      "broker": "dev",
+      "resource_type": "TOPIC",
+      "resource": "onex.evt.example-svc.machine-event-001.v1",
+      "operation": "WRITE",
+      "pattern": "LITERAL"
+    },
+    {
+      "broker": "dev",
+      "resource_type": "TOPIC",
+      "resource": "onex.evt.example-svc.machine-event-001.v1",
+      "operation": "DESCRIBE",
+      "pattern": "LITERAL"
+    },
+    {
+      "broker": "dev",
+      "resource_type": "TOPIC",
+      "resource": "onex.evt.example-svc.machine-event-002.v1",
+      "operation": "WRITE",
+      "pattern": "LITERAL"
+    },
+    {
+      "broker": "dev",
+      "resource_type": "TOPIC",
+      "resource": "onex.evt.example-svc.machine-event-002.v1",
+      "operation": "DESCRIBE",
+      "pattern": "LITERAL"
+    },
+    {
+      "broker": "dev",
+      "resource_type": "TOPIC",
+      "resource": "onex.evt.example-svc.machine-event-003.v1",
+      "operation": "WRITE",
+      "pattern": "LITERAL"
+    },
+    {
+      "broker": "dev",
+      "resource_type": "TOPIC",
+      "resource": "onex.evt.example-svc.machine-event-003.v1",
+      "operation": "DESCRIBE",
+      "pattern": "LITERAL"
+    },
+    {
+      "broker": "dev",
+      "resource_type": "TOPIC",
+      "resource": "onex.evt.example-svc.machine-event-004.v1",
+      "operation": "WRITE",
+      "pattern": "LITERAL"
+    },
+    {
+      "broker": "dev",
+      "resource_type": "TOPIC",
+      "resource": "onex.evt.example-svc.machine-event-004.v1",
+      "operation": "DESCRIBE",
+      "pattern": "LITERAL"
+    },
+    {
+      "broker": "dev",
+      "resource_type": "TOPIC",
+      "resource": "onex.evt.example-svc.machine-event-005.v1",
+      "operation": "WRITE",
+      "pattern": "LITERAL"
+    },
+    {
+      "broker": "dev",
+      "resource_type": "TOPIC",
+      "resource": "onex.evt.example-svc.machine-event-005.v1",
+      "operation": "DESCRIBE",
+      "pattern": "LITERAL"
+    },
+    {
+      "broker": "dev",
+      "resource_type": "TOPIC",
+      "resource": "onex.evt.example-svc.machine-event-006.v1",
+      "operation": "WRITE",
+      "pattern": "LITERAL"
+    },
+    {
+      "broker": "dev",
+      "resource_type": "TOPIC",
+      "resource": "onex.evt.example-svc.machine-event-006.v1",
+      "operation": "DESCRIBE",
+      "pattern": "LITERAL"
+    },
+    {
+      "broker": "dev",
+      "resource_type": "TOPIC",
+      "resource": "onex.evt.example-svc.machine-event-007.v1",
+      "operation": "WRITE",
+      "pattern": "LITERAL"
+    },
+    {
+      "broker": "dev",
+      "resource_type": "TOPIC",
+      "resource": "onex.evt.example-svc.machine-event-007.v1",
+      "operation": "DESCRIBE",
+      "pattern": "LITERAL"
+    },
+    {
+      "broker": "dev",
+      "resource_type": "TOPIC",
+      "resource": "onex.evt.omnimarket.work-ledger-claim.v1",
+      "operation": "WRITE",
+      "pattern": "LITERAL"
+    },
+    {
+      "broker": "dev",
+      "resource_type": "TOPIC",
+      "resource": "onex.evt.omnimarket.work-ledger-claim.v1",
+      "operation": "DESCRIBE",
+      "pattern": "LITERAL"
+    },
+    {
+      "broker": "dev",
+      "resource_type": "TOPIC",
+      "resource": "onex.evt.example-svc.machine-readout-001.v1",
+      "operation": "READ",
+      "pattern": "LITERAL"
+    },
+    {
+      "broker": "dev",
+      "resource_type": "TOPIC",
+      "resource": "onex.evt.example-svc.machine-readout-002.v1",
+      "operation": "READ",
+      "pattern": "LITERAL"
+    },
+    {
+      "broker": "dev",
+      "resource_type": "TOPIC",
+      "resource": "onex.evt.example-svc.machine-readout-003.v1",
+      "operation": "READ",
+      "pattern": "LITERAL"
+    }
+  ]
+}

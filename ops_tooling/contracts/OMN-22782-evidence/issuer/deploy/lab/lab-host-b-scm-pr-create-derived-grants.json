@@ -1,0 +1,62 @@
+{
+  "_note": "synthetic placeholder fixture, no real data",
+  "principal": "dev-<owner>-lab-host-b",
+  "grants": [
+    {
+      "broker": "dev",
+      "resource_type": "GROUP",
+      "resource": "local.example-svc.synthetic_scm_client.consume.v1.",
+      "operation": "READ",
+      "pattern": "PREFIXED"
+    },
+    {
+      "broker": "dev",
+      "resource_type": "GROUP",
+      "resource": "local.example-svc.synthetic_scm_client.consume.v1.",
+      "operation": "DESCRIBE",
+      "pattern": "PREFIXED"
+    },
+    {
+      "broker": "dev",
+      "resource_type": "TOPIC",
+      "resource": "onex.evt.example-svc.synthetic-terminal-01.v1",
+      "operation": "READ",
+      "pattern": "LITERAL"
+    },
+    {
+      "broker": "dev",
+      "resource_type": "TOPIC",
+      "resource": "onex.evt.example-svc.synthetic-terminal-01.v1",
+      "operation": "DESCRIBE",
+      "pattern": "LITERAL"
+    },
+    {
+      "broker": "dev",
+      "resource_type": "TOPIC",
+      "resource": "onex.evt.example-svc.synthetic-terminal-02.v1",
+      "operation": "READ",
+      "pattern": "LITERAL"
+    },
+    {
+      "broker": "dev",
+      "resource_type": "TOPIC",
+      "resource": "onex.evt.example-svc.synthetic-terminal-02.v1",
+      "operation": "DESCRIBE",
+      "pattern": "LITERAL"
+    },
+    {
+      "broker": "dev",
+      "resource_type": "TOPIC",
+      "resource": "onex.evt.example-svc.synthetic-terminal-03.v1",
+      "operation": "READ",
+      "pattern": "LITERAL"
+    },
+    {
+      "broker": "dev",
+      "resource_type": "TOPIC",
+      "resource": "onex.evt.example-svc.synthetic-terminal-03.v1",
+      "operation": "DESCRIBE",
+      "pattern": "LITERAL"
+    }
+  ]
+}

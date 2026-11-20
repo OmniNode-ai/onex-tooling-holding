@@ -1,0 +1,102 @@
+# Overlay for the plans_board_refresh skill — internal.
+#
+# Layered over the skill's committed base by the overlay selector
+# PLANS_BOARD_REFRESH_OVERLAY_PATH. The base declares structure and no content;
+# this file supplies all of the content. Loading the skill without an overlay is
+# a hard stop, deliberately: a board refresh that ran against a guessed
+# generator is worse than one that did not run.
+#
+# Status: shipped in the onex-overlays plugin of the internal marketplace
+# (OMN-19235), moved from docs-repo marketplace-internal/.
+# Nothing sets the selector by default: the skill reads this file only when a
+# session points the selector at it.
+#
+# Catalogue row: plans_board_refresh (omniclaude plugins/onex/process_catalogue.yaml)
+
+overlay_version: "1.0.0"
+catalogue_row: plans_board_refresh
+ticket: OMN-18368
+read_paths_ticket: OMN-19254
+
+# Every path below is repository-relative. The reviewing session's own
+# environment names the registry root; this file never carries an
+# operator-machine path.
+workspace_root_env: registry_root
+
+# The generator that PUBLISHES is the scheduled workflow, so a manual refresh
+# dispatches it. tools/beta_board/beta_board.py -o <file> is the renderer the
+# workflow runs, but run by hand it only writes a local file: the upload is a
+# step inside the workflow, under an OIDC role that can PutObject on the board
+# bucket and exists nowhere else. A local render therefore cannot advance the
+# published timestamp, and this skill would report it as stalled every time.
+# (The earlier value, beta_board_data.py, is a data module with no entry point;
+# it exited 0 having done nothing. OMN-19254.)
+#
+# Do not dispatch right after a proof workflow: the publish scores the last
+# SETTLED run, so wait about 60 seconds for the proof to settle first. The
+# operator note in publish-beta-board.yml records the measured race.
+generator_command: >-
+  gh workflow run publish-beta-board.yml --repo OmniNode-ai/infra_repo --ref dev
+working_directory: infra_repo
+
+# How the refresh is normally triggered, so a person running this skill knows
+# whether they are filling a gap or racing the schedule.
+cadence:
+  scheduled_by: infra_repo .github/workflows/publish-beta-board.yml
+  interval: hourly, at minute 18
+  note: >-
+    Hourly since the board moved to the runner fleet (OMN-18381, operator
+    ruling 2026-09-14); the 15-minute cadence returns once that placement has
+    proven itself. The Linear read was always live and is re-queried on every
+    run. What used to be unreliable was the TRIGGER, which lived in a session
+    cron on one laptop. The workflow removed the laptop from the path. A manual
+    run of this skill is for the case where the workflow itself has stalled.
+
+# The served page is behind a Google Workspace sign-in at the edge (OMN-18044):
+# an unauthenticated read answers 302 to accounts.google.com, so a lane cannot
+# read the board's own stamp. It reads the publish from the workflow that
+# writes it instead. The publish job's upload step is the only writer of the
+# served page, and the distribution serves with caching disabled, so that
+# step's completion time IS the published timestamp. Uses the caller's own gh
+# credential.
+board_locator:
+  kind: command
+  before_command: python3 tools/beta_board/read_published_board.py
+  # <run_start> is the UTC time this run started, as YYYY-MM-DDTHH:MM:SSZ,
+  # taken before the generator was dispatched; the contract is a publish past
+  # the run's start, not merely past the before value. Polls for up to 20
+  # minutes; exits 3 if no such publish lands, which is a stall.
+  after_command: >-
+    python3 tools/beta_board/read_published_board.py --summary
+    --newer-than <run_start> --wait-seconds 1200
+  timestamp_field: published_at
+  served_url: https://example.invalid/board/
+  served_url_access: Google Workspace sign-in, browser only (OMN-18044)
+  description: >-
+    Both commands print JSON and exit 2 when no recent run uploaded the board.
+    They never print an empty success. The after read's --summary carries the
+    generator's own output from the publishing job, which is the tail this
+    skill reports.
+
+# What a stall looks like here, recorded because it has happened.
+known_failure_modes:
+  - >-
+    The generator exits zero and publishes nothing. The board then serves a
+    document that is hours old with no sign it is stale. One measured instance
+    ran 24 consecutive failed runs over seven and a half hours and was found by
+    a reader rather than by the process.
+  - >-
+    The scheduled workflow is healthy and the board is still stale because an
+    upstream credential expired. The generator's exit code does not carry this;
+    the published timestamp does.
+  - >-
+    The timestamp is read with an http request to the board URL. That returns
+    the sign-in redirect, whose headers change on every request, so a stale
+    board reads as fresh.
+
+verification_contract: >-
+  The board's published timestamp advanced past the time the run started. Read it
+  before and after and report both. An unchanged timestamp is a failure, never a
+  no-op.
+
+mechanical_replacement: none yet

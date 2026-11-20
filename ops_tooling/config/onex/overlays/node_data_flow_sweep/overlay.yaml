@@ -1,0 +1,5 @@
+# Deployment facts of omnimarket's node_data_flow_sweep, moved out of its source: the runtime host
+# the dev, lane-i, prod and judge lanes run on (the MagicDNS name resolves on the LAN and
+# off it). Equal to the default the node carried before it read this overlay. A reader names the
+# root directory in ONEX_SKILL_OVERLAY_ROOTS.
+runtime_host: host-51.example

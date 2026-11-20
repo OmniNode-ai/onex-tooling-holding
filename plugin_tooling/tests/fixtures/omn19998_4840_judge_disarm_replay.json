@@ -1,0 +1,19 @@
+{
+ "what": "The landing controller's tick-1914 judge hold of omnibase_infra#4840 (OMN-19998), as the FRICTION rows of 2026-10-11T08:00:46Z (lane=landing-controller) and 2026-10-11T08:19:41Z (lane=orchestrator-9f8a) record it: the hold, the armed head, and the merge-queue guard's refusal of the pre-fix disarm.",
+ "pr": "omnibase_infra#4840",
+ "base": "dev",
+ "tick": 1914,
+ "at": "2026-10-11T08:00:46Z",
+ "lease_id": 6157,
+ "dispatch_head": "5c5f947a81b6",
+ "head": "1292a590485947b26fc91ff1e54734228cc33c02",
+ "paths": [
+  {"path": "tests/ci/fixtures/discovery_manifest_live.json", "kind": "check_test"},
+  {"path": "tests/fixtures/dispatch_parity/selection-oracle-v2.json", "kind": "fixture"}
+ ],
+ "armed": true,
+ "merge_queue_repos": ["omnibase_infra"],
+ "guard_refusal": "BLOCKED (OMN-17427): gh pr merge (neither --match-head-commit nor --auto) bypasses the merge_queue rule on repo=OmniNode-ai/omnibase_infra",
+ "merged_at": "2026-10-11T08:54:05Z",
+ "merge_commit": "3e7f9f675"
+}

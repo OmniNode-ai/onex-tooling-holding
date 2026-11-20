@@ -1,0 +1,25 @@
+{
+  "commit": "d23f72b0c0bc21ffaf63212e923c52702efdb262",
+  "node": "src/omnimarket/nodes/node_automation_liveness_overlay_check_effect",
+  "node_files": [
+    "src/omnimarket/nodes/node_automation_liveness_overlay_check_effect",
+    "src/omnimarket/nodes/node_automation_liveness_overlay_check_compute"
+  ],
+  "package_files": [
+    "src/omnimarket/__init__.py",
+    "src/omnimarket/configs/runtime_paths.yaml",
+    "src/omnimarket/handlers/__init__.py",
+    "src/omnimarket/handlers/handler_local_access_mode.py",
+    "src/omnimarket/handlers/runtime_paths.py",
+    "src/omnimarket/models/__init__.py",
+    "src/omnimarket/models/automation_liveness_overlay_check",
+    "src/omnimarket/models/liveness",
+    "src/omnimarket/models/model_local_access_mode_request.py",
+    "src/omnimarket/models/model_local_access_mode_result.py",
+    "src/omnimarket/nodes/__init__.py",
+    "src/omnimarket/nodes/node_operator_access_mode_effect"
+  ],
+  "repo": "OmniNode-ai/omnimarket",
+  "ticket": "OMN-22725",
+  "what": "The private automation-liveness overlay's reader (onex-automation-liveness-check, node_automation_liveness_overlay_check_effect and its compute node at omnimarket dev d23f72b0). The landing controller's pre-merge liveness read runs the private checkout's installed copy of this reader; its tests run the reader from these files, so a change of the reader's output or flags that the read does not follow fails here and not on a live tick. Pydantic, pyyaml and omnibase-core only; CI fetches exactly these paths at this commit."
+}

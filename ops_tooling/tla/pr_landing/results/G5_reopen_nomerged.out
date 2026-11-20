@@ -1,0 +1,1438 @@
+TLC2 Version 2026.09.25.163503 (rev: 8f4bc8b)
+Running breadth-first search Model-Checking with fp 78 and seed -5226889337254206420 with 3 workers on 32 cores with 2731MB heap and 64MB offheap memory [pid: 1] (Linux 7.0.0-30-generic amd64, Eclipse Adoptium 17.0.20.1 64bit, MSBDiskFPSet, DiskStateQueue).
+Parsing file /work/PrLanding.tla
+Parsing file /tmp/tlc-17921041289687824216/Naturals.tla (jar:file:/work/tla2tools.jar!/tla2sany/StandardModules/Naturals.tla)
+Parsing file /tmp/tlc-17921041289687824216/FiniteSets.tla (jar:file:/work/tla2tools.jar!/tla2sany/StandardModules/FiniteSets.tla)
+Parsing file /tmp/tlc-17921041289687824216/Sequences.tla (jar:file:/work/tla2tools.jar!/tla2sany/StandardModules/Sequences.tla)
+Parsing file /tmp/tlc-17921041289687824216/TLC.tla (jar:file:/work/tla2tools.jar!/tla2sany/StandardModules/TLC.tla)
+Parsing file /tmp/tlc-17921041289687824216/_TLCTrace.tla (jar:file:/work/tla2tools.jar!/tla2sany/StandardModules/_TLCTrace.tla)
+Parsing file /tmp/tlc-17921041289687824216/TLCExt.tla (jar:file:/work/tla2tools.jar!/tla2sany/StandardModules/TLCExt.tla)
+Parsing file /tmp/tlc-17921041289687824216/Integers.tla (jar:file:/work/tla2tools.jar!/tla2sany/StandardModules/Integers.tla)
+Semantic processing of module Naturals
+Semantic processing of module Sequences
+Semantic processing of module FiniteSets
+Semantic processing of module TLC
+Semantic processing of module Integers
+Semantic processing of module TLCExt
+Semantic processing of module _TLCTrace
+Semantic processing of module PrLanding
+Linting of module TLCExt
+Linting of module _TLCTrace
+Linting of module PrLanding
+Starting... (2026-09-28 07:30:53)
+Warning: The set PRs has been defined to be a symmetry set but contains less than two elements.
+(Use the -nowarning option to disable this warning.)
+Computing initial states...
+Finished computing initial states: 2 distinct states generated at 2026-09-28 07:30:53.
+Progress(9) at 2026-09-28 07:30:56: 229,635 states generated (229,635 s/min), 74,723 distinct states found (74,723 ds/min), 37,372 states left on queue.
+Progress(16) at 2026-09-28 07:31:56: 9,446,311 states generated (9,216,676 s/min), 2,708,485 distinct states found (2,633,762 ds/min), 916,811 states left on queue.
+Progress(18) at 2026-09-28 07:32:56: 18,642,065 states generated (9,195,754 s/min), 5,054,232 distinct states found (2,345,747 ds/min), 1,431,546 states left on queue.
+Progress(19) at 2026-09-28 07:33:56: 28,034,329 states generated (9,392,264 s/min), 7,305,707 distinct states found (2,251,475 ds/min), 1,743,919 states left on queue.
+Error: Invariant P7 is violated.
+Error: The behavior up to this point is:
+State 1: <Initial predicate>
+/\ bad = [ p1 |-> FALSE,
+  rerunFailed |-> FALSE,
+  dupRerun |-> FALSE,
+  dupAgent |-> FALSE,
+  twoTerms |-> FALSE,
+  twoTermsEp |-> FALSE,
+  ungated |-> FALSE ]
+/\ keys = [rerun |-> {}, agent |-> {}, term |-> {}]
+/\ row = ( p1 :>
+      [ h |-> 0,
+        d |-> FALSE,
+        hd |-> FALSE,
+        armed |-> FALSE,
+        st |-> "OBSERVED",
+        sq |-> 0,
+        ep |-> 0,
+        cmp |-> "none",
+        ch |-> 0,
+        rr |-> {},
+        ag |-> {},
+        ob |-> {},
+        ex |-> <<0, 0>> ] )
+/\ pq = (p1 :> <<>>)
+/\ latest = (p1 :> [h |-> 0, s |-> 0, d |-> FALSE, hd |-> FALSE])
+/\ net = { [ p |-> p1,
+    k |-> "snap",
+    h |-> 1,
+    s |-> 1,
+    d |-> FALSE,
+    hd |-> FALSE,
+    re |-> FALSE,
+    v |-> "",
+    a |-> <<0, 0>> ] }
+/\ lease = Nil
+/\ gh = ( p1 :>
+      [ s |-> 1,
+        d |-> FALSE,
+        hd |-> FALSE,
+        head |-> 1,
+        merged |-> FALSE,
+        closed |-> FALSE,
+        armed |-> FALSE,
+        pc |-> "pending",
+        cc |-> "pending",
+        pa |-> 0,
+        ca |-> 0,
+        ah |-> 0 ] )
+/\ bud = [ env |-> (p1 :> 3),
+  dup |-> 0,
+  crash |-> 0,
+  tm |-> (p1 :> 1),
+  fm |-> 1,
+  lag |-> (p1 :> 1) ]
+/\ pst = (p1 :> Nil)
+/\ comps = 0
+/\ cmerged = FALSE
+/\ wk = (w1 :> Nil @@ w2 :> Nil)
+
+State 2: <Close(p1) line 159, col 3 to line 163, col 12 of module PrLanding>
+/\ bad = [ p1 |-> FALSE,
+  rerunFailed |-> FALSE,
+  dupRerun |-> FALSE,
+  dupAgent |-> FALSE,
+  twoTerms |-> FALSE,
+  twoTermsEp |-> FALSE,
+  ungated |-> FALSE ]
+/\ keys = [rerun |-> {}, agent |-> {}, term |-> {}]
+/\ row = ( p1 :>
+      [ h |-> 0,
+        d |-> FALSE,
+        hd |-> FALSE,
+        armed |-> FALSE,
+        st |-> "OBSERVED",
+        sq |-> 0,
+        ep |-> 0,
+        cmp |-> "none",
+        ch |-> 0,
+        rr |-> {},
+        ag |-> {},
+        ob |-> {},
+        ex |-> <<0, 0>> ] )
+/\ pq = (p1 :> <<>>)
+/\ latest = (p1 :> [h |-> 0, s |-> 0, d |-> FALSE, hd |-> FALSE])
+/\ net = { [ p |-> p1,
+    k |-> "closed",
+    h |-> 1,
+    s |-> 2,
+    d |-> FALSE,
+    hd |-> FALSE,
+    re |-> FALSE,
+    v |-> "",
+    a |-> <<0, 0>> ],
+  [ p |-> p1,
+    k |-> "snap",
+    h |-> 1,
+    s |-> 1,
+    d |-> FALSE,
+    hd |-> FALSE,
+    re |-> FALSE,
+    v |-> "",
+    a |-> <<0, 0>> ] }
+/\ lease = Nil
+/\ gh = ( p1 :>
+      [ s |-> 2,
+        d |-> FALSE,
+        hd |-> FALSE,
+        head |-> 1,
+        merged |-> FALSE,
+        closed |-> TRUE,
+        armed |-> FALSE,
+        pc |-> "pending",
+        cc |-> "pending",
+        pa |-> 0,
+        ca |-> 0,
+        ah |-> 0 ] )
+/\ bud = [ env |-> (p1 :> 2),
+  dup |-> 0,
+  crash |-> 0,
+  tm |-> (p1 :> 1),
+  fm |-> 1,
+  lag |-> (p1 :> 1) ]
+/\ pst = (p1 :> Nil)
+/\ comps = 0
+/\ cmerged = FALSE
+/\ wk = (w1 :> Nil @@ w2 :> Nil)
+
+State 3: <ForeignMint line 199, col 3 to line 201, col 79 of module PrLanding>
+/\ bad = [ p1 |-> FALSE,
+  rerunFailed |-> FALSE,
+  dupRerun |-> FALSE,
+  dupAgent |-> FALSE,
+  twoTerms |-> FALSE,
+  twoTermsEp |-> FALSE,
+  ungated |-> FALSE ]
+/\ keys = [rerun |-> {}, agent |-> {}, term |-> {}]
+/\ row = ( p1 :>
+      [ h |-> 0,
+        d |-> FALSE,
+        hd |-> FALSE,
+        armed |-> FALSE,
+        st |-> "OBSERVED",
+        sq |-> 0,
+        ep |-> 0,
+        cmp |-> "none",
+        ch |-> 0,
+        rr |-> {},
+        ag |-> {},
+        ob |-> {},
+        ex |-> <<0, 0>> ] )
+/\ pq = (p1 :> <<>>)
+/\ latest = (p1 :> [h |-> 0, s |-> 0, d |-> FALSE, hd |-> FALSE])
+/\ net = { [ p |-> p1,
+    k |-> "closed",
+    h |-> 1,
+    s |-> 2,
+    d |-> FALSE,
+    hd |-> FALSE,
+    re |-> FALSE,
+    v |-> "",
+    a |-> <<0, 0>> ],
+  [ p |-> p1,
+    k |-> "snap",
+    h |-> 1,
+    s |-> 1,
+    d |-> FALSE,
+    hd |-> FALSE,
+    re |-> FALSE,
+    v |-> "",
+    a |-> <<0, 0>> ] }
+/\ lease = Nil
+/\ gh = ( p1 :>
+      [ s |-> 2,
+        d |-> FALSE,
+        hd |-> FALSE,
+        head |-> 1,
+        merged |-> FALSE,
+        closed |-> TRUE,
+        armed |-> FALSE,
+        pc |-> "pending",
+        cc |-> "pending",
+        pa |-> 0,
+        ca |-> 0,
+        ah |-> 0 ] )
+/\ bud = [ env |-> (p1 :> 2),
+  dup |-> 0,
+  crash |-> 0,
+  tm |-> (p1 :> 1),
+  fm |-> 0,
+  lag |-> (p1 :> 1) ]
+/\ pst = (p1 :> Nil)
+/\ comps = 1
+/\ cmerged = FALSE
+/\ wk = (w1 :> Nil @@ w2 :> Nil)
+
+State 4: <CompMerge line 193, col 3 to line 196, col 70 of module PrLanding>
+/\ bad = [ p1 |-> FALSE,
+  rerunFailed |-> FALSE,
+  dupRerun |-> FALSE,
+  dupAgent |-> FALSE,
+  twoTerms |-> FALSE,
+  twoTermsEp |-> FALSE,
+  ungated |-> FALSE ]
+/\ keys = [rerun |-> {}, agent |-> {}, term |-> {}]
+/\ row = ( p1 :>
+      [ h |-> 0,
+        d |-> FALSE,
+        hd |-> FALSE,
+        armed |-> FALSE,
+        st |-> "OBSERVED",
+        sq |-> 0,
+        ep |-> 0,
+        cmp |-> "none",
+        ch |-> 0,
+        rr |-> {},
+        ag |-> {},
+        ob |-> {},
+        ex |-> <<0, 0>> ] )
+/\ pq = (p1 :> <<>>)
+/\ latest = (p1 :> [h |-> 0, s |-> 0, d |-> FALSE, hd |-> FALSE])
+/\ net = { [ p |-> p1,
+    k |-> "cmerged",
+    h |-> 0,
+    s |-> 0,
+    d |-> FALSE,
+    hd |-> FALSE,
+    re |-> FALSE,
+    v |-> "",
+    a |-> <<0, 0>> ],
+  [ p |-> p1,
+    k |-> "closed",
+    h |-> 1,
+    s |-> 2,
+    d |-> FALSE,
+    hd |-> FALSE,
+    re |-> FALSE,
+    v |-> "",
+    a |-> <<0, 0>> ],
+  [ p |-> p1,
+    k |-> "snap",
+    h |-> 1,
+    s |-> 1,
+    d |-> FALSE,
+    hd |-> FALSE,
+    re |-> FALSE,
+    v |-> "",
+    a |-> <<0, 0>> ] }
+/\ lease = Nil
+/\ gh = ( p1 :>
+      [ s |-> 2,
+        d |-> FALSE,
+        hd |-> FALSE,
+        head |-> 1,
+        merged |-> FALSE,
+        closed |-> TRUE,
+        armed |-> FALSE,
+        pc |-> "pending",
+        cc |-> "pending",
+        pa |-> 0,
+        ca |-> 0,
+        ah |-> 0 ] )
+/\ bud = [ env |-> (p1 :> 2),
+  dup |-> 0,
+  crash |-> 0,
+  tm |-> (p1 :> 1),
+  fm |-> 0,
+  lag |-> (p1 :> 1) ]
+/\ pst = (p1 :> Nil)
+/\ comps = 0
+/\ cmerged = TRUE
+/\ wk = (w1 :> Nil @@ w2 :> Nil)
+
+State 5: <Deliver line 353, col 3 to line 358, col 26 of module PrLanding>
+/\ bad = [ p1 |-> FALSE,
+  rerunFailed |-> FALSE,
+  dupRerun |-> FALSE,
+  dupAgent |-> FALSE,
+  twoTerms |-> FALSE,
+  twoTermsEp |-> FALSE,
+  ungated |-> FALSE ]
+/\ keys = [rerun |-> {}, agent |-> {}, term |-> {}]
+/\ row = ( p1 :>
+      [ h |-> 0,
+        d |-> FALSE,
+        hd |-> FALSE,
+        armed |-> FALSE,
+        st |-> "OBSERVED",
+        sq |-> 0,
+        ep |-> 0,
+        cmp |-> "merged",
+        ch |-> 0,
+        rr |-> {},
+        ag |-> {},
+        ob |-> {},
+        ex |-> <<0, 0>> ] )
+/\ pq = (p1 :> <<>>)
+/\ latest = (p1 :> [h |-> 0, s |-> 0, d |-> FALSE, hd |-> FALSE])
+/\ net = { [ p |-> p1,
+    k |-> "closed",
+    h |-> 1,
+    s |-> 2,
+    d |-> FALSE,
+    hd |-> FALSE,
+    re |-> FALSE,
+    v |-> "",
+    a |-> <<0, 0>> ],
+  [ p |-> p1,
+    k |-> "snap",
+    h |-> 1,
+    s |-> 1,
+    d |-> FALSE,
+    hd |-> FALSE,
+    re |-> FALSE,
+    v |-> "",
+    a |-> <<0, 0>> ] }
+/\ lease = Nil
+/\ gh = ( p1 :>
+      [ s |-> 2,
+        d |-> FALSE,
+        hd |-> FALSE,
+        head |-> 1,
+        merged |-> FALSE,
+        closed |-> TRUE,
+        armed |-> FALSE,
+        pc |-> "pending",
+        cc |-> "pending",
+        pa |-> 0,
+        ca |-> 0,
+        ah |-> 0 ] )
+/\ bud = [ env |-> (p1 :> 2),
+  dup |-> 0,
+  crash |-> 0,
+  tm |-> (p1 :> 1),
+  fm |-> 0,
+  lag |-> (p1 :> 1) ]
+/\ pst = (p1 :> Nil)
+/\ comps = 0
+/\ cmerged = TRUE
+/\ wk = (w1 :> Nil @@ w2 :> Nil)
+
+State 6: <ReopenPR(p1) line 166, col 3 to line 169, col 12 of module PrLanding>
+/\ bad = [ p1 |-> FALSE,
+  rerunFailed |-> FALSE,
+  dupRerun |-> FALSE,
+  dupAgent |-> FALSE,
+  twoTerms |-> FALSE,
+  twoTermsEp |-> FALSE,
+  ungated |-> FALSE ]
+/\ keys = [rerun |-> {}, agent |-> {}, term |-> {}]
+/\ row = ( p1 :>
+      [ h |-> 0,
+        d |-> FALSE,
+        hd |-> FALSE,
+        armed |-> FALSE,
+        st |-> "OBSERVED",
+        sq |-> 0,
+        ep |-> 0,
+        cmp |-> "merged",
+        ch |-> 0,
+        rr |-> {},
+        ag |-> {},
+        ob |-> {},
+        ex |-> <<0, 0>> ] )
+/\ pq = (p1 :> <<>>)
+/\ latest = (p1 :> [h |-> 0, s |-> 0, d |-> FALSE, hd |-> FALSE])
+/\ net = { [ p |-> p1,
+    k |-> "closed",
+    h |-> 1,
+    s |-> 2,
+    d |-> FALSE,
+    hd |-> FALSE,
+    re |-> FALSE,
+    v |-> "",
+    a |-> <<0, 0>> ],
+  [ p |-> p1,
+    k |-> "snap",
+    h |-> 1,
+    s |-> 1,
+    d |-> FALSE,
+    hd |-> FALSE,
+    re |-> FALSE,
+    v |-> "",
+    a |-> <<0, 0>> ],
+  [ p |-> p1,
+    k |-> "snap",
+    h |-> 1,
+    s |-> 3,
+    d |-> FALSE,
+    hd |-> FALSE,
+    re |-> TRUE,
+    v |-> "",
+    a |-> <<0, 0>> ] }
+/\ lease = Nil
+/\ gh = ( p1 :>
+      [ s |-> 3,
+        d |-> FALSE,
+        hd |-> FALSE,
+        head |-> 1,
+        merged |-> FALSE,
+        closed |-> FALSE,
+        armed |-> FALSE,
+        pc |-> "pending",
+        cc |-> "pending",
+        pa |-> 0,
+        ca |-> 0,
+        ah |-> 0 ] )
+/\ bud = [ env |-> (p1 :> 1),
+  dup |-> 0,
+  crash |-> 0,
+  tm |-> (p1 :> 1),
+  fm |-> 0,
+  lag |-> (p1 :> 1) ]
+/\ pst = (p1 :> Nil)
+/\ comps = 0
+/\ cmerged = TRUE
+/\ wk = (w1 :> Nil @@ w2 :> Nil)
+
+State 7: <Deliver line 353, col 3 to line 358, col 26 of module PrLanding>
+/\ bad = [ p1 |-> FALSE,
+  rerunFailed |-> FALSE,
+  dupRerun |-> FALSE,
+  dupAgent |-> FALSE,
+  twoTerms |-> FALSE,
+  twoTermsEp |-> FALSE,
+  ungated |-> FALSE ]
+/\ keys = [rerun |-> {}, agent |-> {}, term |-> {}]
+/\ row = ( p1 :>
+      [ h |-> 1,
+        d |-> FALSE,
+        hd |-> FALSE,
+        armed |-> FALSE,
+        st |-> "CHECKS_PENDING",
+        sq |-> 1,
+        ep |-> 0,
+        cmp |-> "merged",
+        ch |-> 0,
+        rr |-> {},
+        ag |-> {},
+        ob |-> {[k |-> "read", h |-> 1, x |-> ""]},
+        ex |-> <<0, 0>> ] )
+/\ pq = (p1 :> <<>>)
+/\ latest = (p1 :> [h |-> 1, s |-> 1, d |-> FALSE, hd |-> FALSE])
+/\ net = { [ p |-> p1,
+    k |-> "closed",
+    h |-> 1,
+    s |-> 2,
+    d |-> FALSE,
+    hd |-> FALSE,
+    re |-> FALSE,
+    v |-> "",
+    a |-> <<0, 0>> ],
+  [ p |-> p1,
+    k |-> "snap",
+    h |-> 1,
+    s |-> 3,
+    d |-> FALSE,
+    hd |-> FALSE,
+    re |-> TRUE,
+    v |-> "",
+    a |-> <<0, 0>> ] }
+/\ lease = Nil
+/\ gh = ( p1 :>
+      [ s |-> 3,
+        d |-> FALSE,
+        hd |-> FALSE,
+        head |-> 1,
+        merged |-> FALSE,
+        closed |-> FALSE,
+        armed |-> FALSE,
+        pc |-> "pending",
+        cc |-> "pending",
+        pa |-> 0,
+        ca |-> 0,
+        ah |-> 0 ] )
+/\ bud = [ env |-> (p1 :> 1),
+  dup |-> 0,
+  crash |-> 0,
+  tm |-> (p1 :> 1),
+  fm |-> 0,
+  lag |-> (p1 :> 1) ]
+/\ pst = (p1 :> Nil)
+/\ comps = 0
+/\ cmerged = TRUE
+/\ wk = (w1 :> Nil @@ w2 :> Nil)
+
+State 8: <Dispatch(p1) line 393, col 3 to line 434, col 59 of module PrLanding>
+/\ bad = [ p1 |-> FALSE,
+  rerunFailed |-> FALSE,
+  dupRerun |-> FALSE,
+  dupAgent |-> FALSE,
+  twoTerms |-> FALSE,
+  twoTermsEp |-> FALSE,
+  ungated |-> FALSE ]
+/\ keys = [rerun |-> {}, agent |-> {}, term |-> {}]
+/\ row = ( p1 :>
+      [ h |-> 1,
+        d |-> FALSE,
+        hd |-> FALSE,
+        armed |-> FALSE,
+        st |-> "CHECKS_PENDING",
+        sq |-> 1,
+        ep |-> 0,
+        cmp |-> "merged",
+        ch |-> 0,
+        rr |-> {},
+        ag |-> {},
+        ob |-> {},
+        ex |-> <<0, 0>> ] )
+/\ pq = (p1 :> <<>>)
+/\ latest = (p1 :> [h |-> 1, s |-> 1, d |-> FALSE, hd |-> FALSE])
+/\ net = { [ p |-> p1,
+    k |-> "closed",
+    h |-> 1,
+    s |-> 2,
+    d |-> FALSE,
+    hd |-> FALSE,
+    re |-> FALSE,
+    v |-> "",
+    a |-> <<0, 0>> ],
+  [ p |-> p1,
+    k |-> "snap",
+    h |-> 1,
+    s |-> 3,
+    d |-> FALSE,
+    hd |-> FALSE,
+    re |-> TRUE,
+    v |-> "",
+    a |-> <<0, 0>> ],
+  [ p |-> p1,
+    k |-> "verdict",
+    h |-> 1,
+    s |-> 0,
+    d |-> FALSE,
+    hd |-> FALSE,
+    re |-> FALSE,
+    v |-> "green",
+    a |-> <<0, 0>> ] }
+/\ lease = Nil
+/\ gh = ( p1 :>
+      [ s |-> 3,
+        d |-> FALSE,
+        hd |-> FALSE,
+        head |-> 1,
+        merged |-> FALSE,
+        closed |-> FALSE,
+        armed |-> FALSE,
+        pc |-> "green",
+        cc |-> "green",
+        pa |-> 0,
+        ca |-> 0,
+        ah |-> 0 ] )
+/\ bud = [ env |-> (p1 :> 1),
+  dup |-> 0,
+  crash |-> 0,
+  tm |-> (p1 :> 1),
+  fm |-> 0,
+  lag |-> (p1 :> 1) ]
+/\ pst = (p1 :> Nil)
+/\ comps = 0
+/\ cmerged = TRUE
+/\ wk = (w1 :> Nil @@ w2 :> Nil)
+
+State 9: <Deliver line 353, col 3 to line 358, col 26 of module PrLanding>
+/\ bad = [ p1 |-> FALSE,
+  rerunFailed |-> FALSE,
+  dupRerun |-> FALSE,
+  dupAgent |-> FALSE,
+  twoTerms |-> FALSE,
+  twoTermsEp |-> FALSE,
+  ungated |-> FALSE ]
+/\ keys = [rerun |-> {}, agent |-> {}, term |-> {}]
+/\ row = ( p1 :>
+      [ h |-> 1,
+        d |-> FALSE,
+        hd |-> FALSE,
+        armed |-> TRUE,
+        st |-> "READY",
+        sq |-> 1,
+        ep |-> 0,
+        cmp |-> "merged",
+        ch |-> 0,
+        rr |-> {},
+        ag |-> {},
+        ob |-> {[k |-> "arm", h |-> 1, x |-> 1]},
+        ex |-> <<0, 0>> ] )
+/\ pq = (p1 :> <<>>)
+/\ latest = (p1 :> [h |-> 1, s |-> 1, d |-> FALSE, hd |-> FALSE])
+/\ net = { [ p |-> p1,
+    k |-> "closed",
+    h |-> 1,
+    s |-> 2,
+    d |-> FALSE,
+    hd |-> FALSE,
+    re |-> FALSE,
+    v |-> "",
+    a |-> <<0, 0>> ],
+  [ p |-> p1,
+    k |-> "snap",
+    h |-> 1,
+    s |-> 3,
+    d |-> FALSE,
+    hd |-> FALSE,
+    re |-> TRUE,
+    v |-> "",
+    a |-> <<0, 0>> ] }
+/\ lease = Nil
+/\ gh = ( p1 :>
+      [ s |-> 3,
+        d |-> FALSE,
+        hd |-> FALSE,
+        head |-> 1,
+        merged |-> FALSE,
+        closed |-> FALSE,
+        armed |-> FALSE,
+        pc |-> "green",
+        cc |-> "green",
+        pa |-> 0,
+        ca |-> 0,
+        ah |-> 0 ] )
+/\ bud = [ env |-> (p1 :> 1),
+  dup |-> 0,
+  crash |-> 0,
+  tm |-> (p1 :> 1),
+  fm |-> 0,
+  lag |-> (p1 :> 1) ]
+/\ pst = (p1 :> Nil)
+/\ comps = 0
+/\ cmerged = TRUE
+/\ wk = (w1 :> Nil @@ w2 :> Nil)
+
+State 10: <Dispatch(p1) line 393, col 3 to line 434, col 59 of module PrLanding>
+/\ bad = [ p1 |-> FALSE,
+  rerunFailed |-> FALSE,
+  dupRerun |-> FALSE,
+  dupAgent |-> FALSE,
+  twoTerms |-> FALSE,
+  twoTermsEp |-> FALSE,
+  ungated |-> FALSE ]
+/\ keys = [rerun |-> {}, agent |-> {}, term |-> {}]
+/\ row = ( p1 :>
+      [ h |-> 1,
+        d |-> FALSE,
+        hd |-> FALSE,
+        armed |-> TRUE,
+        st |-> "READY",
+        sq |-> 1,
+        ep |-> 0,
+        cmp |-> "merged",
+        ch |-> 0,
+        rr |-> {},
+        ag |-> {},
+        ob |-> {},
+        ex |-> <<0, 0>> ] )
+/\ pq = (p1 :> <<>>)
+/\ latest = (p1 :> [h |-> 1, s |-> 1, d |-> FALSE, hd |-> FALSE])
+/\ net = { [ p |-> p1,
+    k |-> "closed",
+    h |-> 1,
+    s |-> 2,
+    d |-> FALSE,
+    hd |-> FALSE,
+    re |-> FALSE,
+    v |-> "",
+    a |-> <<0, 0>> ],
+  [ p |-> p1,
+    k |-> "armed",
+    h |-> 1,
+    s |-> 0,
+    d |-> FALSE,
+    hd |-> FALSE,
+    re |-> FALSE,
+    v |-> "",
+    a |-> <<0, 0>> ],
+  [ p |-> p1,
+    k |-> "snap",
+    h |-> 1,
+    s |-> 3,
+    d |-> FALSE,
+    hd |-> FALSE,
+    re |-> TRUE,
+    v |-> "",
+    a |-> <<0, 0>> ] }
+/\ lease = Nil
+/\ gh = ( p1 :>
+      [ s |-> 3,
+        d |-> FALSE,
+        hd |-> FALSE,
+        head |-> 1,
+        merged |-> FALSE,
+        closed |-> FALSE,
+        armed |-> TRUE,
+        pc |-> "green",
+        cc |-> "green",
+        pa |-> 0,
+        ca |-> 0,
+        ah |-> 1 ] )
+/\ bud = [ env |-> (p1 :> 1),
+  dup |-> 0,
+  crash |-> 0,
+  tm |-> (p1 :> 1),
+  fm |-> 0,
+  lag |-> (p1 :> 1) ]
+/\ pst = (p1 :> Nil)
+/\ comps = 0
+/\ cmerged = TRUE
+/\ wk = (w1 :> Nil @@ w2 :> Nil)
+
+State 11: <GhMerge(p1) line 182, col 3 to line 190, col 63 of module PrLanding>
+/\ bad = [ p1 |-> FALSE,
+  rerunFailed |-> FALSE,
+  dupRerun |-> FALSE,
+  dupAgent |-> FALSE,
+  twoTerms |-> FALSE,
+  twoTermsEp |-> FALSE,
+  ungated |-> FALSE ]
+/\ keys = [rerun |-> {}, agent |-> {}, term |-> {}]
+/\ row = ( p1 :>
+      [ h |-> 1,
+        d |-> FALSE,
+        hd |-> FALSE,
+        armed |-> TRUE,
+        st |-> "READY",
+        sq |-> 1,
+        ep |-> 0,
+        cmp |-> "merged",
+        ch |-> 0,
+        rr |-> {},
+        ag |-> {},
+        ob |-> {},
+        ex |-> <<0, 0>> ] )
+/\ pq = (p1 :> <<>>)
+/\ latest = (p1 :> [h |-> 1, s |-> 1, d |-> FALSE, hd |-> FALSE])
+/\ net = { [ p |-> p1,
+    k |-> "merged",
+    h |-> 1,
+    s |-> 0,
+    d |-> FALSE,
+    hd |-> FALSE,
+    re |-> FALSE,
+    v |-> "I2",
+    a |-> <<0, 0>> ],
+  [ p |-> p1,
+    k |-> "merged",
+    h |-> 1,
+    s |-> 0,
+    d |-> FALSE,
+    hd |-> FALSE,
+    re |-> FALSE,
+    v |-> "I3",
+    a |-> <<0, 0>> ],
+  [ p |-> p1,
+    k |-> "merged",
+    h |-> 1,
+    s |-> 0,
+    d |-> FALSE,
+    hd |-> FALSE,
+    re |-> FALSE,
+    v |-> "I1",
+    a |-> <<0, 0>> ],
+  [ p |-> p1,
+    k |-> "closed",
+    h |-> 1,
+    s |-> 2,
+    d |-> FALSE,
+    hd |-> FALSE,
+    re |-> FALSE,
+    v |-> "",
+    a |-> <<0, 0>> ],
+  [ p |-> p1,
+    k |-> "armed",
+    h |-> 1,
+    s |-> 0,
+    d |-> FALSE,
+    hd |-> FALSE,
+    re |-> FALSE,
+    v |-> "",
+    a |-> <<0, 0>> ],
+  [ p |-> p1,
+    k |-> "snap",
+    h |-> 1,
+    s |-> 3,
+    d |-> FALSE,
+    hd |-> FALSE,
+    re |-> TRUE,
+    v |-> "",
+    a |-> <<0, 0>> ] }
+/\ lease = Nil
+/\ gh = ( p1 :>
+      [ s |-> 4,
+        d |-> FALSE,
+        hd |-> FALSE,
+        head |-> 1,
+        merged |-> TRUE,
+        closed |-> FALSE,
+        armed |-> TRUE,
+        pc |-> "green",
+        cc |-> "green",
+        pa |-> 0,
+        ca |-> 0,
+        ah |-> 1 ] )
+/\ bud = [ env |-> (p1 :> 1),
+  dup |-> 0,
+  crash |-> 0,
+  tm |-> (p1 :> 1),
+  fm |-> 0,
+  lag |-> (p1 :> 1) ]
+/\ pst = (p1 :> Nil)
+/\ comps = 0
+/\ cmerged = TRUE
+/\ wk = (w1 :> Nil @@ w2 :> Nil)
+
+State 12: <Deliver line 353, col 3 to line 358, col 26 of module PrLanding>
+/\ bad = [ p1 |-> FALSE,
+  rerunFailed |-> FALSE,
+  dupRerun |-> FALSE,
+  dupAgent |-> FALSE,
+  twoTerms |-> FALSE,
+  twoTermsEp |-> FALSE,
+  ungated |-> FALSE ]
+/\ keys = [rerun |-> {}, agent |-> {}, term |-> {}]
+/\ row = ( p1 :>
+      [ h |-> 1,
+        d |-> FALSE,
+        hd |-> FALSE,
+        armed |-> TRUE,
+        st |-> "CLOSED",
+        sq |-> 2,
+        ep |-> 0,
+        cmp |-> "merged",
+        ch |-> 0,
+        rr |-> {},
+        ag |-> {},
+        ob |-> {[k |-> "terminal", h |-> 0, x |-> "closed"]},
+        ex |-> <<0, 0>> ] )
+/\ pq = (p1 :> <<>>)
+/\ latest = (p1 :> [h |-> 1, s |-> 1, d |-> FALSE, hd |-> FALSE])
+/\ net = { [ p |-> p1,
+    k |-> "merged",
+    h |-> 1,
+    s |-> 0,
+    d |-> FALSE,
+    hd |-> FALSE,
+    re |-> FALSE,
+    v |-> "I2",
+    a |-> <<0, 0>> ],
+  [ p |-> p1,
+    k |-> "merged",
+    h |-> 1,
+    s |-> 0,
+    d |-> FALSE,
+    hd |-> FALSE,
+    re |-> FALSE,
+    v |-> "I3",
+    a |-> <<0, 0>> ],
+  [ p |-> p1,
+    k |-> "merged",
+    h |-> 1,
+    s |-> 0,
+    d |-> FALSE,
+    hd |-> FALSE,
+    re |-> FALSE,
+    v |-> "I1",
+    a |-> <<0, 0>> ],
+  [ p |-> p1,
+    k |-> "armed",
+    h |-> 1,
+    s |-> 0,
+    d |-> FALSE,
+    hd |-> FALSE,
+    re |-> FALSE,
+    v |-> "",
+    a |-> <<0, 0>> ],
+  [ p |-> p1,
+    k |-> "snap",
+    h |-> 1,
+    s |-> 3,
+    d |-> FALSE,
+    hd |-> FALSE,
+    re |-> TRUE,
+    v |-> "",
+    a |-> <<0, 0>> ] }
+/\ lease = Nil
+/\ gh = ( p1 :>
+      [ s |-> 4,
+        d |-> FALSE,
+        hd |-> FALSE,
+        head |-> 1,
+        merged |-> TRUE,
+        closed |-> FALSE,
+        armed |-> TRUE,
+        pc |-> "green",
+        cc |-> "green",
+        pa |-> 0,
+        ca |-> 0,
+        ah |-> 1 ] )
+/\ bud = [ env |-> (p1 :> 1),
+  dup |-> 0,
+  crash |-> 0,
+  tm |-> (p1 :> 1),
+  fm |-> 0,
+  lag |-> (p1 :> 1) ]
+/\ pst = (p1 :> Nil)
+/\ comps = 0
+/\ cmerged = TRUE
+/\ wk = (w1 :> Nil @@ w2 :> Nil)
+
+State 13: <Dispatch(p1) line 393, col 3 to line 434, col 59 of module PrLanding>
+/\ bad = [ p1 |-> FALSE,
+  rerunFailed |-> FALSE,
+  dupRerun |-> FALSE,
+  dupAgent |-> FALSE,
+  twoTerms |-> FALSE,
+  twoTermsEp |-> FALSE,
+  ungated |-> FALSE ]
+/\ keys = [rerun |-> {}, agent |-> {}, term |-> {<<p1, 0, "closed">>}]
+/\ row = ( p1 :>
+      [ h |-> 1,
+        d |-> FALSE,
+        hd |-> FALSE,
+        armed |-> TRUE,
+        st |-> "CLOSED",
+        sq |-> 2,
+        ep |-> 0,
+        cmp |-> "merged",
+        ch |-> 0,
+        rr |-> {},
+        ag |-> {},
+        ob |-> {},
+        ex |-> <<0, 0>> ] )
+/\ pq = (p1 :> <<>>)
+/\ latest = (p1 :> [h |-> 1, s |-> 1, d |-> FALSE, hd |-> FALSE])
+/\ net = { [ p |-> p1,
+    k |-> "merged",
+    h |-> 1,
+    s |-> 0,
+    d |-> FALSE,
+    hd |-> FALSE,
+    re |-> FALSE,
+    v |-> "I2",
+    a |-> <<0, 0>> ],
+  [ p |-> p1,
+    k |-> "merged",
+    h |-> 1,
+    s |-> 0,
+    d |-> FALSE,
+    hd |-> FALSE,
+    re |-> FALSE,
+    v |-> "I3",
+    a |-> <<0, 0>> ],
+  [ p |-> p1,
+    k |-> "merged",
+    h |-> 1,
+    s |-> 0,
+    d |-> FALSE,
+    hd |-> FALSE,
+    re |-> FALSE,
+    v |-> "I1",
+    a |-> <<0, 0>> ],
+  [ p |-> p1,
+    k |-> "armed",
+    h |-> 1,
+    s |-> 0,
+    d |-> FALSE,
+    hd |-> FALSE,
+    re |-> FALSE,
+    v |-> "",
+    a |-> <<0, 0>> ],
+  [ p |-> p1,
+    k |-> "snap",
+    h |-> 1,
+    s |-> 3,
+    d |-> FALSE,
+    hd |-> FALSE,
+    re |-> TRUE,
+    v |-> "",
+    a |-> <<0, 0>> ] }
+/\ lease = Nil
+/\ gh = ( p1 :>
+      [ s |-> 4,
+        d |-> FALSE,
+        hd |-> FALSE,
+        head |-> 1,
+        merged |-> TRUE,
+        closed |-> FALSE,
+        armed |-> TRUE,
+        pc |-> "green",
+        cc |-> "green",
+        pa |-> 0,
+        ca |-> 0,
+        ah |-> 1 ] )
+/\ bud = [ env |-> (p1 :> 1),
+  dup |-> 0,
+  crash |-> 0,
+  tm |-> (p1 :> 1),
+  fm |-> 0,
+  lag |-> (p1 :> 1) ]
+/\ pst = (p1 :> Nil)
+/\ comps = 0
+/\ cmerged = TRUE
+/\ wk = (w1 :> Nil @@ w2 :> Nil)
+
+State 14: <Ignore line 378, col 3 to line 379, col 53 of module PrLanding>
+/\ bad = [ p1 |-> FALSE,
+  rerunFailed |-> FALSE,
+  dupRerun |-> FALSE,
+  dupAgent |-> FALSE,
+  twoTerms |-> FALSE,
+  twoTermsEp |-> FALSE,
+  ungated |-> FALSE ]
+/\ keys = [rerun |-> {}, agent |-> {}, term |-> {<<p1, 0, "closed">>}]
+/\ row = ( p1 :>
+      [ h |-> 1,
+        d |-> FALSE,
+        hd |-> FALSE,
+        armed |-> TRUE,
+        st |-> "CLOSED",
+        sq |-> 2,
+        ep |-> 0,
+        cmp |-> "merged",
+        ch |-> 0,
+        rr |-> {},
+        ag |-> {},
+        ob |-> {},
+        ex |-> <<0, 0>> ] )
+/\ pq = (p1 :> <<>>)
+/\ latest = (p1 :> [h |-> 1, s |-> 1, d |-> FALSE, hd |-> FALSE])
+/\ net = { [ p |-> p1,
+    k |-> "merged",
+    h |-> 1,
+    s |-> 0,
+    d |-> FALSE,
+    hd |-> FALSE,
+    re |-> FALSE,
+    v |-> "I3",
+    a |-> <<0, 0>> ],
+  [ p |-> p1,
+    k |-> "merged",
+    h |-> 1,
+    s |-> 0,
+    d |-> FALSE,
+    hd |-> FALSE,
+    re |-> FALSE,
+    v |-> "I1",
+    a |-> <<0, 0>> ],
+  [ p |-> p1,
+    k |-> "armed",
+    h |-> 1,
+    s |-> 0,
+    d |-> FALSE,
+    hd |-> FALSE,
+    re |-> FALSE,
+    v |-> "",
+    a |-> <<0, 0>> ],
+  [ p |-> p1,
+    k |-> "snap",
+    h |-> 1,
+    s |-> 3,
+    d |-> FALSE,
+    hd |-> FALSE,
+    re |-> TRUE,
+    v |-> "",
+    a |-> <<0, 0>> ] }
+/\ lease = Nil
+/\ gh = ( p1 :>
+      [ s |-> 4,
+        d |-> FALSE,
+        hd |-> FALSE,
+        head |-> 1,
+        merged |-> TRUE,
+        closed |-> FALSE,
+        armed |-> TRUE,
+        pc |-> "green",
+        cc |-> "green",
+        pa |-> 0,
+        ca |-> 0,
+        ah |-> 1 ] )
+/\ bud = [ env |-> (p1 :> 1),
+  dup |-> 0,
+  crash |-> 0,
+  tm |-> (p1 :> 1),
+  fm |-> 0,
+  lag |-> (p1 :> 1) ]
+/\ pst = (p1 :> Nil)
+/\ comps = 0
+/\ cmerged = TRUE
+/\ wk = (w1 :> Nil @@ w2 :> Nil)
+
+State 15: <Ignore line 378, col 3 to line 379, col 53 of module PrLanding>
+/\ bad = [ p1 |-> FALSE,
+  rerunFailed |-> FALSE,
+  dupRerun |-> FALSE,
+  dupAgent |-> FALSE,
+  twoTerms |-> FALSE,
+  twoTermsEp |-> FALSE,
+  ungated |-> FALSE ]
+/\ keys = [rerun |-> {}, agent |-> {}, term |-> {<<p1, 0, "closed">>}]
+/\ row = ( p1 :>
+      [ h |-> 1,
+        d |-> FALSE,
+        hd |-> FALSE,
+        armed |-> TRUE,
+        st |-> "CLOSED",
+        sq |-> 2,
+        ep |-> 0,
+        cmp |-> "merged",
+        ch |-> 0,
+        rr |-> {},
+        ag |-> {},
+        ob |-> {},
+        ex |-> <<0, 0>> ] )
+/\ pq = (p1 :> <<>>)
+/\ latest = (p1 :> [h |-> 1, s |-> 1, d |-> FALSE, hd |-> FALSE])
+/\ net = { [ p |-> p1,
+    k |-> "merged",
+    h |-> 1,
+    s |-> 0,
+    d |-> FALSE,
+    hd |-> FALSE,
+    re |-> FALSE,
+    v |-> "I1",
+    a |-> <<0, 0>> ],
+  [ p |-> p1,
+    k |-> "armed",
+    h |-> 1,
+    s |-> 0,
+    d |-> FALSE,
+    hd |-> FALSE,
+    re |-> FALSE,
+    v |-> "",
+    a |-> <<0, 0>> ],
+  [ p |-> p1,
+    k |-> "snap",
+    h |-> 1,
+    s |-> 3,
+    d |-> FALSE,
+    hd |-> FALSE,
+    re |-> TRUE,
+    v |-> "",
+    a |-> <<0, 0>> ] }
+/\ lease = Nil
+/\ gh = ( p1 :>
+      [ s |-> 4,
+        d |-> FALSE,
+        hd |-> FALSE,
+        head |-> 1,
+        merged |-> TRUE,
+        closed |-> FALSE,
+        armed |-> TRUE,
+        pc |-> "green",
+        cc |-> "green",
+        pa |-> 0,
+        ca |-> 0,
+        ah |-> 1 ] )
+/\ bud = [ env |-> (p1 :> 1),
+  dup |-> 0,
+  crash |-> 0,
+  tm |-> (p1 :> 1),
+  fm |-> 0,
+  lag |-> (p1 :> 1) ]
+/\ pst = (p1 :> Nil)
+/\ comps = 0
+/\ cmerged = TRUE
+/\ wk = (w1 :> Nil @@ w2 :> Nil)
+
+State 16: <Ignore line 378, col 3 to line 379, col 53 of module PrLanding>
+/\ bad = [ p1 |-> FALSE,
+  rerunFailed |-> FALSE,
+  dupRerun |-> FALSE,
+  dupAgent |-> FALSE,
+  twoTerms |-> FALSE,
+  twoTermsEp |-> FALSE,
+  ungated |-> FALSE ]
+/\ keys = [rerun |-> {}, agent |-> {}, term |-> {<<p1, 0, "closed">>}]
+/\ row = ( p1 :>
+      [ h |-> 1,
+        d |-> FALSE,
+        hd |-> FALSE,
+        armed |-> TRUE,
+        st |-> "CLOSED",
+        sq |-> 2,
+        ep |-> 0,
+        cmp |-> "merged",
+        ch |-> 0,
+        rr |-> {},
+        ag |-> {},
+        ob |-> {},
+        ex |-> <<0, 0>> ] )
+/\ pq = (p1 :> <<>>)
+/\ latest = (p1 :> [h |-> 1, s |-> 1, d |-> FALSE, hd |-> FALSE])
+/\ net = { [ p |-> p1,
+    k |-> "armed",
+    h |-> 1,
+    s |-> 0,
+    d |-> FALSE,
+    hd |-> FALSE,
+    re |-> FALSE,
+    v |-> "",
+    a |-> <<0, 0>> ],
+  [ p |-> p1,
+    k |-> "snap",
+    h |-> 1,
+    s |-> 3,
+    d |-> FALSE,
+    hd |-> FALSE,
+    re |-> TRUE,
+    v |-> "",
+    a |-> <<0, 0>> ] }
+/\ lease = Nil
+/\ gh = ( p1 :>
+      [ s |-> 4,
+        d |-> FALSE,
+        hd |-> FALSE,
+        head |-> 1,
+        merged |-> TRUE,
+        closed |-> FALSE,
+        armed |-> TRUE,
+        pc |-> "green",
+        cc |-> "green",
+        pa |-> 0,
+        ca |-> 0,
+        ah |-> 1 ] )
+/\ bud = [ env |-> (p1 :> 1),
+  dup |-> 0,
+  crash |-> 0,
+  tm |-> (p1 :> 1),
+  fm |-> 0,
+  lag |-> (p1 :> 1) ]
+/\ pst = (p1 :> Nil)
+/\ comps = 0
+/\ cmerged = TRUE
+/\ wk = (w1 :> Nil @@ w2 :> Nil)
+
+State 17: <Deliver line 353, col 3 to line 358, col 26 of module PrLanding>
+/\ bad = [ p1 |-> FALSE,
+  rerunFailed |-> FALSE,
+  dupRerun |-> FALSE,
+  dupAgent |-> FALSE,
+  twoTerms |-> FALSE,
+  twoTermsEp |-> FALSE,
+  ungated |-> FALSE ]
+/\ keys = [rerun |-> {}, agent |-> {}, term |-> {<<p1, 0, "closed">>}]
+/\ row = ( p1 :>
+      [ h |-> 1,
+        d |-> FALSE,
+        hd |-> FALSE,
+        armed |-> TRUE,
+        st |-> "CHECKS_PENDING",
+        sq |-> 3,
+        ep |-> 1,
+        cmp |-> "merged",
+        ch |-> 0,
+        rr |-> {},
+        ag |-> {},
+        ob |-> {[k |-> "read", h |-> 1, x |-> ""]},
+        ex |-> <<0, 0>> ] )
+/\ pq = (p1 :> <<>>)
+/\ latest = (p1 :> [h |-> 1, s |-> 3, d |-> FALSE, hd |-> FALSE])
+/\ net = { [ p |-> p1,
+    k |-> "armed",
+    h |-> 1,
+    s |-> 0,
+    d |-> FALSE,
+    hd |-> FALSE,
+    re |-> FALSE,
+    v |-> "",
+    a |-> <<0, 0>> ] }
+/\ lease = Nil
+/\ gh = ( p1 :>
+      [ s |-> 4,
+        d |-> FALSE,
+        hd |-> FALSE,
+        head |-> 1,
+        merged |-> TRUE,
+        closed |-> FALSE,
+        armed |-> TRUE,
+        pc |-> "green",
+        cc |-> "green",
+        pa |-> 0,
+        ca |-> 0,
+        ah |-> 1 ] )
+/\ bud = [ env |-> (p1 :> 1),
+  dup |-> 0,
+  crash |-> 0,
+  tm |-> (p1 :> 1),
+  fm |-> 0,
+  lag |-> (p1 :> 1) ]
+/\ pst = (p1 :> Nil)
+/\ comps = 0
+/\ cmerged = TRUE
+/\ wk = (w1 :> Nil @@ w2 :> Nil)
+
+State 18: <Dispatch(p1) line 393, col 3 to line 434, col 59 of module PrLanding>
+/\ bad = [ p1 |-> FALSE,
+  rerunFailed |-> FALSE,
+  dupRerun |-> FALSE,
+  dupAgent |-> FALSE,
+  twoTerms |-> FALSE,
+  twoTermsEp |-> FALSE,
+  ungated |-> FALSE ]
+/\ keys = [rerun |-> {}, agent |-> {}, term |-> {<<p1, 0, "closed">>}]
+/\ row = ( p1 :>
+      [ h |-> 1,
+        d |-> FALSE,
+        hd |-> FALSE,
+        armed |-> TRUE,
+        st |-> "CHECKS_PENDING",
+        sq |-> 3,
+        ep |-> 1,
+        cmp |-> "merged",
+        ch |-> 0,
+        rr |-> {},
+        ag |-> {},
+        ob |-> {},
+        ex |-> <<0, 0>> ] )
+/\ pq = (p1 :> <<>>)
+/\ latest = (p1 :> [h |-> 1, s |-> 3, d |-> FALSE, hd |-> FALSE])
+/\ net = { [ p |-> p1,
+    k |-> "armed",
+    h |-> 1,
+    s |-> 0,
+    d |-> FALSE,
+    hd |-> FALSE,
+    re |-> FALSE,
+    v |-> "",
+    a |-> <<0, 0>> ] }
+/\ lease = Nil
+/\ gh = ( p1 :>
+      [ s |-> 4,
+        d |-> FALSE,
+        hd |-> FALSE,
+        head |-> 1,
+        merged |-> TRUE,
+        closed |-> FALSE,
+        armed |-> TRUE,
+        pc |-> "green",
+        cc |-> "green",
+        pa |-> 0,
+        ca |-> 0,
+        ah |-> 1 ] )
+/\ bud = [ env |-> (p1 :> 1),
+  dup |-> 0,
+  crash |-> 0,
+  tm |-> (p1 :> 1),
+  fm |-> 0,
+  lag |-> (p1 :> 0) ]
+/\ pst = (p1 :> Nil)
+/\ comps = 0
+/\ cmerged = TRUE
+/\ wk = (w1 :> Nil @@ w2 :> Nil)
+
+State 19: <Ignore line 378, col 3 to line 379, col 53 of module PrLanding>
+/\ bad = [ p1 |-> FALSE,
+  rerunFailed |-> FALSE,
+  dupRerun |-> FALSE,
+  dupAgent |-> FALSE,
+  twoTerms |-> FALSE,
+  twoTermsEp |-> FALSE,
+  ungated |-> FALSE ]
+/\ keys = [rerun |-> {}, agent |-> {}, term |-> {<<p1, 0, "closed">>}]
+/\ row = ( p1 :>
+      [ h |-> 1,
+        d |-> FALSE,
+        hd |-> FALSE,
+        armed |-> TRUE,
+        st |-> "CHECKS_PENDING",
+        sq |-> 3,
+        ep |-> 1,
+        cmp |-> "merged",
+        ch |-> 0,
+        rr |-> {},
+        ag |-> {},
+        ob |-> {},
+        ex |-> <<0, 0>> ] )
+/\ pq = (p1 :> <<>>)
+/\ latest = (p1 :> [h |-> 1, s |-> 3, d |-> FALSE, hd |-> FALSE])
+/\ net = {}
+/\ lease = Nil
+/\ gh = ( p1 :>
+      [ s |-> 4,
+        d |-> FALSE,
+        hd |-> FALSE,
+        head |-> 1,
+        merged |-> TRUE,
+        closed |-> FALSE,
+        armed |-> TRUE,
+        pc |-> "green",
+        cc |-> "green",
+        pa |-> 0,
+        ca |-> 0,
+        ah |-> 1 ] )
+/\ bud = [ env |-> (p1 :> 1),
+  dup |-> 0,
+  crash |-> 0,
+  tm |-> (p1 :> 1),
+  fm |-> 0,
+  lag |-> (p1 :> 0) ]
+/\ pst = (p1 :> Nil)
+/\ comps = 0
+/\ cmerged = TRUE
+/\ wk = (w1 :> Nil @@ w2 :> Nil)
+
+32167930 states generated, 8256302 distinct states found, 1827414 states left on queue.
+The depth of the complete state graph search is 19.
+Finished in 03min 26s at (2026-09-28 07:34:18)
+Trace exploration spec path: ./PrLanding_TTrace_1790580652.tla
+rc=12

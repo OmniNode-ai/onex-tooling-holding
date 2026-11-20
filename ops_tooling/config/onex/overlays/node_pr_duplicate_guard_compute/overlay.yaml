@@ -1,0 +1,11 @@
+# The files a repository regenerates in every pull request of a kind, read by omnimarket's
+# node_pr_duplicate_snapshot_effect through ONEX_SKILL_OVERLAY_ROOTS (or ONEX_WORKSPACE_CONFIG_ROOT) and passed to
+# node_pr_duplicate_guard_compute as generated_paths (OMN-21624). Overlap confined to these files does not make
+# two pull requests duplicates of each other; overlap in an authored file still does.
+#
+# beta/plans/INDEX.md is rendered from beta/plans/PLAN_LIFECYCLE.yaml by scripts/check_plan_index.py --write,
+# and the plan-index check fails a plan pull request whose index is stale, so every plan pull request rewrites
+# its status-count rows. Each path is matched whole, never by its last segment.
+generated_paths:
+  docs_repo:
+    - beta/plans/INDEX.md

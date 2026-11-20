@@ -1,0 +1,673 @@
+# Every effective observe-only path in the registry repositories (OMN-19998, plan unit N3).
+#
+# RULING 2026-09-29T12:02:35Z: no observe-only, report-only, shadow or advisory modes; every checker
+# acts or blocks, and the existing ones are converted. A path is observe-only when a check runs and
+# cannot stop anything. tests/observe_only/_observe_only_scan.py reads five shapes (kinds):
+#   continue_on_error    a job or step with continue-on-error set to anything but false
+#   ignored_exit         a check command line ending in `|| true`, `|| :` or `|| exit 0`
+#   observe_mode         a mode key set to report_only, observe, shadow, advisory, warn or
+#                        log_only, or a shadow / report_only / observe_only / advisory flag set true
+#   advisory_name        a workflow job whose id or name says shadow, advisory, report-only, observe
+#   python_mode_default  a Python assignment or parameter default setting such a mode or flag
+#
+# owner_repo is the registry repository whose maintainers convert the path, or retire it with a
+# cited reason in the same change. It is a role, never a person.
+#
+# The check (tests/observe_only/test_observe_only_inventory_omn19998.py, the CI job
+# nonblocking-path-inventory and the pre-commit hook observe-only-inventory) fails in both directions:
+#   * a path the scan finds that is not listed here is a NEW observe-only path. Convert it so the
+#     check acts or blocks; do not list it;
+#   * an entry whose path the scan no longer finds is a converted path. Delete the entry.
+# So this file shrinks as paths are converted. The failure message prints the exact YAML.
+# On a change (the CI job and the hook) only this repository's own paths are scanned, and an entry of
+# another repository may be deleted but not added. The other repositories' default branches are
+# scanned by the scheduled workflow observe-only-inventory-cleanup, which opens the pull request that
+# deletes their stale entries and fails its own run on a path not listed here (OMN-19998).
+#
+# First written from the default branches (origin/HEAD) of the clones read on 2026-10-13:
+#   knowledge_base origin/main 0a5199650207
+#   docs_repo origin/main 384613f322d7
+#   registry_root origin/main 565a9c969d32
+#   omnibase_core origin/dev e06f904a9baa
+#   omnibase_infra origin/dev 8fd5208561bb
+#   omnibase_spi origin/dev 592724dfd5bc
+#   omniclaude origin/dev d6a31b6a938a
+#   omnidash origin/dev f3ffde6096ef
+#   omniintelligence origin/dev 798e98e7929c
+#   omnimarket origin/dev 69fcd9778c46
+#   omnimemory origin/dev 5ae1c7674ac9
+#   infra_repo origin/dev 21675c9e43af
+#   registry_root origin/dev c38515fae81d
+# plugin-tooling-pkg has no clone on the host that wrote this; its row is the installed plugin tree
+# 2072557d1734 (no finding). The CI job reads the repository itself.
+schema_version: observe-only-inventory/v1
+# The registry repositories the scan covers: the `repositories` list of the liveness sources declaration, which moved to the
+# overlays repository with the declaration (OMN-20804), so the inventory names its own scope.
+repositories:
+  - knowledge_base
+  - docs_repo
+  - registry_root
+  - omnibase_core
+  - omnibase_infra
+  - ops_tooling_pkg
+  - omnibase_spi
+  - omniclaude
+  - plugin-tooling-pkg
+  - omnidash
+  - omniintelligence
+  - omnimarket
+  - omnimemory
+  - infra_repo
+entries:
+  - repo: registry_root
+    path: .github/workflows/scheduled-gap-detect.yml
+    kind: continue_on_error
+    locator: jobs/gap-detect/steps/[Check decommissioned references]
+    detail: 'True'
+    owner_repo: registry_root
+  - repo: omnibase_core
+    path: .github/workflows/ci.yml
+    kind: advisory_name
+    locator: jobs/shadow-compare
+    detail: shadow-compare / Shadow Selection Compare
+    owner_repo: omnibase_core
+  - repo: omnibase_core
+    path: .github/workflows/ci.yml
+    kind: continue_on_error
+    locator: jobs/shadow-compare
+    detail: 'True'
+    owner_repo: omnibase_core
+  - repo: omnibase_core
+    path: .github/workflows/product-readiness-shadow.yml
+    kind: advisory_name
+    locator: jobs/lint-shadow
+    detail: lint-shadow / lint (shadow)
+    owner_repo: omnibase_core
+  - repo: omnibase_core
+    path: .github/workflows/product-readiness-shadow.yml
+    kind: advisory_name
+    locator: jobs/tests-shadow
+    detail: tests-shadow / tests+coverage (shadow)
+    owner_repo: omnibase_core
+  - repo: omnibase_core
+    path: .github/workflows/product-readiness-shadow.yml
+    kind: advisory_name
+    locator: jobs/typecheck-shadow
+    detail: typecheck-shadow / typecheck (shadow)
+    owner_repo: omnibase_core
+  - repo: omnibase_core
+    path: .github/workflows/product-readiness-shadow.yml
+    kind: observe_mode
+    locator: jobs/product-readiness/with/report_only
+    detail: 'True'
+    owner_repo: omnibase_core
+  - repo: omnibase_core
+    path: .github/workflows/publish-downstream-pin-bump.yml
+    kind: continue_on_error
+    locator: jobs/bump
+    detail: 'True'
+    owner_repo: omnibase_core
+  - repo: omnibase_core
+    path: .github/workflows/receipt-gate.yml
+    kind: continue_on_error
+    locator: jobs/dod-verify/steps/[Check out the pull request head]
+    detail: ${{ inputs.shadow == 'true' }}
+    owner_repo: omnibase_core
+  - repo: omnibase_core
+    path: .github/workflows/receipt-gate.yml
+    kind: continue_on_error
+    locator: jobs/dod-verify/steps/[Derive the OCC writer app's dependency-pin-only or release-cut verdict at the head (OMN-17427, OMN-20074)]
+    detail: ${{ inputs.shadow == 'true' }}
+    owner_repo: omnibase_core
+  - repo: omnibase_core
+    path: .github/workflows/receipt-gate.yml
+    kind: continue_on_error
+    locator: jobs/dod-verify/steps/[Detect dependency-bot author (receipt-gate exemption)]
+    detail: ${{ inputs.shadow == 'true' }}
+    owner_repo: omnibase_core
+  - repo: omnibase_core
+    path: .github/workflows/receipt-gate.yml
+    kind: continue_on_error
+    locator: jobs/dod-verify/steps/[Export the Postgres service to the bound tests]
+    detail: ${{ inputs.shadow == 'true' }}
+    owner_repo: omnibase_core
+  - repo: omnibase_core
+    path: .github/workflows/receipt-gate.yml
+    kind: continue_on_error
+    locator: jobs/dod-verify/steps/[Install the pinned verifier]
+    detail: ${{ inputs.shadow == 'true' }}
+    owner_repo: omnibase_core
+  - repo: omnibase_core
+    path: .github/workflows/receipt-gate.yml
+    kind: continue_on_error
+    locator: jobs/dod-verify/steps/[Install uv]
+    detail: ${{ inputs.shadow == 'true' }}
+    owner_repo: omnibase_core
+  - repo: omnibase_core
+    path: .github/workflows/receipt-gate.yml
+    kind: continue_on_error
+    locator: jobs/dod-verify/steps/[Must-fail control at the merge base]
+    detail: ${{ inputs.shadow == 'true' }}
+    owner_repo: omnibase_core
+  - repo: omnibase_core
+    path: .github/workflows/receipt-gate.yml
+    kind: continue_on_error
+    locator: jobs/dod-verify/steps/[Prepare the merge base with the pull request's test side laid over it]
+    detail: ${{ inputs.shadow == 'true' }}
+    owner_repo: omnibase_core
+  - repo: omnibase_core
+    path: .github/workflows/receipt-gate.yml
+    kind: continue_on_error
+    locator: jobs/dod-verify/steps/[Provide the PostgreSQL 16 server tools]
+    detail: ${{ inputs.shadow == 'true' }}
+    owner_repo: omnibase_core
+  - repo: omnibase_core
+    path: .github/workflows/receipt-gate.yml
+    kind: continue_on_error
+    locator: jobs/dod-verify/steps/[Provision the contracts' declared sibling checkouts]
+    detail: ${{ inputs.shadow == 'true' }}
+    owner_repo: omnibase_core
+  - repo: omnibase_core
+    path: .github/workflows/receipt-gate.yml
+    kind: continue_on_error
+    locator: jobs/dod-verify/steps/[Refuse anything but a same-repository pull request]
+    detail: ${{ inputs.shadow == 'true' }}
+    owner_repo: omnibase_core
+  - repo: omnibase_core
+    path: .github/workflows/receipt-gate.yml
+    kind: continue_on_error
+    locator: jobs/dod-verify/steps/[Resolve the cited tickets]
+    detail: ${{ inputs.shadow == 'true' }}
+    owner_repo: omnibase_core
+  - repo: omnibase_core
+    path: .github/workflows/receipt-gate.yml
+    kind: continue_on_error
+    locator: jobs/dod-verify/steps/[Set up Python 3.13]
+    detail: ${{ inputs.shadow == 'true' }}
+    owner_repo: omnibase_core
+  - repo: omnibase_core
+    path: .github/workflows/receipt-gate.yml
+    kind: continue_on_error
+    locator: jobs/dod-verify/steps/[Verify the contract at the PR head]
+    detail: ${{ inputs.shadow == 'true' }}
+    owner_repo: omnibase_core
+  - repo: omnibase_core
+    path: .github/workflows/release.yml
+    kind: continue_on_error
+    locator: jobs/report-partial-state/steps/[Download preserved dist artifacts]
+    detail: 'True'
+    owner_repo: omnibase_core
+  - repo: omnibase_core
+    path: .github/workflows/shadow-metrics-harvest.yml
+    kind: advisory_name
+    locator: jobs/harvest
+    detail: harvest / Harvest shadow records
+    owner_repo: omnibase_core
+  - repo: omnibase_core
+    path: .github/workflows/shadow-metrics-harvest.yml
+    kind: continue_on_error
+    locator: jobs/harvest/steps/[Download shadow record(s) from the triggering run]
+    detail: 'True'
+    owner_repo: omnibase_core
+  - repo: omnibase_infra
+    path: .github/required-checks.yaml
+    kind: observe_mode
+    locator: gates/[required-check-skip-guard / check-skip-vectors]/mode
+    detail: ADVISORY
+    owner_repo: omnibase_infra
+  - repo: omnibase_infra
+    path: .github/workflows/ci.yml
+    kind: advisory_name
+    locator: jobs/ci-cascade-reason-graph
+    detail: ci-cascade-reason-graph / CI cascade reason-graph (report-only)
+    owner_repo: omnibase_infra
+  - repo: omnibase_infra
+    path: .github/workflows/ci.yml
+    kind: continue_on_error
+    locator: jobs/application-database-domain-enforcement/steps/[Mint bot-account app token]
+    detail: 'True'
+    owner_repo: omnibase_infra
+  - repo: omnibase_infra
+    path: .github/workflows/ci.yml
+    kind: continue_on_error
+    locator: jobs/ci-cascade-reason-graph
+    detail: 'True'
+    owner_repo: omnibase_infra
+  - repo: omnibase_infra
+    path: .github/workflows/ci.yml
+    kind: continue_on_error
+    locator: jobs/migration-conflict-check/steps/[Mint bot-account app token]
+    detail: 'True'
+    owner_repo: omnibase_infra
+  - repo: omnibase_infra
+    path: .github/workflows/ci.yml
+    kind: continue_on_error
+    locator: jobs/onex-validation/steps/[Run imperative-orchestrator ratchet report (ARCH-004)]
+    detail: 'True'
+    owner_repo: omnibase_infra
+  - repo: omnibase_infra
+    path: .github/workflows/ci.yml
+    kind: continue_on_error
+    locator: jobs/onex-validation/steps/[Run orchestration-monolith ratchet report (ARCH-004 Signal B)]
+    detail: 'True'
+    owner_repo: omnibase_infra
+  - repo: omnibase_infra
+    path: .github/workflows/ci.yml
+    kind: continue_on_error
+    locator: jobs/test-failure-ratchet/steps/[Download all JUnit XML shards (attempt 1)]
+    detail: 'True'
+    owner_repo: omnibase_infra
+  - repo: omnibase_infra
+    path: .github/workflows/ci.yml
+    kind: continue_on_error
+    locator: jobs/test-failure-ratchet/steps/[Download all JUnit XML shards (attempt 2)]
+    detail: 'True'
+    owner_repo: omnibase_infra
+  - repo: omnibase_infra
+    path: .github/workflows/ci.yml
+    kind: continue_on_error
+    locator: jobs/test-failure-ratchet/steps/[Download all JUnit XML shards (attempt 3)]
+    detail: 'True'
+    owner_repo: omnibase_infra
+  - repo: omnibase_infra
+    path: .github/workflows/dev-lane-liveness.yml
+    kind: continue_on_error
+    locator: jobs/saturation-record/steps/[Download prior records for the sustain window]
+    detail: 'True'
+    owner_repo: omnibase_infra
+  - repo: omnibase_infra
+    path: .github/workflows/dev-lane-liveness.yml
+    kind: continue_on_error
+    locator: jobs/saturation-record/steps/[Download this run's lab half]
+    detail: 'True'
+    owner_repo: omnibase_infra
+  - repo: omnibase_infra
+    path: .github/workflows/dev-lane-liveness.yml
+    kind: continue_on_error
+    locator: jobs/saturation-record/steps/[Fetch the most recent route decision's reason]
+    detail: 'True'
+    owner_repo: omnibase_infra
+  - repo: omnibase_infra
+    path: .github/workflows/docker-build.yml
+    kind: continue_on_error
+    locator: jobs/docker-integration-tests
+    detail: 'True'
+    owner_repo: omnibase_infra
+  - repo: omnibase_infra
+    path: .github/workflows/fresh-deploy-fitness.yml
+    kind: continue_on_error
+    locator: jobs/pinned-wheel-skew
+    detail: 'True'
+    owner_repo: omnibase_infra
+  - repo: omnibase_infra
+    path: .github/workflows/lane-census-refresh.yml
+    kind: continue_on_error
+    locator: jobs/refresh/steps/[Fetch the CI bus lane overlay]
+    detail: 'True'
+    owner_repo: omnibase_infra
+  - repo: omnibase_infra
+    path: .github/workflows/lane-census-refresh.yml
+    kind: continue_on_error
+    locator: jobs/refresh/steps/[Publish the census-observed fact to the bus]
+    detail: 'True'
+    owner_repo: omnibase_infra
+  - repo: omnibase_infra
+    path: .github/workflows/omni-standards-compliance.yml
+    kind: continue_on_error
+    locator: jobs/type-safety/steps/[Mint bot-account app token]
+    detail: 'True'
+    owner_repo: omnibase_infra
+  - repo: omnibase_infra
+    path: .github/workflows/omni-standards-compliance.yml
+    kind: continue_on_error
+    locator: jobs/type-union-check/steps/[Mint bot-account app token]
+    detail: 'True'
+    owner_repo: omnibase_infra
+  - repo: omnibase_infra
+    path: .github/workflows/product-readiness-shadow.yml
+    kind: advisory_name
+    locator: jobs/lint-shadow
+    detail: lint-shadow / lint (shadow)
+    owner_repo: omnibase_infra
+  - repo: omnibase_infra
+    path: .github/workflows/product-readiness-shadow.yml
+    kind: advisory_name
+    locator: jobs/tests-shadow
+    detail: tests-shadow / tests+coverage (shadow)
+    owner_repo: omnibase_infra
+  - repo: omnibase_infra
+    path: .github/workflows/product-readiness-shadow.yml
+    kind: advisory_name
+    locator: jobs/typecheck-shadow
+    detail: typecheck-shadow / typecheck (shadow)
+    owner_repo: omnibase_infra
+  - repo: omnibase_infra
+    path: .github/workflows/release-train-nightly.yml
+    kind: continue_on_error
+    locator: jobs/decide/steps/[Fetch the canonical deploy-path classifier]
+    detail: 'True'
+    owner_repo: omnibase_infra
+  - repo: omnibase_infra
+    path: .github/workflows/runner-route-reusable.yml
+    kind: continue_on_error
+    locator: jobs/route/steps/[Download the most recent lab-load record]
+    detail: 'True'
+    owner_repo: omnibase_infra
+  - repo: omnibase_infra
+    path: .github/workflows/runtime-rebuild-trigger-reusable.yml
+    kind: continue_on_error
+    locator: jobs/verify-sibling-converged/steps/[Wait for the dev lane to vendor the merged sibling revision]
+    detail: 'True'
+    owner_repo: omnibase_infra
+  - repo: omnibase_infra
+    path: .github/workflows/runtime-rebuild-trigger.yml
+    kind: continue_on_error
+    locator: jobs/verify-lane-converged/steps/[Fetch the declared CI bus lanes]
+    detail: 'True'
+    owner_repo: omnibase_infra
+  - repo: omnibase_infra
+    path: .github/workflows/runtime-rebuild-trigger.yml
+    kind: continue_on_error
+    locator: jobs/verify-lane-converged/steps/[Publish the lane-j lab-pass verdict to the bus]
+    detail: 'True'
+    owner_repo: omnibase_infra
+  - repo: omnibase_infra
+    path: .github/workflows/runtime-rebuild-trigger.yml
+    kind: continue_on_error
+    locator: jobs/verify-lane-converged/steps/[Wait for the dev lane to report a revision containing the merge SHA]
+    detail: 'True'
+    owner_repo: omnibase_infra
+  - repo: omnibase_infra
+    path: config/release_train_policy.yaml
+    kind: observe_mode
+    locator: repos/omniclaude/mode
+    detail: report_only
+    owner_repo: omnibase_infra
+  - repo: omnibase_spi
+    path: .github/required-checks.yaml
+    kind: observe_mode
+    locator: gates/[Shape-Gate Independence (OMN-20298)]/mode
+    detail: ADVISORY
+    owner_repo: omnibase_spi
+  - repo: omnibase_spi
+    path: .github/required-checks.yaml
+    kind: observe_mode
+    locator: gates/[required-check-skip-guard / check-skip-vectors]/mode
+    detail: ADVISORY
+    owner_repo: omnibase_spi
+  - repo: omnibase_spi
+    path: .github/workflows/namespace-validation.yml
+    kind: continue_on_error
+    locator: jobs/validate-namespace-isolation/steps/[Run SPI purity validation]
+    detail: 'True'
+    owner_repo: omnibase_spi
+  - repo: omniclaude
+    path: .github/workflows/ci.yml
+    kind: continue_on_error
+    locator: jobs/test/steps/[Upload coverage artifact]
+    detail: 'True'
+    owner_repo: omniclaude
+  - repo: omniclaude
+    path: .github/workflows/ci.yml
+    kind: continue_on_error
+    locator: jobs/test/steps/[Upload test results]
+    detail: 'True'
+    owner_repo: omniclaude
+  - repo: omniclaude
+    path: .github/workflows/ci.yml
+    kind: ignored_exit
+    locator: jobs/security-python/steps/[Bandit security scan]#bandit -r src/ --exclude .venv/,__pycache__/ --confidence-level medium --severity-level medium -f json -o bandit-report.json || true
+    detail: 'true'
+    owner_repo: omniclaude
+  - repo: omniclaude
+    path: .github/workflows/product-readiness-shadow.yml
+    kind: advisory_name
+    locator: jobs/lint-shadow
+    detail: lint-shadow / lint (shadow)
+    owner_repo: omniclaude
+  - repo: omniclaude
+    path: .github/workflows/product-readiness-shadow.yml
+    kind: advisory_name
+    locator: jobs/security-shadow
+    detail: security-shadow / security (shadow)
+    owner_repo: omniclaude
+  - repo: omniclaude
+    path: .github/workflows/product-readiness-shadow.yml
+    kind: advisory_name
+    locator: jobs/tests-shadow
+    detail: tests-shadow / tests+coverage (shadow) (split ${{ matrix.split }}/2)
+    owner_repo: omniclaude
+  - repo: omniclaude
+    path: .github/workflows/product-readiness-shadow.yml
+    kind: advisory_name
+    locator: jobs/typecheck-shadow
+    detail: typecheck-shadow / typecheck (shadow)
+    owner_repo: omniclaude
+  - repo: omniclaude
+    path: .github/workflows/security-scan.yml
+    kind: continue_on_error
+    locator: jobs/dependency-scan/steps/[Run Dependency Review]
+    detail: 'True'
+    owner_repo: omniclaude
+  - repo: omniclaude
+    path: .github/workflows/security-scan.yml
+    kind: ignored_exit
+    locator: jobs/dependency-scan/steps/[Run Safety Check]#safety check --file requirements.txt --output json > safety-report.json || true
+    detail: 'true'
+    owner_repo: omniclaude
+  - repo: omniclaude
+    path: .github/workflows/security-scan.yml
+    kind: ignored_exit
+    locator: jobs/dependency-scan/steps/[Run Safety Check]#safety check --file requirements.txt || true
+    detail: 'true'
+    owner_repo: omniclaude
+  - repo: omniclaude
+    path: plugins/onex/hooks/config/dod_enforcement.yaml
+    kind: observe_mode
+    locator: graduation/phase_1/mode
+    detail: advisory
+    owner_repo: omniclaude
+  - repo: omniclaude
+    path: plugins/onex/hooks/config/model_router_hook.yaml
+    kind: observe_mode
+    locator: mode
+    detail: advisory
+    owner_repo: omniclaude
+  - repo: omnidash
+    path: .github/required-checks.yaml
+    kind: observe_mode
+    locator: gates/[required-check-skip-guard / check-skip-vectors]/mode
+    detail: ADVISORY
+    owner_repo: omnidash
+  - repo: omniintelligence
+    path: src/omniintelligence/rl/emit.py
+    kind: python_mode_default
+    locator: 'shadow_mode: bool = True'
+    detail: 'shadow_mode: bool = True,'
+    owner_repo: omniintelligence
+  - repo: omnimarket
+    path: .github/workflows/contract-walker.yml
+    kind: advisory_name
+    locator: jobs/contract-walker
+    detail: contract-walker / contract-walker (report-only)
+    owner_repo: omnimarket
+  - repo: omnimarket
+    path: .github/workflows/contract-walker.yml
+    kind: continue_on_error
+    locator: jobs/contract-walker
+    detail: 'True'
+    owner_repo: omnimarket
+  - repo: omnimarket
+    path: .github/workflows/delegation-rung-eval-nightly.yml
+    kind: continue_on_error
+    locator: jobs/rung-eval/steps/[Report missing nights (previous nights)]
+    detail: 'True'
+    owner_repo: omnimarket
+  - repo: omnimarket
+    path: .github/workflows/dep-health-gate.yml
+    kind: continue_on_error
+    locator: jobs/dep-health/steps/[Dep health sweep (advisory)]
+    detail: 'True'
+    owner_repo: omnimarket
+  - repo: omnimarket
+    path: .github/workflows/dep-health-gate.yml
+    kind: continue_on_error
+    locator: jobs/dep-health/steps/[Dep health sweep (delta)]
+    detail: 'True'
+    owner_repo: omnimarket
+  - repo: omnimarket
+    path: .github/workflows/pr-arch-review.yml
+    kind: continue_on_error
+    locator: jobs/arch-lint/steps/[Post architectural lint summary as PR comment]
+    detail: 'True'
+    owner_repo: omnimarket
+  - repo: omnimarket
+    path: .github/workflows/product-readiness-shadow.yml
+    kind: advisory_name
+    locator: jobs/lint-shadow
+    detail: lint-shadow / lint (shadow)
+    owner_repo: omnimarket
+  - repo: omnimarket
+    path: .github/workflows/product-readiness-shadow.yml
+    kind: advisory_name
+    locator: jobs/tests-shadow
+    detail: tests-shadow / tests+coverage (shadow)
+    owner_repo: omnimarket
+  - repo: omnimarket
+    path: .github/workflows/product-readiness-shadow.yml
+    kind: advisory_name
+    locator: jobs/typecheck-shadow
+    detail: typecheck-shadow / typecheck (shadow)
+    owner_repo: omnimarket
+  - repo: omnimarket
+    path: .github/workflows/release-cut.yml
+    kind: continue_on_error
+    locator: jobs/sync-main
+    detail: 'True'
+    owner_repo: omnimarket
+  - repo: omnimarket
+    path: .github/workflows/security-scan.yml
+    kind: ignored_exit
+    locator: jobs/dependency-scan/steps/[Run Safety Check]#safety check --file requirements.txt --output json > safety-report.json || true
+    detail: 'true'
+    owner_repo: omnimarket
+  - repo: infra_repo
+    path: .github/workflows/deploy-onex-staging.yml
+    kind: continue_on_error
+    locator: jobs/deploy-staging/steps/[OMN-18543 AC5 readback capture (evidence, never a gate)]
+    detail: 'True'
+    owner_repo: infra_repo
+  - repo: infra_repo
+    path: .github/workflows/deploy-onex-staging.yml
+    kind: continue_on_error
+    locator: jobs/deploy-staging/steps/[Post-deploy staleness check (OMN-11770) [ADVISORY]]
+    detail: 'True'
+    owner_repo: infra_repo
+  - repo: infra_repo
+    path: .github/workflows/deploy-onex-staging.yml
+    kind: continue_on_error
+    locator: jobs/deploy-staging/steps/[Upload the OMN-18543 AC5 readback]
+    detail: 'True'
+    owner_repo: infra_repo
+  - repo: infra_repo
+    path: .github/workflows/publish-beta-board.yml
+    kind: continue_on_error
+    locator: jobs/publish/steps/[Obtain the PR queue read token]
+    detail: 'True'
+    owner_repo: infra_repo
+  - repo: infra_repo
+    path: .github/workflows/publish-beta-board.yml
+    kind: continue_on_error
+    locator: jobs/publish/steps/[Report the installation's API rate limit (OMN-19031)]
+    detail: 'True'
+    owner_repo: infra_repo
+  - repo: infra_repo
+    path: .github/workflows/publish-plans-board.yml
+    kind: continue_on_error
+    locator: jobs/publish/steps/[Obtain the PR queue read token]
+    detail: 'True'
+    owner_repo: infra_repo
+  - repo: infra_repo
+    path: .github/workflows/security-scan.yml
+    kind: ignored_exit
+    locator: jobs/bandit-python/steps/[Run Bandit security scan]#bandit -c .bandit --severity-level medium --confidence-level medium -r docker/onex-api/ -f json -o bandit-report.json 2>/dev/null || true
+    detail: 'true'
+    owner_repo: infra_repo
+  - repo: infra_repo
+    path: .github/workflows/staging-green-bar.yml
+    kind: continue_on_error
+    locator: jobs/bar-heartbeat
+    detail: 'True'
+    owner_repo: infra_repo
+  - repo: infra_repo
+    path: .github/workflows/staging-green-bar.yml
+    kind: continue_on_error
+    locator: jobs/bar-heartbeat/steps/[Fetch this run's report]
+    detail: 'True'
+    owner_repo: infra_repo
+  - repo: infra_repo
+    path: .github/workflows/staging-green-bar.yml
+    kind: continue_on_error
+    locator: jobs/staging-green-bar/steps/[Checkout the dashboard source tree leg 8 scans]
+    detail: 'True'
+    owner_repo: infra_repo
+  - repo: infra_repo
+    path: .github/workflows/staging-green-bar.yml
+    kind: continue_on_error
+    locator: jobs/staging-green-bar/steps/[Mint the cross-repository read token the collector uses]
+    detail: 'True'
+    owner_repo: infra_repo
+  - repo: infra_repo
+    path: .github/workflows/terraform-plan.yml
+    kind: continue_on_error
+    locator: jobs/plan/steps/[Configure AWS credentials (OIDC -> omninode-github-actions-plan-role, read-only plan)]
+    detail: 'True'
+    owner_repo: infra_repo
+  - repo: infra_repo
+    path: .github/workflows/terraform-plan.yml
+    kind: continue_on_error
+    locator: jobs/plan/steps/[Terraform plan]
+    detail: 'True'
+    owner_repo: infra_repo
+  - repo: infra_repo
+    path: .github/workflows/test-composite-actions.yml
+    kind: continue_on_error
+    locator: jobs/test-resolve-ecr-digest-fallback/steps/[Configure AWS credentials]
+    detail: 'True'
+    owner_repo: infra_repo
+  - repo: infra_repo
+    path: .github/workflows/test-composite-actions.yml
+    kind: continue_on_error
+    locator: jobs/test-resolve-ecr-digest-fallback/steps/[Test exact-miss falls back to newest tagged image]
+    detail: 'True'
+    owner_repo: infra_repo
+  - repo: infra_repo
+    path: .github/workflows/test-composite-actions.yml
+    kind: continue_on_error
+    locator: jobs/test-resolve-ecr-digest-fallback/steps/[Test no-image-anywhere fails loud, never silently skips]
+    detail: 'True'
+    owner_repo: infra_repo
+  - repo: infra_repo
+    path: .github/workflows/test-composite-actions.yml
+    kind: continue_on_error
+    locator: jobs/test-resolve-ecr-digest/steps/[Configure AWS credentials]
+    detail: 'True'
+    owner_repo: infra_repo
+  - repo: infra_repo
+    path: .github/workflows/test-composite-actions.yml
+    kind: continue_on_error
+    locator: jobs/test-resolve-ecr-digest/steps/[Test with valid commit SHA]
+    detail: 'True'
+    owner_repo: infra_repo
+  - repo: infra_repo
+    path: .github/workflows/test-composite-actions.yml
+    kind: continue_on_error
+    locator: jobs/test-ssm-port-forward/steps/[Test cleanup action (no AWS required)]
+    detail: 'True'
+    owner_repo: infra_repo
+  - repo: registry_root
+    path: .github/workflows/ci.yml
+    kind: continue_on_error
+    locator: jobs/lighthouse
+    detail: 'True'
+    owner_repo: registry_root

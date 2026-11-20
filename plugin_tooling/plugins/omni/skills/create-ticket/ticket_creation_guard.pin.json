@@ -1,0 +1,12 @@
+{
+  "commit": "664d0597717c502c40de12978b8f664c19080b12",
+  "repo": "OmniNode-ai/omniclaude",
+  "ticket": "OMN-21270",
+  "paths": [
+    "plugins/onex/hooks/lib",
+    "plugins/onex/hooks/config",
+    "src/omniclaude/handlers",
+    "src/omniclaude/nodes/node_hook_refusal_record_effect/handlers"
+  ],
+  "what": "The tree the create-ticket pre-flight of step 7 runs: the ticket-creation guard, its policy and binding grammar, the stdlib-only handlers the guard loads by path (handler_lane_intake, OMN-17942 rules 11-14), and the refusal recorder's lane reader the sidecar-plus-CLAIM resolution sits on. tests/test_lane_intake.py runs the real guard over the payload SKILL.md documents, so CI fetches exactly these paths at this commit and exports CREATE_TICKET_GUARD_ROOT. A live branch is deliberately not read: the pre-flight's own transcription in this SKILL.md is pinned to a commit for the same reason."
+}

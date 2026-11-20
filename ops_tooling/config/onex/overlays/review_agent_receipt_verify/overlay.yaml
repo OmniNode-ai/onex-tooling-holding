@@ -1,0 +1,47 @@
+# Deployment overlay of omniintelligence's node_review_agent_receipt_verify_compute (OMN-22345): the
+# policy the receipt verifier applies to a signed agent review receipt, and the quorum it needs.
+# Data only. The node's loader reads this file from the first root on ONEX_SKILL_OVERLAY_ROOTS that
+# holds review_agent_receipt_verify/overlay.yaml (ModelAgentReceiptVerifierSettings) and lays its keys
+# over the packaged defaults, which approve no voter and forbid provider anthropic and endpoint class
+# review_gateway.
+#
+# Same policy as the dispatch roster: policy below carries the dispatch overlay's approved_identities,
+# forbidden_providers, forbidden_endpoint_classes, forbidden_endpoints and forbidden_hosts
+# (node_agent_review_dispatch_orchestrator/overlay.yaml) unchanged. The verifier's policy model has no
+# approved_rungs and no publisher_identity, so those keys stay in the dispatch overlay alone, as does
+# harness_rungs, the rung-to-harness map the harness rung node reads. The three files (dispatch
+# overlay, this one, agent_review_gate_accept) change together in one change; a voter approved in one
+# and not the other is refused at the verifier or never called.
+#
+# Rulings behind the roster: RULING 2026-10-18T15:06:49Z (one lab reviewer and one Sonnet reviewer),
+# OPERATOR-CONSENT 2026-10-09T00:43:41Z (Codex may read PR diffs in any reviewer gate it qualifies
+# for), RULING 2026-10-03T00:40:00Z (an author never accepts its own work; Codex as cross-model
+# reviewer), RULING 2026-11-02T20:48:24Z (decision D2: the Codex rung after the lab rung's measured
+# shortfall, lab Qwen 0/28 and GLM 13/28 on the review adequacy set, run
+# 00000000-0000-4000-8000-000000000000), and the operator row of 2026-11-03T13:07:44Z (headless
+# Claude Sonnet on lab hosts through the Claude subscription, never the API).
+#
+# One identity per non-lab model: codex-chatgpt for Codex on any host, claude-sonnet for Sonnet over
+# any transport, claude-opus for Opus (OMN-19998, the operator's words of 2026-11-05: Opus as a
+# review voter in place of Codex), so none counts twice toward the quorum.
+#
+# The Anthropic API stays out of the agent path: provider anthropic is not forbidden because the
+# ruled Sonnet voter is an Anthropic model; the endpoint classes review_gateway and anthropic_api are
+# forbidden, so a voter of either class is refused here as in the dispatch roster.
+# transport is the bus binding the lab dev lane runs (EnumAgentReceiptVerifyTransport: in_memory or
+# redpanda). quorum_size 2 is the dispatch quorum's number: two distinct approved identities.
+transport: redpanda
+quorum_size: 2
+policy:
+  approved_identities:
+    - lab-gpu-one-qwen
+    - lab-gpu-two-qwen
+    - codex-chatgpt
+    - claude-sonnet
+    - claude-opus
+  forbidden_providers: []
+  forbidden_endpoint_classes:
+    - review_gateway
+    - anthropic_api
+  forbidden_endpoints: []
+  forbidden_hosts: []

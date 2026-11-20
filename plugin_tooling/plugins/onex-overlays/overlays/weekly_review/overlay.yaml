@@ -1,0 +1,443 @@
+# Rubric overlay for the weekly_review skill — internal.
+#
+# Layered over the skill's committed base by the overlay selector
+# WEEKLY_REVIEW_OVERLAY_PATH. The base declares structure and no content; this
+# file supplies all of the content.
+#
+# AUTHORITY: guides/weekly-review-rubric.md and its role files are the standard.
+# This file is a transcription of the countable half of it for a loader to read.
+# Where the two disagree, the guide wins. Change both in the same pull request.
+
+rubric_version: "1.0.0"
+scope: org
+
+# Anchored on a variable the reviewing session supplies, never on that
+# session's working directory and never on a default. The skill refuses a bare
+# relative path and an unset variable by name, so a personnel document cannot
+# land in a plausible-looking wrong place and report success. The variable
+# names the private reviews directory on the reviewing machine; this file
+# deliberately encodes no directory layout of its own, because a shared
+# repository is the wrong place to carry one and the shared-document scrub
+# strips it anyway. Personnel review output lives exclusively in that
+# operator-only tier -- never in this repository, not chat, not the tracker,
+# not a pull request comment.
+# The role documents below anchor on a different variable: they live in
+# docs_repo, where this overlay was first written, and the
+# reviews do not.
+# The skill substitutes tokens in output_files[].filename_template, not here
+# (SKILL.md step 6), so the per-person folder guides/weekly-review-rubric.md
+# §7 requires -- one folder per person -- is expressed as a {person}/ prefix
+# on each filename_template below, not as a token in this field.
+output_directory: "${WEEKLY_REVIEW_OUTPUT_DIR}"
+
+criteria:
+  - criterion_id: deadlines
+    title: Deadlines committed and met
+    what_to_read: >-
+      Dates the person put in writing and what happened to each: due dates on
+      tickets they own, dates in ticket comments, go or no-go calls in the
+      standup channel, deliverables promised in a plan or brief. Count dates
+      that slipped, dates that held, and verbal commitments that never landed as
+      a checkable artifact. A date removed as a criterion is withdrawn, not met.
+    anchors:
+      1: "No dates in writing, or a date missed with no notice."
+      2: "Dates missed, and explained afterwards rather than before."
+      3: "Short-horizon commitments hold, and no delivery date exists for the work as a whole."
+      4: "A delivery date exists, scope moves instead of the date, and slips are called before they arrive."
+      5: "The date holds, and the estimate is measurably better than the previous window's."
+
+  - criterion_id: tangible_pieces
+    title: Tangible pieces landing
+    what_to_read: >-
+      Acceptance or release criteria that moved from not-met to met on work the
+      person owns, read off the governing document at both ends of the window
+      and attributed to a named ticket and merge. Separate product criteria from
+      evidence criteria. A promise of readiness is not progress.
+    anchors:
+      1: "Nothing moved, and nothing they own closed."
+      2: "Work landed and no criterion moved."
+      3: "One criterion or milestone moved on their work, or only an evidence criterion moved."
+      4: "Several product criteria moved, with the remaining blockers named and owned."
+      5: "A milestone met on their work, proven by a run rather than asserted."
+    caps:
+      - For the fractional-technical-lead role, where the criteria that went green in the window went green on other people's fixes and this person reported them, this criterion is capped at 3 and the override is stated.
+      - For the founder-operator role, a window whose only moved criterion measures whether records exist does not reach 3, and the override is stated.
+
+  - criterion_id: spec_and_depth
+    title: Spec, project management and technical depth
+    what_to_read: >-
+      Tickets and plans they authored, judged by whether another lane could
+      build from them unaided; checkable acceptance criteria; their review
+      comments, diagnoses and rulings. Count where they caught a generated
+      approach being wrong, explained a tradeoff in their own words, or debugged
+      by reading the system. Count confident claims a later live read falsified,
+      and whether those claims had been marked uncertain.
+    anchors:
+      1: "Nothing authored, or the reasoning collapses under one question."
+      2: "Specs need rewriting before anyone can build from them."
+      3: "Buildable specs, depth present but thin."
+      4: "Specs land unaided, and at least one wrong approach caught with evidence."
+      5: "The same, and a decision of theirs adopted as standing process because the reasoning held."
+    caps:
+      - For the fractional-technical-lead role, where a live re-run falsified the one premise they had named as decisive while the softer numbers around it were hedged, this criterion is held at 4 however good the rest is.
+
+  - criterion_id: communication
+    title: Communication and visibility
+    what_to_read: >-
+      Cadence counted by day; where they posted and whether it was actionable or
+      narrative; problems flagged before anyone asked; signals that someone
+      else's work moved. Quote verbatim with timestamps and state the sample
+      size.
+    anchors:
+      1: "Silence, or status only when asked for it."
+      2: "Irregular, narrative, not actionable."
+      3: "Several days a week, actionable."
+      4: "Near daily, actionable, and problems flagged before anyone asked."
+      5: "The same, and someone else's work moved because of what they wrote."
+
+  - criterion_id: ambiguity
+    title: Ambiguity
+    what_to_read: >-
+      Structure added where none existed; positions held against consensus and
+      what happened to them; places they recorded that a thing was not known
+      rather than filling the gap.
+    anchors:
+      1: "Waits to be told."
+      2: "Adds structure only when asked."
+      3: "Adds structure unasked, and holds a position when pushed."
+      4: "Builds a missing surface unprompted, and holds a reasoned position against consensus."
+      5: "The same, and the position changed the plan."
+
+  - criterion_id: decision_latency
+    title: Decision latency
+    measure: median_hours_to_answer
+    what_to_read: >-
+      Requests parked on them, answered and still open, with elapsed hours each.
+      Sources: ticket comments awaiting a ruling, held reply drafts, ledger rows
+      citing a ruling, chat threads addressed to them. Report the median and
+      maximum of the answered and the age of the oldest unanswered. Long hours
+      are a risk, never a defence.
+    anchors:
+      1: "Requests sit for days."
+      2: "Answered eventually, with no pattern."
+      3: "Median under a day, with a long tail."
+      4: "Median under four hours, and nothing open older than a day."
+      5: "The same, and the queue is empty at the end of the window."
+    bands:
+      - {score: 1, min_inclusive: 72.0}
+      - {score: 2, min_inclusive: 24.0, max_exclusive: 72.0}
+      - {score: 3, min_inclusive: 4.0, max_exclusive: 24.0}
+      - {score: 4, max_exclusive: 4.0}
+    promotion_to_five: No request is still open at the end of the window.
+
+  # contractor-engineer.md and contractor-team-account.md both invert this
+  # criterion's direction for their role: "Mostly measured in the outward
+  # direction for this role: asks they parked on someone else, and how long
+  # each waited... a finding about the organization, and the review records
+  # it as one rather than scoring the [person/account] down for it." That is
+  # the opposite subject from decision_latency above, which measures asks
+  # parked ON the person. Carried as a distinct criterion, not a variant of
+  # decision_latency, because ModelReviewRole has no mechanism to override an
+  # existing criterion_id per role -- a role's `criteria` list only
+  # references shared criteria by id, and `extra_criteria` adds new ones.
+  # Scored on escalation, not on elapsed hours, so it declares no measure and
+  # no bands. The earlier revision carried the inward criterion's hour bands
+  # while its own text said "Score on whether the wait was escalated, not on
+  # its raw length" -- the bands then scored the exact thing the criterion
+  # forbids scoring. A live trial on 2026-09-14 produced a 23.3-hour median
+  # that the bands placed at 3 while the anchors placed it at 2, because the
+  # unanswered asks had not been escalated. The hours are still collected and
+  # reported; they are context about the organization, not the score.
+  - criterion_id: decision_latency_outward
+    title: Decision latency (outward)
+    what_to_read: >-
+      For this role the queue runs outward: asks the person or account parked
+      on someone else, and how long each has waited, from ticket comments,
+      chat threads and ledger rows where they are the requester rather than
+      the requested. An ask still parked at the review cutoff is recorded
+      with its age. Report the median and maximum of the answered, and the
+      age of the oldest unanswered, and state the sample size. This measures
+      the organization's
+      responsiveness to them, not their own responsiveness -- a long outward
+      wait is a finding about the organization and is never scored down
+      against the person or account for it. Score on whether the wait was
+      escalated, not on its raw length: the hours are reported as context
+      and carry no band.
+    anchors:
+      1: "Asks they raised sit unanswered for days, and none were escalated."
+      2: "Answered eventually, with no pattern, and escalation is inconsistent."
+      3: "Median under a day, with a long tail, and unanswered asks are escalated."
+      4: "Median under four hours, and nothing open older than a day without an escalation on record."
+      5: "The same, and the queue is empty at the end of the window."
+
+  - criterion_id: ticket_flow
+    title: Ticket creation against closure, and open work in progress
+    measure: completed_over_created
+    what_to_read: >-
+      Tickets created and completed in the window, their share of each, and the
+      count in progress on their name against whatever limit they have stated
+      for themselves. Report the direction of the gap, not only its size.
+      Created resolves on the creator field: tickets the person filed
+      themselves. Completed and in-progress resolve on the assignee field:
+      tickets closed, or still open, under their own name. This is the
+      person's own inflow against their own clearance, never the
+      organization's totals, unless the role's rubric document states
+      otherwise.
+    anchors:
+      1: "Inflow far exceeds closure and open work grew."
+      2: "Inflow exceeds closure and open work is flat."
+      3: "Inflow and closure within ten percent of each other."
+      4: "Closure wins."
+      5: "Closure wins, and open work fell toward the stated limit."
+    bands:
+      - {score: 1, max_exclusive: 0.5}
+      - {score: 2, min_inclusive: 0.5, max_exclusive: 0.9}
+      - {score: 3, min_inclusive: 0.9, max_exclusive: 1.1}
+      - {score: 4, min_inclusive: 1.1}
+    promotion_to_five: Open work in progress fell toward the stated limit.
+
+  - criterion_id: attention_share
+    title: Attention share
+    measure: product_and_customer_share
+    what_to_read: >-
+      Classify a stated sample of their decisions and messages into operations
+      and infrastructure, process and governance, product and architecture, and
+      customers and external. Report all four percentages and the sample size.
+      Where two samples disagree, report both and say what each measures. The
+      band reads the sample the role's rubric document names, and the review
+      says which sample that was; the other is reported as context. Record the
+      classification decision by decision, each with its date and its assigned
+      class, and say how many were borderline and on what basis they were
+      assigned. Two independent classifications of the same corpus have landed
+      three times apart and in different bands, so a classification that is
+      not published is not reproducible and neither is the band it produces.
+    anchors:
+      1: "Under a tenth of the sample on product and customers combined."
+      2: "Under a quarter."
+      3: "Between a quarter and a half."
+      4: "Half or more."
+      5: "The same, and a customer-facing outcome moved in the window."
+    bands:
+      - {score: 1, max_exclusive: 0.10}
+      - {score: 2, min_inclusive: 0.10, max_exclusive: 0.25}
+      - {score: 3, min_inclusive: 0.25, max_exclusive: 0.50}
+      - {score: 4, min_inclusive: 0.50}
+    promotion_to_five: A customer-facing outcome moved in the window.
+
+  - criterion_id: corrections
+    title: Corrections, in both directions
+    measure: self_correction_share
+    what_to_read: >-
+      How often a later live read falsified one of their premises and whether
+      they had marked it provisional; how often they caught someone else's wrong
+      claim first; and whether they corrected themselves in public before anyone
+      challenged them. Gate compliance is scored here: a bypass or skipped gate
+      they reported themselves within the hour is a process finding and counts
+      as a self-correction. The measure is self-corrections divided by
+      self-corrections plus corrections a verifier needed, the same
+      denominator the fourth trend measure uses. State the count on each
+      side of that division and the sample size, because two reviewers
+      reading the same corpus will otherwise divide by different things.
+    anchors:
+      1: "Premises falsified often, and stated flat."
+      2: "Falsified sometimes and unmarked, or a bypass that somebody else found."
+      3: "Rarely falsified, or marked provisional before the read that falsified it."
+      4: "The same, and they catch someone else's wrong claim first."
+      5: "The same, and they correct themselves in public unasked."
+    bands:
+      - {score: 1, max_exclusive: 0.25}
+      - {score: 2, min_inclusive: 0.25, max_exclusive: 0.5}
+      - {score: 3, min_inclusive: 0.5, max_exclusive: 0.75}
+      - {score: 4, min_inclusive: 0.75}
+    promotion_to_five: A public self-correction was posted before anyone challenged the claim.
+    caps:
+      - A bypass or skipped gate discovered by somebody else caps this criterion at 2, whatever the ratio says.
+
+roles:
+  - role_id: founder-operator
+    rubric_document: ${WEEKLY_REVIEW_RUBRIC_ROOT}/guides/weekly-review-rubric/founder-operator.md
+    criteria:
+      - deadlines
+      - tangible_pieces
+      - spec_and_depth
+      - communication
+      - ambiguity
+      - decision_latency
+      - ticket_flow
+      - attention_share
+      - corrections
+    extra_criteria:
+      - criterion_id: allocation_against_capability
+        title: Allocation against capability
+        what_to_read: >-
+          Whether the window's shortfalls are capability gaps or allocation
+          choices: the criteria that did not move, set against what the recorded
+          decisions were spent on.
+        anchors:
+          1: "The shortfall is a capability gap and nothing in the window addresses it."
+          2: "Allocation is the cause and the window shows no attempt to change it."
+          3: "Allocation is the cause and it is named somewhere in their own writing."
+          4: "Allocation moved: work that used to consume their decisions was delegated outright."
+          5: "The same, and a product or customer criterion moved as a result inside the window."
+
+  - role_id: fractional-technical-lead
+    rubric_document: ${WEEKLY_REVIEW_RUBRIC_ROOT}/guides/weekly-review-rubric/fractional-technical-lead.md
+    criteria:
+      - deadlines
+      - tangible_pieces
+      - spec_and_depth
+      - communication
+      - ambiguity
+      # Both directions, because this role's document says the queue runs both
+      # ways: asks parked on them, and separately asks they parked on someone
+      # else and how long they waited before escalating. The earlier revision
+      # carried only the inward one, so the half the role file calls out as the
+      # latency finding was not scored at all.
+      - decision_latency
+      - decision_latency_outward
+      - ticket_flow
+      - attention_share
+      - corrections
+    extra_criteria:
+      - criterion_id: durable_record
+        title: Durable record
+        what_to_read: >-
+          For each substantial piece of analysis, where it landed and on what
+          day. A document in a repository on the day it was written is the bar;
+          an ephemeral hosted link in a chat message is not an artifact.
+        anchors:
+          1: "The window's work exists only in chat and is not recoverable a week later."
+          2: "Owed written deliverables were replaced by chat messages."
+          3: "Some analysis landed as a document, some as links someone else had to rescue."
+          4: "Every substantial piece landed as a document in a repository within a day of being written."
+          5: "The same, and the pivotal claim in each is marked at the confidence they actually hold it."
+
+  - role_id: contractor-engineer
+    rubric_document: ${WEEKLY_REVIEW_RUBRIC_ROOT}/guides/weekly-review-rubric/contractor-engineer.md
+    criteria:
+      - deadlines
+      - tangible_pieces
+      - spec_and_depth
+      - communication
+      - ambiguity
+      - decision_latency_outward
+      - ticket_flow
+      - attention_share
+      - corrections
+    extra_criteria:
+      - criterion_id: working_without_the_workspace
+        title: Working without the workspace
+        what_to_read: >-
+          How well the record compensates for having no access to the workspace
+          registry, the coordination ledger or the local tooling: whether
+          tickets carry the evidence, the blockers and the handoffs.
+        anchors:
+          1: "Their state cannot be reconstructed from any surface the organization can read."
+          2: "State lives only in chat and has to be asked for."
+          3: "Tickets carry current state; chat carries the rest."
+          4: "Tickets carry the evidence, the blockers and the handoffs, so a reader needs nothing else."
+          5: "The same, and their write-ups are reused by other people as the record of what happened."
+
+  - role_id: contractor-team-account
+    rubric_document: ${WEEKLY_REVIEW_RUBRIC_ROOT}/guides/weekly-review-rubric/contractor-team-account.md
+    criteria:
+      - deadlines
+      - tangible_pieces
+      - spec_and_depth
+      - communication
+      - ambiguity
+      - decision_latency_outward
+      - ticket_flow
+      - attention_share
+      - corrections
+    extra_criteria:
+      - criterion_id: attribution_compensation
+        title: Compensating for the shared identity
+        what_to_read: >-
+          Whether the account's own record supplies the attribution a shared
+          identity destroys: the non-bypass attestation on pull request bodies,
+          force-push attribution, an acceptance note when assigned work closes
+          on proof supplied elsewhere, and a capture time on reported state.
+        anchors:
+          1: "Nothing compensates - no attestation, no force-push attribution, no acceptance notes, no capture times."
+          2: "One of the four is present."
+          3: "Two of the four are present."
+          4: "Three of the four are present and the fourth is named as a gap by the account itself."
+          5: "All four, consistently, so the record answers attribution questions the identity cannot."
+
+identity_sources:
+  - source_id: code-host
+    # A search, so it returns near matches: three logins sharing a prefix came
+    # back for one unambiguous handle on 2026-09-14. match_field is what makes
+    # "exactly one match" checkable -- narrow to the row whose login equals the
+    # handle exactly, and record both counts.
+    resolve_command: "gh api 'search/users?q={person}' --jq '.items[] | {login, id}'"
+    positive_control: "gh api 'search/issues?q=org:<org>+is:pr+author:<a handle known to be busy>' --jq '.total_count'"
+    match_field: login
+    required: true
+  - source_id: tracker
+    resolve_command: "list users filtered to {person}; require exactly one active match and record the uuid"
+    positive_control: "the same listing for a name known to be active, confirming rows come back"
+    match_field: name
+    required: true
+  - source_id: chat
+    resolve_command: "search users for {person}; require exactly one match and record the member id"
+    positive_control: "the same search for a member known to post daily"
+    match_field: real_name
+    required: false
+  - source_id: coordination-ledger
+    resolve_command: "grep the rolling work ledger for rows naming {person} or a lane acting on their behalf"
+    positive_control: "the same grep for a lane name known to appear, confirming the file is being read"
+    match_field: lane
+    required: false
+
+output_files:
+  - kind: review
+    filename_template: "{person}/{date}-{person}-review.md"
+    voice: >-
+      Third person, written for leadership, in the reviewer's own voice. Plain,
+      short sentences, no em-dashes, no praise padding, no cushioning.
+    may_contain:
+      - a score per criterion
+      - the deciding artifact for each criterion
+      - the four trend measures and the trend paragraph
+      - the reviewer's name
+    must_not_contain:
+      - a local filesystem path
+      - an internal lane name
+      - a third party's name
+      - heated language quoted rather than paraphrased
+
+  - kind: feedback
+    filename_template: "{person}/{date}-{person}-feedback.md"
+    voice: >-
+      Second person, addressed to the person, in the reviewer's own voice. No
+      bullets inside paragraphs. 700 to 1000 words, or 900 to 1200 for the
+      founder-operator role.
+    may_contain:
+      - the same facts as the review
+      - the specific artifacts and dated quotes of their own words
+      - the concrete ask and why it matters
+    must_not_contain:
+      - any score
+      - any 1-to-5 number
+      - vocabulary describing the person's standing rather than their work
+      - a local filesystem path
+      - an internal lane name
+      - a third party's name
+
+  - kind: private-notes
+    filename_template: "{person}/{date}-{person}-private-notes.md"
+    voice: Reviewer only, five lines.
+    may_contain:
+      - what was deliberately left out and why
+      - retention, pay, hardware
+      - speculation about motive, labelled as speculation
+    must_not_contain:
+      - anything that belongs in the other two files
+
+trend_measures:
+  - "Throughput: pull requests merged and median time from open to merge. Context only, never progress."
+  - "Ticket flow: tickets closed against tickets opened, and open work in progress against the stated limit."
+  - "Gate compliance: confirmed bypasses and who found each, and the share of pull request bodies carrying the non-bypass attestation line."
+  - "Corrections: corrections a verifier needed, against corrections the person made first."

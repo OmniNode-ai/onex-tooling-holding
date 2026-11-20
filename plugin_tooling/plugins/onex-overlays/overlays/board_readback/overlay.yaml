@@ -1,0 +1,94 @@
+# Overlay for the board_readback skill — internal.
+#
+# Layered over the skill's committed base by the overlay selector
+# BOARD_READBACK_OVERLAY_PATH. The base declares structure and no content.
+#
+# Status: shipped in the onex-overlays plugin of the internal marketplace
+# (OMN-19235), moved from docs-repo marketplace-internal/.
+# Nothing sets the selector by default: the skill reads this file only when a
+# session points the selector at it.
+#
+# Catalogue row: board_readback (omniclaude plugins/onex/process_catalogue.yaml)
+
+overlay_version: "1.0.0"
+catalogue_row: board_readback
+ticket: OMN-18368
+read_paths_ticket: OMN-19254
+
+workspace_root_env: registry_root
+working_directory: infra_repo
+
+# The readback is a pull request against the repository the generator lives in,
+# because the board is generated FROM that repository's code and the inputs it
+# reads. A readback that lands anywhere else is a readback of a copy.
+landing_surface:
+  kind: pull_request
+  repository: OmniNode-ai/infra_repo
+  requirement: >-
+    The raw re-read output is quoted in the pull request body, not summarised,
+    so a reviewer can recompute the verdict from what is quoted.
+
+# The served page cannot be read by a lane. Since OMN-18044 the distribution
+# puts it behind a Google Workspace sign-in at the edge: an unauthenticated
+# read answers 302 to accounts.google.com, and the bucket admits the
+# distribution and nothing else. A person reads it in a signed-in browser.
+#
+# A lane reads the publish instead, from the workflow that writes it. The
+# publish job's upload step is the only writer of the served page, and the
+# distribution serves with caching disabled, so that step's completion time is
+# when the served page changed. --summary adds the generator's own printed
+# summary from the same job (criteria cleared, carrier tickets closed,
+# beta-critical counts, probe states), which is what the page was rendered
+# from and what the inputs below are compared against. Uses the caller's own
+# gh credential. Exits 2 when no recent run uploaded or the log carries no
+# summary; it never prints an empty success.
+board_locator:
+  kind: command
+  command: python3 tools/beta_board/read_published_board.py --summary
+  served_url: https://example.invalid/board/
+  served_url_access: Google Workspace sign-in, browser only (OMN-18044)
+
+# Every command below exits non-zero on an empty read. An input that produces
+# zero bytes is unread, never agreement: the ticket-state input used to name a
+# module with no entry point, and exited 0 with 0 bytes on every run (OMN-19254).
+input_locators:
+  - id: ticket-state
+    description: >-
+      The live ticket query the generator runs, through the generator's own
+      fetch functions: carrier ticket states and the beta-critical set, as
+      JSON. Needs LINEAR_API_KEY; exits 2 without it or on an empty read.
+    command: python3 tools/beta_board/beta_board.py --inputs-only
+  - id: reconciliation
+    description: >-
+      The board reconciliation check, which is the surface that catches a board
+      agreeing with itself but not with its sources. --require-live because
+      without it a missing key runs only the static half and still exits 0.
+    command: python3 tools/beta_board/check_board_reconciliation.py --require-live
+
+# What makes this row exist rather than folding into the refresh row.
+rationale: >-
+  The refresh row asks whether the board moved. This row asks whether the board
+  still agrees with the inputs it was generated from, and asks it at the last
+  possible moment. A board generated an hour before the merge has had an hour to
+  go stale, and two measured status updates in one window carried claims taken
+  from a frozen board readback that a live read contradicted.
+
+known_failure_modes:
+  - >-
+    A readback of a cached board, which proves the cache and nothing else.
+  - >-
+    A re-read done early in the run and quoted at the end, with writes in
+    between. It reads as a readback and is not one.
+  - >-
+    An input command that exits zero and prints nothing. The readback then
+    quotes an empty block and reports agreement with it. Zero bytes is a
+    failure of the read, whatever the exit code says.
+  - >-
+    An http read of the board URL. It returns the sign-in redirect, not the
+    board, and a status check on it passes while reading nothing.
+
+verification_contract: >-
+  The generator's own inputs were re-read immediately before the merge, and the
+  raw re-read output is quoted in the change that lands it.
+
+mechanical_replacement: none yet

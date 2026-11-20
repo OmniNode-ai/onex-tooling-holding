@@ -1,0 +1,6 @@
+{
+  "channel": "<channel-id>",
+  "text": "*Friday retrospective — @@WEEK@@*\nWe have 15 minutes at the end of today's stand-up. Everyone, reply in this thread with:\n1. *Real product use:* the workflow you used, what you expected, and what happened. If you did not use the product, say so.\n2. *One product idea or friction:* the change you would make and the user it would help.\n3. *One process change:* something we should try next week.\n\n*In the 15 minutes:* spend 5 minutes sharing, 5 choosing the top three, and 5 assigning owners and recording actions.\n*Facilitator:* file every product idea or friction as a Backlog ticket, credit its contributor, and link the original reply in the ticket. For a duplicate, link the existing ticket and add the contributor's evidence there. Reply here with the ticket links and the top three, each with an accountable owner, before we finish. Record the agreed process changes here too.\n*Shared review criterion for everyone:* evidence of real product use and a contributed product idea or friction during the week, read from this thread and the linked tickets. Missing evidence is recorded as not observed; activity or merge counts do not stand in for product use.",
+  "idempotency_key": "team-retrospective|@@WEEK@@|<channel-id>",
+  "correlation_id": "@@CORRELATION_ID@@"
+}

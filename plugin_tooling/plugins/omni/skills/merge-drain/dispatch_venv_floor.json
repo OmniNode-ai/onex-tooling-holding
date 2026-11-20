@@ -1,0 +1,5 @@
+{
+  "omnimarket": "a5f86dd8c09e2e08d56f40b490f32bc375f2c8f6",
+  "ticket": "OMN-20864",
+  "what": "The oldest omnimarket revision a lab host's dispatch venv may hold and still take a unit that uses the venv (landing_placement.HostParity, OMN-20864). A venv at this commit or after it, on omnimarket's merged history (origin/dev or origin/main of the launching host's clone), is compatible; one below it, or off the merged history, is refused. a5f86dd8c (omnimarket#5202, OMN-22687) is the newest change the plugin's lab-lane path loads from the venv: it adds node_hook_parse_probe_compute, which renders the hook parse probe the placement script runs on a host (OMN-22676). Raise it in the same PR as a plugin change that needs a newer omnimarket in the dispatch venv; never set it to the launching host's live revision, which is the moving target this file replaced (414 launching-host and every-merge lab-host refusals, reports/2026-10-12-why-landing-got-slower.md rank 4)."
+}

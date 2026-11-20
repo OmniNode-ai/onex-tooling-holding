@@ -1,0 +1,79 @@
+[
+  {
+    "lesson": 1,
+    "ticket": "OMN-19815",
+    "source": "plugin-tooling-pkg:plugins/omni/skills/merge-drain/scripts/landing_scorecard.py",
+    "marker": "def floor_breaches\\(",
+    "fix": "per-core-repo floors on product merges"
+  },
+  {
+    "lesson": 1,
+    "ticket": "OMN-19815",
+    "source": "plugin-tooling-pkg:plugins/omni/skills/queue-status/scripts/queue_status.py",
+    "marker": "docs[-_ ]only",
+    "fix": "the all-repo merges line excludes docs-only merges"
+  },
+  {
+    "lesson": 3,
+    "ticket": "OMN-19998",
+    "source": "omnimarket:src/omnimarket/nodes/node_pr_landing_decision_compute/handlers/handler_pr_landing_decision.py",
+    "marker": "OMN-19998|load_pause_per_core",
+    "fix": "the load pause stops no fix worker (today an absolute load_pause_threshold)"
+  },
+  {
+    "lesson": 9,
+    "ticket": "OMN-20246",
+    "source": "omnibase_infra:.github/workflows/auto-merge.yml",
+    "marker": "OMN-20246|workflows?[-_ ]scope",
+    "fix": "the arming credential can arm a PR that changes a workflow file"
+  },
+  {
+    "lesson": 10,
+    "ticket": "OMN-19822",
+    "source": "plugin-tooling-pkg:plugins/omni/skills/merge-drain/scripts/landing_facts.py",
+    "marker": "OMN-19822",
+    "fix": "the controller lands batch-window change-control companions"
+  },
+  {
+    "lesson": 11,
+    "ticket": "OMN-20102",
+    "source": "plugin-tooling-pkg:plugins/omni/skills/queue-status/scripts/queue_status.py",
+    "marker": "class DeadlineState",
+    "fix": "queue-status prints within a total deadline"
+  },
+  {
+    "lesson": 12,
+    "ticket": "OMN-20005",
+    "source": null,
+    "marker": null,
+    "fix": "gh reads route around the 403 on org Actions variables; no fix point in a source exists yet"
+  },
+  {
+    "lesson": 14,
+    "ticket": "OMN-19379",
+    "source": "plugin-tooling-pkg:plugins/omni/skills/merge-drain/scripts/landing_github.py",
+    "marker": "ready_for_review|draft[-_ ]era",
+    "fix": "runs_to_rerun drops runs that started before the last ready_for_review"
+  },
+  {
+    "lesson": 16,
+    "ticket": "OMN-20247",
+    "source": "plugin-tooling-pkg:plugins/omni/skills/merge-drain/scripts/landing_controller.py",
+    "marker": "OMN-20247",
+    "fix": "a pr_claim_registry claim stops owning a PR once its verb ends"
+  },
+  {
+    "lesson": 18,
+    "ticket": "OMN-20247",
+    "source": "plugin-tooling-pkg:plugins/omni/skills/merge-drain/scripts/landing_facts.py",
+    "marker": "OMN-20247",
+    "fix": "an order-edge wait's parent is the covering companion"
+  },
+  {
+    "lesson": 19,
+    "ticket": "OMN-20247",
+    "source": "plugin-tooling-pkg:plugins/omni/skills/merge-drain/scripts/drain_map.py",
+    "marker": "OMN-20247",
+    "fix": "drain_map supersedes a pin-advance PR only after a diff comparison"
+  }
+]

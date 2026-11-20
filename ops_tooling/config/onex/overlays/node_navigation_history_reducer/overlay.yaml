@@ -1,0 +1,6 @@
+# Lab embedding endpoint of omnimemory's navigation history reducer (OMN-20936), moved out of the
+# shipped src/omnimemory/runtime/plugin.py, which carried it as the default for LLM_EMBEDDING_URL.
+# The shipped plugin reads it from this directory when it is named in ONEX_SKILL_OVERLAY_ROOTS;
+# LLM_EMBEDDING_URL still wins when it is set. omniintelligence's embedding and navigation
+# retriever nodes read LLM_EMBEDDING_URL alone, so they have no overlay here.
+embedding_url: "http://192.0.2.126:8100"

@@ -1,0 +1,6 @@
+# The open-PR overlap values lane_brief.py's check reads through open_pr_overlay: which kinds refuse, which warn, how
+# many are listed and the watcher-state age bound. The handler holds no value of its own; only these do.
+refuse_on: [branch, ticket]
+warn_on: [files]
+max_listed: 5
+state_max_age_s: 900

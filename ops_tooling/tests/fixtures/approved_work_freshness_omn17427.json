@@ -1,0 +1,335 @@
+{
+  "description": "Ten approved-work rows whose work a lab lane found already merged on 2026-10-07 (OMN-17427), two partly done rows, and one row whose Linear ticket is Duplicate. facts are the freshness check's inputs read on 2026-10-07; rows are the list's rows before the check ran.",
+  "checked_at": "2026-10-07T08:40:00Z",
+  "rows": [
+    {
+      "id": "planned-omn-19360",
+      "kind": "partial-node",
+      "ticket": "OMN-19360",
+      "repo": "omnimarket",
+      "goal": "Finish existing Pytest failure digest compute node: junit XML to a typed, capped, fingerprinted failure digest. Integrate current work before building; scope is this ticket only.",
+      "acceptance_check": "Acceptance:; Each fixture maps to its outcome. -- falsifier: any fixture test fails.; A missing or empty junit file is infra_error, never passed. -- falsifier: a test that feeds an empty string and asserts passed.; The handler imports no envelope type. -- falsifier: grep -n ModelEventEnvelope over the node finds a match.; Two reports differing only in timing have the same fingerprint. -- falsifier: a test with two s\u2026 [full contract in source] Read the full owning ticket criteria and falsifiers and beta/plans/2026-09-23-delegated-test-loop-first-slice.md + T4 (line 213) before work; prove only this ticket's acceptance; grouped/dependency scopes and conditional rollouts remain gated.",
+      "added_by": "inventory-planned-work-2221",
+      "added_at": "2026-10-06T22:19:12Z"
+    },
+    {
+      "id": "planned-omn-19746",
+      "kind": "partial-node",
+      "ticket": "OMN-19746",
+      "repo": "omnibase_core",
+      "goal": "Finish existing omnibase_core: typed runtime lane declaration, lane roles and the runtime.lane overlay key, naming no lane. Integrate current work before building; scope is this ticket only.",
+      "acceptance_check": "Acceptance:; \u00a73.3 cases -- falsifier: uv run pytest tests/unit/models/config_overlay/test_runtime_lane_declaration.py -q -k resolve; the new modules name no lane id -- falsifier: git grep -n -E 'lane-j|lane-i|lane-k|lane-p|prepr-|dogfood|judge' -- <the new files> returns a hit; the JSON Schema export equals model_json_schema() -- falsifier: uv run pytest tests/unit/models/config_overlay -q -k s\u2026 [full contract in source] Read the full owning ticket criteria and falsifiers and beta/plans/2026-09-26-runtime-lane-overlays-plan.md + LO1 (line 450) before work; prove only this ticket's acceptance; grouped/dependency scopes and conditional rollouts remain gated.",
+      "added_by": "inventory-planned-work-2221",
+      "added_at": "2026-10-06T22:19:12Z"
+    },
+    {
+      "id": "planned-omn-20014",
+      "kind": "partial-node",
+      "ticket": "OMN-20014",
+      "repo": "omnimarket",
+      "goal": "Finish existing delegation judgeability: a compute joins each receipt to the captured Claude Code hook events for what the lane did next. Integrate current work before building; scope is this ticket only.",
+      "acceptance_check": "Receipts written after JI.1 join exactly (join=digest) for at least 90 percent of calls made inside a window the capture covers -- falsifier: the compute's run over hook_events_probe_83 and post-JI.1 receipts, count of join=digest over calls in the covered window, below 0.90.; The compute never emits a label -- falsifier: uv run pytest tests/nodes/node_delegation_hook_followup_compute -k no_label_field -v.; An ambig\u2026 [full contract in source] Read the full owning ticket criteria and falsifiers and beta/plans/2026-09-28-delegation-judgeability-and-injection-ab-plan.md + JI.4 (line 118) before work; prove only this ticket's acceptance; grouped/dependency scopes and conditional rollouts remain gated.",
+      "added_by": "inventory-planned-work-2221",
+      "added_at": "2026-10-06T22:19:12Z"
+    },
+    {
+      "id": "planned-omn-20415",
+      "kind": "partial-node",
+      "ticket": "OMN-20415",
+      "repo": "omnimarket",
+      "goal": "Finish existing The landing decision node groups red PRs by shared cause and dispatches one bounded cause worker per cluster. Integrate current work before building; scope is this ticket only.",
+      "acceptance_check": "Acceptance: OMN-20415 AC1 to AC6. Read the full owning ticket criteria and falsifiers and beta/plans/2026-10-03-red-pr-fixer-plan.md + T2 (line 253) before work; prove only this ticket's acceptance; grouped/dependency scopes and conditional rollouts remain gated.",
+      "added_by": "inventory-planned-work-2221",
+      "added_at": "2026-10-06T22:19:12Z"
+    },
+    {
+      "id": "planned-omn-20458",
+      "kind": "wiring",
+      "ticket": "OMN-20458",
+      "repo": "omnimarket",
+      "goal": "Finish existing The in-process local rung resolves a model name for local-coder, and a contract test covers every ordinary-routing rung. Integrate current work before building; scope is this ticket only.",
+      "acceptance_check": "Resolve the local-coder model name through the ordinary in-process route; an empty binding fails a contract test; a named local terminal receipt is recorded. A deployed dev-bus receipt alone does not prove this route. Read the full owning ticket criteria and falsifiers and beta/plans/2026-10-05-process-observability-top20.md + 8 (line 160) before work; prove only this ticket's acceptance; grouped/dependency scopes and conditional rollouts remain gated.",
+      "added_by": "inventory-planned-work-2221",
+      "added_at": "2026-10-06T22:19:12Z"
+    },
+    {
+      "id": "planned-omn-20087",
+      "kind": "partial-node",
+      "ticket": "OMN-20087",
+      "repo": "omnimarket",
+      "goal": "Finish existing The trajectory evaluation effect node, with the in-memory evaluator. Integrate current work before building; scope is this ticket only.",
+      "acceptance_check": "[ ] AC1: With the setting unset, a submit is refused backend_disabled and the injected transport records zero requests -- falsifier: uv run pytest tests/unit/nodes/node_trajectory_evaluation_effect/test_handler_trajectory_evaluation.py -k disabled -q; [ ] AC2: An unknown setting value is refused backend_misconfigured with zero requests -- falsifier: uv run pytest tests/unit/nodes/node_trajectory_evaluation_effect/te\u2026 [full contract in source] Read the full owning ticket criteria and falsifiers and beta/plans/2026-09-28-dharma-ai-effect-adapter-plan.md + T1 (line 159) before work; prove only this ticket's acceptance; grouped/dependency scopes and conditional rollouts remain gated.",
+      "added_by": "inventory-planned-work-2221",
+      "added_at": "2026-10-06T22:19:12Z"
+    },
+    {
+      "id": "planned-omn-19791",
+      "kind": "partial-node",
+      "ticket": "OMN-19791",
+      "repo": "omnimarket",
+      "goal": "Finish existing delegation evals: a reproducible stratified draw of gate decisions by class and gate outcome, with the sealed holdout bucket kept out. Integrate current work before building; scope is this ticket only.",
+      "acceptance_check": "Re-running the committed query and seed reproduces the manifest -- falsifier: the two dev-lane draws differ in any key.; No bucket-0 and no customer-tenant item is drawn -- falsifier: uv run pytest tests/nodes/node_delegation_eval_sample_compute -k \"holdout_bucket_never_drawn or customer_tenant_never_drawn\" -v. Read the full owning ticket criteria and falsifiers and beta/plans/2026-09-26-delegation-evals-plan.md + EV.2 (line 169) before work; prove only this ticket's acceptance; grouped/dependency scopes and conditional rollouts remain gated.",
+      "added_by": "inventory-planned-work-2221",
+      "added_at": "2026-10-06T22:19:12Z"
+    },
+    {
+      "id": "partial-prune-contract-config",
+      "kind": "partial-node",
+      "ticket": "OMN-20591",
+      "repo": "omnimarket",
+      "goal": "Finish both existing prune effects with contract/store archive and DB resolution; integrate existing runtime scheduler before building.",
+      "acceptance_check": "uv run pytest tests/test_golden_chain_consumer_flow_prune_effect.py tests/test_golden_chain_dead_letter_prune_effect.py -q passes with zero skips; skipped_tick_never_resolves_sink and unconfigured_sink_refuses are collected and pass; an authorized lane-o correlated tick yields zero prune dead letters.",
+      "added_by": "inventory-partial-nodes-2219",
+      "added_at": "2026-10-06T22:19:12Z"
+    },
+    {
+      "id": "planned-omn-18700",
+      "kind": "partial-node",
+      "ticket": "OMN-18700",
+      "repo": "omnimarket",
+      "goal": "Finish existing Gap G: the served local model is held to a recorded response-contract conformance bar (unblocks goal row L11). Integrate current work before building; scope is this ticket only.",
+      "acceptance_check": "every one of K1\u2013K6 meets its row in the E11 completion mapping below. The other tickets in this row resolve into that mapping: OMN-18278 and OMN-18700 through K5's output-only bar, OMN-7942 through K2's response-contract round-trip, and OMN-18931 is K4. OMN-18831: a request of each accepted task class carries that class's declared route in its terminal's route identity Read the full owning ticket criteria and falsifiers and beta/plans/2026-09-22-verification-and-observability-unified-plan.md + E11 (line 1076) before work; prove only this ticket's acceptance; grouped/dependency scopes and conditional rollouts remain gated.",
+      "added_by": "inventory-planned-work-2221",
+      "added_at": "2026-10-06T22:19:12Z"
+    },
+    {
+      "id": "planned-omn-19359",
+      "kind": "partial-node",
+      "ticket": "OMN-19359",
+      "repo": "omnimarket",
+      "goal": "Finish existing Focused test run operation on the push validation effect, one throwaway container per task on lab-host-c. Integrate current work before building; scope is this ticket only.",
+      "acceptance_check": "Acceptance:; The builder emits exactly one -v, whose source is under the task root. -- falsifier: a unit test finds a second mount flag or a source outside the root in any built argument list.; Every forbidden flag is refused (the positive control). -- falsifier: any forbidden form in section 4 builds without raising.; T0 passes: the hidden test passes at the fixed ref and fails at the pre-fix ref, with the collecti\u2026 [full contract in source] Read the full owning ticket criteria and falsifiers and beta/plans/2026-09-23-delegated-test-loop-first-slice.md + T3 (line 197) before work; prove only this ticket's acceptance; grouped/dependency scopes and conditional rollouts remain gated.",
+      "added_by": "inventory-planned-work-2221",
+      "added_at": "2026-10-06T22:19:12Z"
+    },
+    {
+      "id": "planned-omn-19790",
+      "kind": "partial-node",
+      "ticket": "OMN-19790",
+      "repo": "omnimarket",
+      "goal": "Finish existing delegation evals: a labelled-item store in slice 27's format, written by a rule-7a projection from label events. Integrate current work before building; scope is this ticket only.",
+      "acceptance_check": "A label event becomes exactly one item row keyed by item, rater and rubric -- falsifier: uv run pytest tests/test_golden_chain_projection_delegation_eval.py -k one_row_per_label_key -v.; A planted secret in a snapshot is removed before the event is published -- falsifier: uv run pytest tests/unit/delegation -k eval_label_snapshot_scrubbed -q.; The 40.4 labels are in the dev-lane table -- falsifier: select count() fr\u2026 [full contract in source] Read the full owning ticket criteria and falsifiers and beta/plans/2026-09-26-delegation-evals-plan.md + EV.1 (line 157) before work; prove only this ticket's acceptance; grouped/dependency scopes and conditional rollouts remain gated.",
+      "added_by": "inventory-planned-work-2221",
+      "added_at": "2026-10-06T22:19:12Z"
+    },
+    {
+      "id": "planned-omn-20037",
+      "kind": "wiring",
+      "ticket": "OMN-20037",
+      "repo": "omnibase_infra",
+      "goal": "Finish existing Installed systemd and launchd units are never compared to the tracked copies, so a merged unit fix can sit undelivered on a lab host. Integrate current work before building; scope is this ticket only.",
+      "acceptance_check": "Compare each installed scheduled unit and script with its tracked revision; install existing fixes, run one bounded fire and verify run ID, expanded registry binding, counts and retained-live-tree exit behavior. Read the full owning ticket criteria and falsifiers and beta/plans/2026-10-05-process-observability-top20.md + 7 (line 141) before work; prove only this ticket's acceptance; grouped/dependency scopes and conditional rollouts remain gated.",
+      "added_by": "inventory-planned-work-2221",
+      "added_at": "2026-10-06T22:19:12Z"
+    },
+    {
+      "id": "planned-omn-19125",
+      "kind": "wiring",
+      "ticket": "OMN-19125",
+      "repo": "omnimarket",
+      "goal": "Finish existing Every `onex delegate --timeout N` fails closed with no terminal: the CLI sends a field the request model forbids. Integrate current work before building; scope is this ticket only.",
+      "acceptance_check": "the standard delegate command with --timeout reaches a terminal and writes a receipt; 0 of 48 flagged runs produced a receipt before the fix; a pre-publish validation failure names the field, the model and the capture log (OMN-19131 AC3, AC4). Not re-run in this revision Read the full owning ticket criteria and falsifiers and beta/plans/2026-09-22-verification-and-observability-unified-plan.md + C9 (line 975) before work; prove only this ticket's acceptance; grouped/dependency scopes and conditional rollouts remain gated.",
+      "added_by": "inventory-planned-work-2221",
+      "added_at": "2026-10-06T22:19:12Z"
+    }
+  ],
+  "facts": [
+    {
+      "ticket": "OMN-19360",
+      "linear_state_name": "In Review",
+      "linear_state_type": "started",
+      "acceptance_status": "pass",
+      "evidence": [
+        {
+          "pr": "omnimarket#2825",
+          "commit": "b8c34a60d1598d1bc7fd2b00db41e3fae202ada6"
+        }
+      ],
+      "remaining": ""
+    },
+    {
+      "ticket": "OMN-19746",
+      "linear_state_name": "Backlog",
+      "linear_state_type": "backlog",
+      "acceptance_status": "pass",
+      "evidence": [
+        {
+          "pr": "omnibase_core#1786",
+          "commit": "be874b620778118ba824134747cd549385cfdc5f"
+        }
+      ],
+      "remaining": ""
+    },
+    {
+      "ticket": "OMN-20014",
+      "linear_state_name": "Backlog",
+      "linear_state_type": "backlog",
+      "acceptance_status": "partial",
+      "evidence": [
+        {
+          "pr": "omnimarket#3241",
+          "commit": "79230da68749c1e1b52fdf4b68e63ea483641ff7"
+        }
+      ],
+      "remaining": "AC1: 90 percent join=digest rate over hook_events_probe_83 covered window not run; waits on dev-lane hook-events projection."
+    },
+    {
+      "ticket": "OMN-20415",
+      "linear_state_name": "Backlog",
+      "linear_state_type": "backlog",
+      "acceptance_status": "pass",
+      "evidence": [
+        {
+          "pr": "omnimarket#3342",
+          "commit": "4d7e6e68ad211e063117c79d1d32f4982ff7d448"
+        }
+      ],
+      "remaining": ""
+    },
+    {
+      "ticket": "OMN-20458",
+      "linear_state_name": "Backlog",
+      "linear_state_type": "backlog",
+      "acceptance_status": "partial",
+      "evidence": [
+        {
+          "pr": "omnimarket#3351",
+          "commit": "18b2a296c422ea05518a1cc2eeab021e88ca31ff"
+        }
+      ],
+      "remaining": "AC1/AC3: launching Mac overlay still lacks model_name (operator-owned, untouched); lab receipt used backend local-host-54-example-chat not local-coder; no named local terminal receipt recorded for local-coder"
+    },
+    {
+      "ticket": "OMN-20087",
+      "linear_state_name": "Backlog",
+      "linear_state_type": "backlog",
+      "acceptance_status": "pass",
+      "evidence": [
+        {
+          "pr": "omnimarket#3165",
+          "commit": "39b6cec31273ba8295480d0b9950901e8143ec6f"
+        }
+      ],
+      "remaining": ""
+    },
+    {
+      "ticket": "OMN-19791",
+      "linear_state_name": "In Progress",
+      "linear_state_type": "started",
+      "acceptance_status": "partial",
+      "evidence": [
+        {
+          "pr": "omnimarket#3075",
+          "commit": "ce2130209d87ad00d83c343affccff446922e184"
+        },
+        {
+          "pr": "docs-repo#1043",
+          "commit": "a52dec5b80be96cbb6ff2f63eaad9ca6a061e967"
+        }
+      ],
+      "remaining": "Draw operation of node_delegation_eval_orchestrator absent on main; draw SQL query is not a committed runnable artifact (ran ad hoc on h908), so re-running the committed query and seed cannot be shown; Linear AC1 unchecked."
+    },
+    {
+      "ticket": "OMN-20591",
+      "linear_state_name": "Backlog",
+      "linear_state_type": "backlog",
+      "acceptance_status": "partial",
+      "evidence": [
+        {
+          "pr": "omnimarket#3503",
+          "commit": "a54ae0b42700865d7e219ac7f6883091e3df4f09"
+        }
+      ],
+      "remaining": "AC4: authorized lane-o correlated tick with zero prune dead letters needs package rollout and removal of two archive env settings in infra compose; not done."
+    },
+    {
+      "ticket": "OMN-18700",
+      "linear_state_name": "In Review",
+      "linear_state_type": "started",
+      "acceptance_status": "pass",
+      "evidence": [
+        {
+          "pr": "omnimarket#2817",
+          "commit": "47871f791c984b1fc39ce4cbe5f7c88e9dadbe40"
+        },
+        {
+          "pr": "omnimarket#2871",
+          "commit": "bce9d31651e2c407675059311032bec8a5b842e2"
+        }
+      ],
+      "remaining": ""
+    },
+    {
+      "ticket": "OMN-19359",
+      "linear_state_name": "In Review",
+      "linear_state_type": "started",
+      "acceptance_status": "pass",
+      "evidence": [
+        {
+          "pr": "omnimarket#2824",
+          "commit": "b1499fe4ea576fce523769b06f43e15797acbe99"
+        }
+      ],
+      "remaining": ""
+    },
+    {
+      "ticket": "OMN-19790",
+      "linear_state_name": "In Progress",
+      "linear_state_type": "started",
+      "acceptance_status": "partial",
+      "evidence": [
+        {
+          "pr": "omnimarket#3059",
+          "commit": "df56bf1228fcd068b4eac1b03b6f82157f3c6bfa"
+        },
+        {
+          "pr": "omnibase_infra#4315",
+          "commit": "278377912341d50362b2cadfb714a54d5ad076f6"
+        }
+      ],
+      "remaining": "AC3: slice-40 task 40.4 labels not loaded into the dev-lane delegation_eval_items table."
+    },
+    {
+      "ticket": "OMN-20037",
+      "linear_state_name": "Backlog",
+      "linear_state_type": "backlog",
+      "acceptance_status": "partial",
+      "evidence": [
+        {
+          "pr": "omnibase_infra#4284",
+          "commit": "18571bb139d047bec7252b279476f08e1b9f372a"
+        },
+        {
+          "pr": "plugin-tooling-pkg#112",
+          "commit": "f52954bffe07068bf8dc92e5c895efa0063243ee"
+        }
+      ],
+      "remaining": "Live operator work: install fixes for drifted installed units on lab hosts (lab-host-a had 5 real drifts unfixed), run one bounded fire and verify run ID, registry binding, counts and retained-live-tree exit; ONEX_UNIT_DRIFT_ENDPOINTS set and /unit-drift route live-proven"
+    },
+    {
+      "ticket": "OMN-19125",
+      "linear_state_name": "Duplicate",
+      "linear_state_type": "duplicate",
+      "acceptance_status": "",
+      "evidence": [],
+      "remaining": ""
+    }
+  ],
+  "expected_done": [
+    "OMN-19360",
+    "OMN-19746",
+    "OMN-20415",
+    "OMN-20087",
+    "OMN-18700",
+    "OMN-19359",
+    "OMN-19125"
+  ],
+  "expected_open_with_remaining": [
+    "OMN-20014",
+    "OMN-20458",
+    "OMN-19791",
+    "OMN-20591",
+    "OMN-19790",
+    "OMN-20037"
+  ]
+}

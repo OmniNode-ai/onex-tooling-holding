@@ -1,0 +1,25 @@
+TLC2 Version 2026.10.13.164326 (rev: 210df3a)
+Running breadth-first search Model-Checking with fp 128 and seed 2783801687654297905 with 4 workers on 32 cores with 2731MB heap and 64MB offheap memory [pid: 13] (Linux 7.0.0-42-generic amd64, Eclipse Adoptium 17.0.21 64bit, MSBDiskFPSet, DiskStateQueue).
+Parsing file /work/LandingController.tla
+Semantic processing of module Naturals
+Semantic processing of module Sequences
+Semantic processing of module FiniteSets
+Semantic processing of module TLC
+Semantic processing of module Integers
+Semantic processing of module TLCExt
+Semantic processing of module _TLCTrace
+Semantic processing of module LandingController
+Starting... (2026-11-19 02:07:46)
+Warning: The set Workers has been defined to be a symmetry set but contains less than two elements.
+(Use the -nowarning option to disable this warning.)
+Computing initial states...
+Finished computing initial states: 1 distinct state generated at 2026-11-19 02:07:47.
+Model checking completed. No error has been found.
+  Estimates of the probability that TLC did not check all reachable states
+  because two distinct states had the same fingerprint:
+  calculated (optimistic):  val = 6.6E-11
+88932 states generated, 16851 distinct states found, 0 states left on queue.
+The depth of the complete state graph search is 20.
+The average outdegree of the complete state graph is 1 (minimum is 0, the maximum 10 and the 95th percentile is 3).
+Finished in 07s at (2026-11-19 02:07:51)
+rc=0

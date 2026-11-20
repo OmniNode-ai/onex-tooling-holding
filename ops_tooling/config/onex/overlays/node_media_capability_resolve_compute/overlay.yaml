@@ -1,0 +1,28 @@
+# OMN-22781: the lab's media backends, bound to typed capabilities. The values are read by
+# whatever calls omnimarket's node_media_capability_resolve_compute (OMN-22774) and injected as its `backends`;
+# a node asks for a capability (tts, stt, embed, video) and carries no host or port. Each row's
+# port is the port of the unit declared in the node_host_installer_net_units overlay (OMN-22757), and each
+# endpoint path is the one OpenAI-shaped path its capability is served at.
+# The video backend is on demand: its unit is never enabled, and starting it stops the four resident units.
+# The decision backend was removed with its unit on 2026-11-14 (OMN-24493).
+backends:
+  - backend_id: lab-media-embed
+    capability: embed
+    endpoint_url: http://192.0.2.127:8100/v1/embeddings
+    served_model_id: text-embedding-qwen3
+    serving: true
+  - backend_id: lab-media-tts
+    capability: tts
+    endpoint_url: http://192.0.2.127:8102/v1/audio/speech
+    served_model_id: qwen3-tts-0.6b
+    serving: true
+  - backend_id: lab-media-stt
+    capability: stt
+    endpoint_url: http://192.0.2.127:8103/v1/audio/transcriptions
+    served_model_id: whisper-large-v3-turbo
+    serving: true
+  - backend_id: lab-media-video
+    capability: video
+    endpoint_url: http://192.0.2.127:8104/v1/videos
+    served_model_id: wan2.2-ti2v-5b
+    serving: true

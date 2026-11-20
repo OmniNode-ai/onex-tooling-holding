@@ -1,0 +1,87 @@
+# Overlay for the landing goal's ticket rule (OMN-22570), the second half of the goal scope next to goal_scope/overlay.yaml.
+#
+# Read by the landing controller at every tick (load_goal_ticket_rule, through landing_goal_holds). `key: scalar` lines and
+# `ticket_roots:` followed by `- item` lines only. It is its own overlay so a reader that predates it never meets a key it refuses.
+# Absent: the rule is off and only the lists in goal_scope decide. Present and wrong: the tick says GOAL-RULE-UNREAD and only the lists
+# decide. No value below has a default in code.
+#
+# The rule (operator, 2026-11-06): a pull request of the operator is in scope when the ticket it declares (the first ticket its title
+# names, else its body's `Ticket:` line) is OMN-22478 or a descendant of it. Product pull requests (registry_root) are in scope by
+# goal_scope's in_scope_repos, and a pull request on goal_scope's in_scope_prs or prerequisite_prs is in scope by its entry. The
+# paused list in goal_scope overrides this rule: a pull request on it is held whatever ticket it names. A HOLD row acts through the
+# draft the hold node makes, and a draft is never held or landed, so the rule never lifts one. Barred work stays drafted under its HOLD.
+overlay_version: "1.0.0"
+ticket: OMN-22570
+ruling: "operator 2026-11-06: a pull request is in scope when its ticket is OMN-22478 or a child of it; the paused list and the HOLD rows override the rule"
+
+# Where a ticket's parent is read from (Linear's GraphQL endpoint, or a loopback endpoint in a test), and the bounds of the read.
+endpoint: https://api.linear.app/graphql
+# How long a parent read from Linear is kept (6 hours): a ticket is reparented rarely, and a stale yes ends at this bound.
+cache_seconds: 21600
+# Linear reads one tick may make; a pull request whose chain is not finished waits held for the next tick. 40 covers the operator's
+# open pull requests on a cold cache (a read on 2026-11-06 found 20 unlisted ones, 12 reads left 8 held for the next tick), and 40
+# unanswered reads of 5 seconds each stay inside the tick's budget.
+reads_per_tick: 40
+read_timeout_seconds: 5
+# Parent steps walked from the declared ticket up to a root.
+max_depth: 6
+
+# OMN-22478 is the goal's root: the rebuild pieces 1 to 6 (RULING 2026-11-06T12:10:28Z and 2026-11-06T13:16:32Z) mint their tickets under it, so
+# a piece pull request is admitted by its ticket with no list entry. OMN-21288 is the one runtime, one container plan (RULING 2026-11-06T13:14:48Z):
+# its task tickets (T10a OMN-22664, T10b OMN-22669, T15 OMN-22391 and the rest) sit under OMN-21288 and not under OMN-22478, so it is a second root.
+#
+# OMN-22847 is the stopped-line fill epic, the factory floor plan (the operator's go of 2026-11-07): its task tickets (floor fill nodes, the
+# work-state projection, the commitment ledger) sit under it and under neither root above, so 13 of the operator's open floor pull requests
+# read unlisted on 2026-11-08. OMN-19998 is the landing controller's own ticket, already named in goal_scope's prerequisite list: the
+# landing fixes that cite it have no entry in a list and sit under neither root (its parent OMN-17427 is the Codex integration umbrella and
+# is not a root, so the rule admits OMN-19998 and its children only). The paused list and the HOLD rows still override all of these.
+#
+# OMN-20655 is the ticket closer (the dod-closeout sweep), which feeds the factory floor's zero-flip stoppage row. Its fix pull requests
+# (omnimarket#5440, ops_tooling_pkg#1520 and #1525) cite it and sit under no root above, so the controller kept every head out as
+# unlisted from 09:30Z to 19:22Z on 2026-11-08 and recorded no decision for them (admissions.jsonl). The operator's goal puts landing
+# prerequisites and the floor in scope, and the closer is the floor's input, so it is a root of its own.
+#
+# OMN-19787 is the delegation evals parent: the local-model eval tickets (OMN-23626 to OMN-23632, OMN-23637 to OMN-23639 and the grandchildren
+# under them) sit under it, and its own parent OMN-19432 (the delegation work plan) is not a root, so the eval pull requests
+# omnimarket#5787, #5789, #5792 and #5794 were kept out as unlisted. The operator's goal of 2026-11-10 23:38Z, item 6 (local models
+# do real work), and the operator's ruling of 2026-11-11T01:04:42Z ("we can go ahead and make the change") add it as a root. OMN-19432 stays
+# no root: only the evals parent and its children are admitted.
+#
+# 2026-11-11 (RULING 2026-11-11T16:08:19Z, the 2026-11-10 23:38Z goal): five roots join. OMN-23731 is the hourly check as a node
+# workflow (an epic with no parent). OMN-18925 is delegation end-to-end reliability, the parent of the delegation readiness plan
+# OMN-23161 to OMN-23183 that builds the nine scenarios. OMN-20372 is the cost estimator (Prompt Cost Explorer), an epic with no parent.
+# OMN-23745 is the six-workflows plan's ratchet ticket, whose parent OMN-21407 is not a root. OMN-23834 is the friction fix that stops
+# open core changes colliding on one version line; its parent OMN-18549 is not a root.
+#
+# 2026-11-13 (RULING 2026-11-13T21:16:04Z, applying RULING 2026-11-06T23:06:27Z; current goal RULING 2026-11-12T12:28:10Z; ticket OMN-19998, lane
+# goal-roots-6802): the current goal's own tickets join as roots, each under the 2026-11-06 category that covers it. 27 pull requests were kept out
+# as unlisted at the watcher tick 2026-11-13T21:19:24Z; no chain of them reached a root. OMN-22478 (landing and fill) and OMN-19998 (factory
+# integration) were roots already and are not repeated.
+#   OMN-21611  the stability lane on h901 runs a pinned release apart from dev (category: the one runtime, one container plan). It heads
+#              omnimarket#6042 and overlays#444 (their tickets sit under OMN-21612). Replaces draft plugin-tooling-pkg#1895, which listed
+#              OMN-24231 and overlays#444 alone.
+#   OMN-24138  the scheduled closer node (category: the floor, as OMN-20655 is: it feeds the floor's zero-flip row). Its parent is OMN-19998, so it
+#              was admitted through that root already; it is named so the closer's own tickets do not depend on that parent staying put.
+#   OMN-18594  the release train (category: landing prerequisites: the cut and the downstream pin bumps). Its parent OMN-12655 is not a root.
+#   OMN-21318  the contract hot-loading plan revision (category: the one runtime, one container plan: handler packages stop being baked into the
+#              runtime image). It heads omnibase_infra#5946 and overlays#356.
+#   OMN-17229  every lab host runs the runtime and attaches to the bus (category: the one runtime, one container plan). It heads omnimarket#5918.
+# OMN-17427 stays no root (it is the Codex integration umbrella): the 13 pull requests whose chains end there are admitted one by one in
+# goal_scope's lists, by the subject of their own ticket, and the rest stay paused.
+ticket_roots:
+- OMN-22478
+- OMN-21288
+- OMN-22847
+- OMN-19998
+- OMN-20655
+- OMN-19787
+- OMN-23731
+- OMN-18925
+- OMN-20372
+- OMN-23745
+- OMN-23834
+- OMN-21611
+- OMN-24138
+- OMN-18594
+- OMN-21318
+- OMN-17229

@@ -1,0 +1,158 @@
+# The registry root's clone list, in the format the public installer's clone step reads
+# (OMN-17427): one command populates this directory.
+#
+#   <omnibase checkout>/install.sh --clone-only --repos <this directory>/repos.yaml --into <this directory>
+#
+# Each `name` is the directory the repository is cloned to and is gitignored in .gitignore as
+# `/<name>/`; each `repo` is the owner/name cloned over https with the credential git is logged in
+# with. A repository the login cannot read fails the run and is named. tests/test_registry_repos_yaml.py
+# pins that every name here is a gitignored directory entry.
+#
+# Not listed: `RSD`, a second checkout of the repository `rsd-repo` already clones, and
+# `steel_onslaught`, which lives under a personal account, not the organisation.
+#
+# An entry whose branch protection requires the branch up to date (it lands one pull request at a
+# time) carries `landing: {strict_base: true, required_context: <check-run name>}` (OMN-21276,
+# RULING 2026-10-13T22:42:38Z). tests/test_registry_repos_yaml.py refuses such an entry whose
+# required context is produced by a workflow with no `merge_group` trigger. The installer's clone step
+# reads only the `name:` and `repo:` lines, so the nested key does not change what is cloned.
+# An entry carrying `observers.stuck_hours.excluded: true` and a `reason` is left out of the daily
+# stuck-hours observer's repository scope (OMN-24633).
+repositories:
+  - name: omnibase_core
+    repo: OmniNode-ai/omnibase_core
+    type: python
+    description: Core models, contracts, validators, CLI
+
+  - name: omnibase_infra
+    repo: OmniNode-ai/omnibase_infra
+    type: python
+    description: Infrastructure services, Kafka, Postgres
+
+  - name: omnibase_spi
+    repo: OmniNode-ai/omnibase_spi
+    type: python
+    description: Service provider interface protocols
+    landing:
+      strict_base: true
+      required_context: CI Summary
+
+  - name: omniclaude
+    repo: OmniNode-ai/omniclaude
+    type: python
+    description: Claude Code agent plugin, hooks, skills
+
+  - name: omnidash
+    repo: OmniNode-ai/omnidash
+    type: node
+    description: Composable widget dashboard (Vite + React)
+    landing:
+      strict_base: true
+      required_context: CI Summary
+
+  - name: omniintelligence
+    repo: OmniNode-ai/omniintelligence
+    type: python
+    description: Intelligence nodes - intent, drift, review
+
+  - name: omnimemory
+    repo: OmniNode-ai/omnimemory
+    type: python
+    description: Document ingestion and semantic retrieval
+
+  - name: omnimarket
+    repo: OmniNode-ai/omnimarket
+    type: python
+    description: Market skill nodes (onex skill)
+
+  - name: omnibase
+    repo: OmniNode-ai/omnibase
+    type: other
+    description: Public installer and distribution repository
+
+  - name: plugin-tooling-pkg
+    repo: OmniNode-ai/plugin-tooling-pkg
+    type: other
+    description: Internal plugin skills and hooks
+    landing:
+      strict_base: true
+      required_context: validate-plugin
+
+  - name: codex-tooling-pkg
+    repo: OmniNode-ai/codex-tooling-pkg
+    type: other
+    description: Internal Codex plugin skills
+
+  - name: infra_repo
+    repo: OmniNode-ai/infra_repo
+    type: python
+    description: Infrastructure definitions
+    landing:
+      strict_base: true
+      required_context: CI Summary
+
+  - name: knowledge_base
+    repo: OmniNode-ai/knowledge_base
+    type: python
+    description: Public knowledge base
+
+  - name: docs_repo
+    repo: OmniNode-ai/docs-repo
+    type: other
+    description: planning corpus (tracking, plans, reports, runbooks)
+
+  - name: omnibot
+    repo: OmniNode-ai/omnibot
+    type: other
+    description: Registry clone
+
+  - name: omnicursor
+    repo: OmniNode-ai/omnicursor
+    type: python
+    description: Registry clone
+
+  - name: omnigemini
+    repo: OmniNode-ai/omnigemini
+    type: other
+    description: Registry clone
+
+  - name: registry_root
+    repo: OmniNode-ai/registry_root
+    type: other
+    description: Registry clone
+
+  - name: omnipulse
+    repo: OmniNode-ai/omnipulse
+    type: node
+    description: Registry clone
+
+  - name: registry_root
+    repo: OmniNode-ai/registry_root
+    type: python
+    description: Registry clone
+    landing:
+      strict_base: true
+      required_context: CI Summary
+
+  - name: omniui
+    repo: OmniNode-ai/omniui
+    type: node
+    description: Registry clone
+
+  - name: registry_root
+    repo: OmniNode-ai/registry_root
+    type: node
+    description: Registry clone
+
+  - name: rsd-repo
+    repo: OmniNode-ai/rsd-repo
+    type: python
+    description: Registry clone
+    # OMN-24633: a private repository not cloned on the operator host and parked (RULING
+    # 2026-10-17T16:11:00Z, OMN-17427), so the stuck-hours observer, which reads the clone's landing
+    # branch, leaves it out of its scope instead of reporting incomplete coverage. The clone step
+    # reads only `name:` and `repo:`.
+    observers:
+      stuck_hours:
+        excluded: true
+        reason: private repository, not cloned on the operator host (parked by RULING 2026-10-17T16:11:00Z)

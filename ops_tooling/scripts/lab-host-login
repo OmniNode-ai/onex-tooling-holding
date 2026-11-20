@@ -1,0 +1,363 @@
+#!/usr/bin/env bash
+# lab-host-login: make one lab host usable by landing workers and remote lanes over non-interactive ssh.
+#
+# Why: a macOS login keychain is locked in an ssh session, so `claude` and `gh` read no credential
+# there. The landing controller (landing_placement.py) reads a Claude OAuth token file and a
+# file-stored gh token instead. This script puts both in place and then proves them the way the
+# controller reads them: a fresh non-login shell with an empty environment.
+#
+#   lab-host-login            run ON the host, once, interactively: token file, gh login, verify
+#   lab-host-login --check    verification only; needs no tty, so it runs over ssh:
+#                               ssh HOST 'bash -s -- --check' < lab-host-login
+#                             honours --skip-claude and --skip-gh: a skipped item is not probed and cannot fail it.
+#                             The Claude probe draws the host's token pool the way the landing runner does, then the
+#                             token file, then the host login; a rate-limited account is logged in, not a failure.
+#
+# Flags: --renew (redo a login that already works), --skip-claude, --skip-gh, -h/--help.
+# Exit: 0 every check passed, 1 a check failed, 2 usage or setup failure (including a GITHUB_TOKEN or
+# GH_TOKEN in the environment, which gh prefers over its stored login: setup names the files that define
+# it and stops before any login step).
+#
+# The token never reaches stdout, stderr, argv or the environment of a child: the token file is written
+# by a shell builtin under umask 077, and the verification reads it inside the child shell.
+# bash 3.2 (macOS) safe; runs on Linux too.
+
+set -u
+
+TOKEN_REL=".config/omni/claude-oauth-token"
+REPO_URL="https://example.invalid/private-repo"
+PROBE_TIMEOUT="${LAB_HOST_LOGIN_TIMEOUT:-90}"
+# The PATH a controller shell has: user-local installs first (claude), then Homebrew, then the base.
+PROBE_PATH="${LAB_HOST_LOGIN_PATH:-$HOME/.local/bin:/opt/homebrew/bin:/usr/local/bin:/usr/bin:/bin}"
+
+TOKEN_FILE="$HOME/$TOKEN_REL"
+FAILS=0
+
+say() { printf '%s\n' "$*"; }
+die() { printf 'lab-host-login: %s\n' "$*" >&2; exit 2; }
+
+usage() {
+  sed -n '2,22p' "$0" 2>/dev/null | sed 's/^# \{0,1\}//'
+}
+
+# Remove anything shaped like a Claude or GitHub token from a line before it is shown.
+scrub() {
+  sed -E 's/sk-ant-[A-Za-z0-9_-]+/<token>/g; s/(gh[pousr]|github_pat)_[A-Za-z0-9_]+/<token>/g'
+}
+
+# A setup-token value: sk-ant-..., no whitespace, long enough not to be a paste accident.
+valid_token() {
+  case "$1" in
+    sk-ant-*) ;;
+    *) return 1 ;;
+  esac
+  case "$1" in
+    *[[:space:]]*) return 1 ;;
+  esac
+  [ "${#1}" -ge 40 ]
+}
+
+# Write $1 to the token file: umask 077, temp file in the same directory, mode 600, atomic rename.
+write_token_file() {
+  local dir tmp
+  dir="$(dirname "$TOKEN_FILE")"
+  ( umask 077 && mkdir -p "$dir" ) || return 1
+  chmod 700 "$dir" 2>/dev/null || true
+  tmp="$TOKEN_FILE.tmp.$$"
+  ( umask 077 && printf '%s\n' "$1" > "$tmp" ) || { rm -f "$tmp"; return 1; }
+  chmod 600 "$tmp" && mv -f "$tmp" "$TOKEN_FILE"
+}
+
+# Run "$@" with stdin closed and a hard timeout; output goes to $OUT. Returns the command's status,
+# 124 on timeout. Kills only its own child (never pkill).
+run_timed() {
+  local pid watcher rc
+  "$@" < /dev/null > "$OUT" 2>&1 &
+  pid=$!
+  ( sleep "$PROBE_TIMEOUT"; kill "$pid" 2>/dev/null ) > /dev/null 2>&1 &
+  watcher=$!
+  wait "$pid" 2> /dev/null
+  rc=$?
+  kill "$watcher" 2> /dev/null
+  wait "$watcher" 2> /dev/null
+  if [ "$rc" -ge 128 ]; then rc=124; fi
+  return "$rc"
+}
+
+# The fresh shell the controller uses: empty environment, HOME and PATH only, non-login.
+fresh() {
+  env -i HOME="$HOME" USER="$(id -un)" PATH="$PROBE_PATH" GIT_TERMINAL_PROMPT=0 ${ONEX_CLAUDE_POOL_PY:+"ONEX_CLAUDE_POOL_PY=$ONEX_CLAUDE_POOL_PY"} sh -c "$1"
+}
+
+report() { # report PASS|FAIL name detail
+  say "$1 $2: $3"
+  if [ "$1" = FAIL ]; then FAILS=$((FAILS + 1)); fi
+}
+
+first_line() {
+  local msg
+  msg="$(scrub < "$OUT" | grep -o '"message": *"[^"]*"' | head -n 1 | cut -c1-160)"
+  if [ -n "$msg" ]; then printf '%s\n' "$msg"; return; fi
+  scrub < "$OUT" | grep -v '^[[:space:]{}]*$' | head -n 1 | cut -c1-160
+}
+
+# The host's Claude token pool, drawn the way the landing runner draws it (landing_placement.py CLAUDE_POOL_SH and
+# TOKEN_EXPORT): the dispatch venv under the first registry root that has one, `node_claude_token_pool_effect resolve`
+# printing the first token whose limit has passed. The runner prefers it to the token file and the host login, so the
+# check does too. The same lines run in the child shell of the probe, so the token never reaches this script.
+POOL_MODULE="omnimarket.nodes.node_claude_token_pool_effect"
+POOL_SH='CPY="${ONEX_CLAUDE_POOL_PY:-}"; [ -n "$CPY" ] || for r in "${registry_root:-}" "$HOME/Code/registry_root" "$HOME/registry_root" "/data/omninode/registry_root"; do if [ -n "$r" ] && [ -x "$r/.onex-dispatch-venv/bin/python" ]; then CPY="$r/.onex-dispatch-venv/bin/python"; break; fi; done'
+
+# A usage-limit answer from claude: the login works, the account is out of quota for now.
+limited_answer() {
+  grep -qiE 'hit your|have hit|limit reached|out of extra usage|rate.?limit' "$OUT"
+}
+
+check_claude() {
+  local src status
+  if ! fresh 'command -v claude' > "$OUT" 2>&1 < /dev/null; then
+    report FAIL claude "the claude CLI is not on PATH ($PROBE_PATH); install it (https://claude.com/product/claude-code)"
+    return
+  fi
+  if [ -r "$TOKEN_FILE" ] && [ "$(wc -c < "$TOKEN_FILE" | tr -d ' ')" -lt 40 ]; then
+    report FAIL claude "$TOKEN_REL is unreadable as a token (too short); rerun lab-host-login --renew"
+    return
+  fi
+  # shellcheck disable=SC2016  # the $-expansions belong to the child shell
+  if run_timed fresh "$POOL_SH"'; T="$HOME/'"$TOKEN_REL"'"; S=login
+if [ -n "$CPY" ] && CP="$("$CPY" -m '"$POOL_MODULE"' resolve 2>/dev/null)" && [ -n "$CP" ]; then export CLAUDE_CODE_OAUTH_TOKEN="$CP"; S=pool; elif [ -r "$T" ]; then export CLAUDE_CODE_OAUTH_TOKEN="$(cat "$T")"; S=file; fi
+unset CP; echo "SOURCE $S"; claude -p "reply ok" --model sonnet --output-format text'; then
+    src="$(sed -n 's/^SOURCE //p' "$OUT" | head -n 1)"
+    if grep -v '^SOURCE ' "$OUT" | grep -qiw 'ok'; then
+      report PASS claude "claude -p answered using $(source_name "$src")"
+      return
+    fi
+    if limited_answer; then
+      report PASS claude "logged in using $(source_name "$src"); that account is rate-limited right now, which is not a missing login"
+      return
+    fi
+    report FAIL claude "claude -p ran but did not answer ok using $(source_name "$src"): $(first_line)"
+    return
+  fi
+  src="$(sed -n 's/^SOURCE //p' "$OUT" | head -n 1)"
+  if limited_answer; then
+    report PASS claude "logged in using $(source_name "$src"); that account is rate-limited right now, which is not a missing login"
+    return
+  fi
+  status="$(fresh 'claude auth status' 2>&1 < /dev/null | tr -d ' \n' | scrub | cut -c1-120)"
+  case "$status" in
+    *'"loggedIn":false'*)
+      if [ "$src" = pool ]; then
+        report FAIL claude "the token pool answered but claude -p failed using it and no login is readable: $(first_line)"
+      elif [ "$(uname -s)" = Darwin ]; then
+        report FAIL claude "no login is readable without the keychain (locked over ssh), the host has no token pool and there is no token file at ~/$TOKEN_REL; run lab-host-login on this host"
+      else
+        report FAIL claude "not logged in, the host has no token pool and there is no token file at ~/$TOKEN_REL; run lab-host-login on this host"
+      fi ;;
+    *) report FAIL claude "claude -p failed using $(source_name "$src"): $(first_line)" ;;
+  esac
+}
+
+source_name() {
+  case "$1" in
+    pool) printf "the host's token pool" ;;
+    file) printf "token file" ;;
+    *) printf "claude's own login (no token pool, no token file)" ;;
+  esac
+}
+
+check_gh() {
+  local login store
+  if ! fresh 'command -v gh' > "$OUT" 2>&1 < /dev/null; then
+    report FAIL gh "gh is not installed or not on PATH ($PROBE_PATH); brew install gh (macOS) or apt install gh (Linux)"
+    return
+  fi
+  if run_timed fresh 'gh api user --jq .login'; then
+    login="$(head -n 1 "$OUT" | tr -cd 'A-Za-z0-9_-')"
+    store="$(fresh 'gh auth status' 2>&1 < /dev/null | grep -c 'keyring')"
+    if [ "$store" -gt 0 ]; then
+      report PASS gh "gh api user answered as $login (token is in the keyring: it may lock over ssh; rerun lab-host-login --renew)"
+    else
+      report PASS gh "gh api user answered as $login (file-stored token)"
+    fi
+    return
+  fi
+  report FAIL gh "gh api user failed in a fresh shell (not logged in, or the token sits in a locked keychain); run lab-host-login on this host: $(first_line)"
+}
+
+check_git() {
+  if ! fresh 'command -v git' > "$OUT" 2>&1 < /dev/null; then
+    report FAIL git "git is not on PATH ($PROBE_PATH)"
+    return
+  fi
+  if run_timed fresh "git ls-remote $REPO_URL HEAD"; then
+    if grep -q 'HEAD' "$OUT"; then
+      report PASS git "git ls-remote reached OmniNode-ai/ops_tooling_pkg"
+      return
+    fi
+  fi
+  report FAIL git "git ls-remote on OmniNode-ai/ops_tooling_pkg failed (no credential helper, or gh auth setup-git not run): $(first_line)"
+}
+
+do_check() {
+  OUT="$(mktemp "${TMPDIR:-/tmp}/lab-host-login.XXXXXX")" || die "mktemp failed"
+  trap 'rm -f "$OUT"' EXIT
+  say "lab-host-login --check on $(hostname -s 2>/dev/null || hostname) ($(uname -s))"
+  if [ "$SKIP_CLAUDE" -eq 1 ]; then say "SKIP claude: --skip-claude"; else check_claude; fi
+  if [ "$SKIP_GH" -eq 1 ]; then say "SKIP gh: --skip-gh"; else check_gh; fi
+  check_git
+  if [ "$FAILS" -eq 0 ]; then say "RESULT PASS: this host can run landing workers over ssh"; return 0; fi
+  say "RESULT FAIL: $FAILS check(s) failed"
+  return 1
+}
+
+# gh reads GH_TOKEN, then GITHUB_TOKEN, before its own hosts.yml, so a token variable in the environment
+# makes `gh auth login` refuse and the stored login is never used (OMN-20110). Names the variables that
+# are set and every startup file that defines one (file:line, value masked), then stops before any
+# login step has run. `--check` does not need this: it probes in an `env -i` shell.
+TOKEN_VARS="GITHUB_TOKEN GH_TOKEN GITHUB_ENTERPRISE_TOKEN GH_ENTERPRISE_TOKEN"
+TOKEN_VAR_RE="GITHUB_TOKEN|GH_TOKEN|GITHUB_ENTERPRISE_TOKEN|GH_ENTERPRISE_TOKEN"
+STARTUP_ETC="${LAB_HOST_LOGIN_ETC:-/etc}"
+
+startup_files() {
+  local f
+  for f in .zshenv .zprofile .zshrc .zlogin .bash_profile .bash_login .bashrc .profile env-dir/env-file; do
+    printf '%s\n' "$HOME/$f"
+  done
+  for f in zshenv zprofile zshrc profile bash.bashrc bashrc environment; do
+    printf '%s\n' "$STARTUP_ETC/$f"
+  done
+  for f in "$STARTUP_ETC"/profile.d/*.sh; do
+    [ -f "$f" ] && printf '%s\n' "$f"
+  done
+}
+
+# Print "  <file>:<line>: [export ]NAME=<redacted>" for each definition; the value is never shown.
+token_definitions() {
+  local f
+  startup_files | while IFS= read -r f; do
+    [ -f "$f" ] && [ -r "$f" ] || continue
+    grep -nE "^[[:space:]]*(export[[:space:]]+)?($TOKEN_VAR_RE)[[:space:]]*=" "$f" 2> /dev/null \
+      | sed -E 's/^([0-9]+):[[:space:]]*(export[[:space:]]+)?([A-Z_]+)[[:space:]]*=.*/\1: \2\3=<redacted>/' \
+      | while IFS= read -r l; do printf '  %s:%s\n' "$f" "$l"; done
+  done
+}
+
+refuse_token_env() {
+  local v set_vars="" defs
+  for v in $TOKEN_VARS; do
+    [ -n "${!v:-}" ] && set_vars="$set_vars $v"
+  done
+  [ -n "$set_vars" ] || return 0
+  defs="$(token_definitions)"
+  {
+    for v in $set_vars; do printf 'lab-host-login: %s is set in this shell.\n' "$v"; done
+    printf 'gh uses it instead of its stored login, so `gh auth login` refuses and the login cannot finish.\n'
+    printf 'Nothing was changed. No login step ran.\n'
+    if [ -n "$defs" ]; then
+      printf 'Defined in (value not shown):\n%s\n' "$defs"
+    else
+      printf 'Where: no startup file under %s or %s defines it: it was exported in this terminal or inherited from the process that started it.\n' "$HOME" "$STARTUP_ETC"
+    fi
+    printf 'Fix: run `unset GITHUB_TOKEN GH_TOKEN` in this shell and rerun lab-host-login.\n'
+    [ -z "$defs" ] || printf 'To keep it from coming back, remove each definition listed above.\n'
+    case "$defs" in
+      *"/env-dir/env-file:"*)
+        printf 'Exception: ~/env-dir/env-file is read by deploy-runtime.sh and the deploy agent, which need GITHUB_TOKEN. Keep that line\n'
+        printf 'and instead add `unset GITHUB_TOKEN GH_TOKEN` to your shell rc right after the line that sources the file.\n' ;;
+    esac
+  } >&2
+  exit 2
+}
+
+# The real device node of the controlling terminal (/dev/ttysNNN, /dev/pts/N), not the /dev/tty alias.
+# A child whose stdin is redirected from /dev/tty gets the alias node, which macOS kqueue refuses
+# (EINVAL); Bun registers stdin with kqueue, so `claude setup-token` died on it before printing
+# anything. `tty` cannot name the device from an fd opened through the alias (it answers /dev/tty), so
+# ask this shell's own stdin first, then ps for the shell's controlling terminal. Falls back to
+# /dev/tty when neither names a device.
+real_tty() {
+  local dev
+  dev=""
+  if [ -t 0 ]; then dev="$(tty 2> /dev/null)" || dev=""; fi
+  if [ -z "$dev" ] || [ "$dev" = /dev/tty ]; then
+    dev="$(ps -o tty= -p $$ 2> /dev/null | tr -d ' ')"
+    case "$dev" in
+      '' | '?' | '??' | /dev/*) ;;
+      *) dev="/dev/$dev" ;;
+    esac
+  fi
+  case "$dev" in
+    /dev/tty | '' | '?' | '??') printf '/dev/tty\n' ;;
+    /dev/*) printf '%s\n' "$dev" ;;
+    *) printf '/dev/tty\n' ;;
+  esac
+}
+
+setup_claude() {
+  local tok tty_dev
+  if [ "$RENEW" -eq 0 ] && [ -r "$TOKEN_FILE" ] && [ "$(wc -c < "$TOKEN_FILE" | tr -d ' ')" -ge 40 ]; then
+    say "claude: token file $TOKEN_FILE already exists; keeping it (--renew replaces it)"
+    return 0
+  fi
+  command -v claude > /dev/null 2>&1 || PATH="$PROBE_PATH" command -v claude > /dev/null 2>&1 \
+    || die "the claude CLI is not installed; install it, then rerun"
+  say "claude: running 'claude setup-token'. Complete the browser login it opens."
+  say "        When it prints the token, copy it; you paste it at the next prompt (nothing is echoed)."
+  tty_dev="$(real_tty)"
+  PATH="$PROBE_PATH:$PATH" claude setup-token < "$tty_dev" || say "claude: setup-token exited non-zero; you can still paste a token below"
+  printf 'Paste the token (input hidden), then Enter: ' > /dev/tty
+  IFS= read -rs tok < /dev/tty
+  printf '\n' > /dev/tty
+  valid_token "$tok" || die "that is not a Claude token (expected sk-ant-..., no spaces); nothing was written"
+  write_token_file "$tok" || die "could not write $TOKEN_FILE"
+  tok=""
+  say "claude: wrote $TOKEN_FILE (mode $(stat -c %a "$TOKEN_FILE" 2>/dev/null || stat -f %Lp "$TOKEN_FILE"))"
+}
+
+setup_gh() {
+  if ! PATH="$PROBE_PATH:$PATH" command -v gh > /dev/null 2>&1; then
+    die "gh is not installed; brew install gh (macOS) or apt install gh (Linux), then rerun"
+  fi
+  if [ "$RENEW" -eq 0 ] && PATH="$PROBE_PATH:$PATH" gh auth status 2> /dev/null | grep -q 'hosts.yml'; then
+    say "gh: already logged in with a file-stored token; keeping it (--renew replaces it)"
+  else
+    say "gh: logging in with a file-stored token (not the keychain)"
+    PATH="$PROBE_PATH:$PATH" gh auth login --hostname github.com --git-protocol https --insecure-storage --web < /dev/tty \
+      || die "gh auth login failed"
+  fi
+  PATH="$PROBE_PATH:$PATH" gh auth setup-git || die "gh auth setup-git failed"
+}
+
+main() {
+  local mode=setup
+  RENEW=0
+  SKIP_CLAUDE=0
+  SKIP_GH=0
+  while [ $# -gt 0 ]; do
+    case "$1" in
+      --check) mode=check ;;
+      --renew) RENEW=1 ;;
+      --skip-claude) SKIP_CLAUDE=1 ;;
+      --skip-gh) SKIP_GH=1 ;;
+      -h | --help) usage; exit 0 ;;
+      *) usage >&2; die "unknown argument: $1" ;;
+    esac
+    shift
+  done
+  if [ "$mode" = check ]; then
+    do_check
+    exit $?
+  fi
+  [ "$SKIP_GH" -eq 1 ] || refuse_token_env
+  ( : < /dev/tty ) 2> /dev/null || die "setup needs a terminal (use ssh -t), or run --check for the verification only"
+  [ "$SKIP_CLAUDE" -eq 1 ] || setup_claude
+  [ "$SKIP_GH" -eq 1 ] || setup_gh
+  say "verifying in a fresh non-login shell:"
+  do_check
+  exit $?
+}
+
+if [ -z "${LAB_HOST_LOGIN_SOURCE_ONLY:-}" ]; then
+  main "$@"
+fi

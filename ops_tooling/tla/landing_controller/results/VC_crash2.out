@@ -1,0 +1,32 @@
+TLC2 Version 2.19 of 08 August 2024 (rev: 5a47802)
+Running breadth-first search Model-Checking with fp 47 and seed 1230815680077667757 with 8 workers on 32 cores with 7282MB heap and 64MB offheap memory [pid: 1] (Linux 7.0.0-34-generic amd64, Eclipse Adoptium 17.0.20.1 x86_64, MSBDiskFPSet, DiskStateQueue).
+Parsing file /work/LandingController.tla
+Parsing file /tmp/Naturals.tla
+Parsing file /tmp/FiniteSets.tla
+Parsing file /tmp/TLC.tla
+Parsing file /tmp/Sequences.tla
+Semantic processing of module Naturals
+Semantic processing of module Sequences
+Semantic processing of module FiniteSets
+Semantic processing of module TLC
+Semantic processing of module LandingController
+Starting... (2026-10-10 07:11:01)
+Warning: The set Workers has been defined to be a symmetry set but contains less than two elements.
+(Use the -nowarning option to disable this warning.)
+Computing initial states...
+Finished computing initial states: 1 distinct state generated at 2026-10-10 07:11:02.
+Progress(15) at 2026-10-10 07:11:05: 111,212 states generated (111,212 s/min), 32,530 distinct states found (32,530 ds/min), 16,076 states left on queue.
+Progress(22) at 2026-10-10 07:12:05: 16,281,001 states generated (16,169,789 s/min), 2,984,877 distinct states found (2,952,347 ds/min), 1,033,232 states left on queue.
+Progress(24) at 2026-10-10 07:13:05: 32,180,870 states generated (15,899,869 s/min), 5,463,343 distinct states found (2,478,466 ds/min), 1,439,934 states left on queue.
+Progress(26) at 2026-10-10 07:14:05: 47,377,882 states generated (15,197,012 s/min), 7,577,804 distinct states found (2,114,461 ds/min), 1,481,775 states left on queue.
+Progress(27) at 2026-10-10 07:15:05: 62,218,084 states generated (14,840,202 s/min), 9,484,442 distinct states found (1,906,638 ds/min), 1,148,411 states left on queue.
+Model checking completed. No error has been found.
+  Estimates of the probability that TLC did not check all reachable states
+  because two distinct states had the same fingerprint:
+  calculated (optimistic):  val = 4.2E-5
+  based on the actual fingerprints:  val = 2.0E-5
+79110081 states generated, 11359021 distinct states found, 0 states left on queue.
+The depth of the complete state graph search is 34.
+The average outdegree of the complete state graph is 1 (minimum is 0, the maximum 10 and the 95th percentile is 3).
+Finished in 05min 03s at (2026-10-10 07:16:04)
+rc=0

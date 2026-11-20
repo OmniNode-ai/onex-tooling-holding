@@ -1,0 +1,80 @@
+# Host overlay for the worktree-reconcile node (omnimarket node_worktree_reconcile_effect).
+#
+# Deployment facts live here, in the private overlay, never in the public node: which
+# directories each host keeps worktrees and lane clones in, which remote owners a
+# standalone clone must belong to before it may ever be removed, and which paths are
+# never touched. The per-host timer passes --host explicitly; nothing is guessed from
+# the hostname.
+#
+# ${VAR} is expanded from the environment at run time. A variable that is not set is a
+# refusal (exit 78), never an empty string: an unexpanded root would scan the wrong tree.
+#
+# enabled: false is the revoke switch for one host. The run still classifies and writes
+# its report, and removes nothing.
+
+hosts:
+  operator-mac:
+    enabled: true
+    execute: true
+    roots:
+      - "${registry_root}/omni_worktrees"
+      - "${OPS_TOOLING_PKG_HOME}/omni_worktrees"
+    # The Mac keeps no lane clones outside the registry roots.
+    extra_clone_roots: []
+    exclude_paths: []
+    allowed_remote_owners:
+      - OmniNode-ai
+    policy:
+      quiet_hours: 6.0
+      stale_hours: 72.0
+      max_removals_per_run: 200
+
+  lab-host-a:
+    enabled: true
+    execute: true
+    roots:
+      - "${registry_root}/omni_worktrees"
+    # Lanes on the lab host clone repositories straight into the home directory
+    # (drain, ci-speed, push-lane and pre-push scratch dirs). Those are standalone
+    # clones, not worktrees, and no registry pass ever looked at them.
+    extra_clone_roots:
+      - "${HOME}"
+    # The canonical clones, the runtime workspace and the registry itself are never
+    # candidates, whatever they contain.
+    exclude_paths:
+      - "${HOME}/Code"
+      - "${HOME}/.omninode"
+      - "${registry_root}"
+    # A standalone clone whose origin is not one of these owners (a driver source
+    # tree, a third-party tool) is always kept.
+    allowed_remote_owners:
+      - OmniNode-ai
+    policy:
+      quiet_hours: 6.0
+      stale_hours: 72.0
+      max_removals_per_run: 100
+
+  lab-host-h:
+    enabled: true
+    # The pass classifies every tree and writes its report, and removes nothing.
+    # Flip to true by the operator once the first reports are read, because lane
+    # worktrees live on this host.
+    execute: false
+    roots:
+      - "${registry_root}/omni_worktrees"
+    # The home directory of this host holds the live lane worktrees under
+    # lab-run/runs, which a pass must never see.
+    extra_clone_roots: []
+    # The live lane worktrees and the registry itself are never candidates,
+    # whatever they contain.
+    exclude_paths:
+      - "${HOME}/lab-run"
+      - "${registry_root}"
+    # A standalone clone whose origin is not one of these owners (a driver source
+    # tree, a third-party tool) is always kept.
+    allowed_remote_owners:
+      - OmniNode-ai
+    policy:
+      quiet_hours: 6.0
+      stale_hours: 72.0
+      max_removals_per_run: 100

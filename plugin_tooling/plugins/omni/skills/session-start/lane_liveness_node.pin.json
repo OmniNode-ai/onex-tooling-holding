@@ -1,0 +1,14 @@
+{
+  "commit": "f13713368f27fb420b3fdec5481ab1acc88e7362",
+  "node": "src/omnimarket/nodes/node_lane_liveness_compute",
+  "package_files": [
+    "src/omnimarket/__init__.py",
+    "src/omnimarket/nodes/__init__.py",
+    "src/omnimarket/models/__init__.py",
+    "src/omnimarket/models/liveness/__init__.py",
+    "src/omnimarket/models/liveness/model_lane_liveness.py"
+  ],
+  "repo": "OmniNode-ai/omnimarket",
+  "ticket": "OMN-20603",
+  "what": "The lane liveness decision node (node_lane_liveness_compute) the lane liveness read's tests run in process through tests/onex_node_double.py. The read itself calls the deployed node through onex node; CI fetches exactly these paths at this commit."
+}

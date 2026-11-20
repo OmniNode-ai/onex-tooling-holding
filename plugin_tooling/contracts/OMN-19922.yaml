@@ -1,0 +1,29 @@
+# synthetic placeholder fixture, no real data
+schema_version: 1.0.0
+ticket_id: OMN-19922
+title: Synthetic moved-contract placeholder
+summary: Synthetic placeholder contract.
+is_seam_ticket: false
+interface_change: false
+interfaces_touched: []
+requirements:
+- id: R1
+  statement: Synthetic requirement for a placeholder contract.
+  acceptance:
+  - id: AC1
+    statement: A synthetic criterion that stands in for the moved contract.
+evidence_requirements:
+- kind: ci
+  description: Synthetic evidence entry.
+  command: 'true'
+emergency_bypass:
+  enabled: false
+  justification: ''
+  follow_up_ticket_id: ''
+dod_evidence:
+- id: dod-omn19922-ac1
+  description: Synthetic evidence entry.
+  source: generated
+  checks:
+  - check_type: command
+    check_value: 'true'

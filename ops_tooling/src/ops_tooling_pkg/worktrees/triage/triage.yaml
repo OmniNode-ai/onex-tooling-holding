@@ -1,0 +1,186 @@
+# Policy and authority for the automatic worktree triage (onex-worktree-triage, OMN-17427).
+#
+# Read on every run; nothing here is cached. Triage keeps no copies (OMN-21817, operator ruling
+# 2026-10-31: "If it has [merged], just remove it. If there's uncompleted work, then it should
+# probably just be redone."). A tree is removed, or it is left alone because a live lane is using
+# it. Nothing is archived, pinned, bundled or retained under a ref.
+#
+# This file is also the revoke switch for the removal class: set removal.enabled to false (or
+# delete the authority stamp) and the next run still removes the SAFE class, removes nothing
+# else, and pages that removal was withheld.
+#
+# Two classes, two authorities:
+#
+# * SAFE class: the classifier's prune-eligible rows, removed by omniclaude
+#   scripts/worktree_auto_prune.py --execute under the SAME consent row the morning prune
+#   cites (handlers/worktree_prune/unattended.yaml, re-resolved each run, never copied here).
+# * REMOVAL class: every other tree no live lane is using (rubric.py), removed with
+#   git worktree remove --force. The authority row is named by stamp and lane (a line number stops
+#   resolving at the next ledger roll) and must resolve to a RULING or an operator-consent row
+#   from the operator.
+
+removal:
+  enabled: true
+  authority_stamp: "2026-10-31T20:03:26Z"
+  authority_lane: "orchestrator-31d9"
+
+# Local branches already merged into origin/dev or origin/main, deleted from the canonical
+# clones. The canonical-clone reference-transaction hook (OMN-18370) refuses a branch
+# deletion unless a cited OPERATOR-CONSENT row and the exact refs agree, so the run names
+# every ref in a STATUS row before deleting. Clearing the stamp (or enabled: false) revokes
+# it without touching the worktree classes above.
+branch_delete:
+  enabled: true
+  authority_stamp: "2026-09-30T08:00:03Z"
+  authority_lane: "orchestrator-0c2f"
+
+policy:
+  # Activity newer than this keeps a tree: a lane between creating it and writing its CLAIM.
+  # It is the only age bar. Every other keep is a live lane: a process with its working
+  # directory inside the tree, an open CLAIM naming the tree or its ticket, or the hand-held list.
+  quiet_hours: 1
+  # An open CLAIM naming the worktree (its path or its worktree= value; a ticket id is not a
+  # name) keeps it inside this window.
+  path_claim_hours: 72
+  # An open CLAIM on the worktree's ticket keeps it inside this window.
+  ticket_claim_hours: 24
+
+# Directories of installed unit definitions (OMN-22657). A tree whose path an installed launchd
+# plist or systemd unit names is kept, at classification and again just before removal: the unit
+# runs from it. A directory that does not exist on this host is skipped; one that cannot be read,
+# or a definition that cannot be parsed, keeps every tree and says so. No entry here keeps every tree.
+unit_roots:
+  dirs:
+    - ~/Library/LaunchAgents
+    - ~/.config/systemd/user
+    - /etc/systemd/system
+
+limits:
+  max_removals_per_run: 300
+  max_branch_deletions_per_run: 1500
+  removal_workers: 4
+  facts_workers: 6
+
+alarm:
+  # Free space on the registry's volume under this percentage makes the next timer tick run
+  # the cleanup at once; still under it after the cleanup, the run pages.
+  disk_free_pct: 15
+  # Under pressure, a run is not repeated sooner than this after the last one finished.
+  pressure_retry_minutes: 60
+  # The Mac relays a lab host's latest run to the ledger; a run older than this pages.
+  relay_stale_hours: 7
+
+# Where a host reads the PR watcher's open pull requests, first fresh answer wins (OMN-21817).
+# ONEX_PR_WATCHER_STATE is tried before these. The Mac runs the watcher itself; a lab host has no
+# state at the registry path and reads the state its read-only watcher keeps (a tick every 300 s;
+# a state older than 15 minutes is not read). With no answer a tree the classifier could not
+# resolve is "unknown", never open, and is kept for as long as an open pull request would keep it.
+pr_state:
+  sources:
+    - $registry_root/.claude_scratch/pr-watcher/state.json
+    - ~/.local/state/onex/pr-watcher-readonly/state.json
+
+# Docker hygiene (node_lab_disk_hygiene_effect) on every host below with docker: true, first in
+# each run. Lane-safe: a container of a lane the omnibase_infra lane census declares, or of any
+# compose project with a running container, is never removed; named volumes are never pruned.
+# A host's stale_tmp directories are swept in the same pass: entries this user owns that nothing
+# changed for tmp_stale_hours and no process holds (2026-10-07: /tmp on .202 held 201GB).
+docker_hygiene:
+  # Skip the Docker steps while any per-project lane lock (the deploy agent's flock, one file per
+  # compose project under ~/env-dir/env-item) is held: a prune racing a deploy's image
+  # build blocked two dev deploys on 2026-10-31 (OMN-21817). The temp sweep still runs. Disk
+  # pressure (free space under alarm.disk_free_pct) overrides the skip.
+  skip_while_lane_locked: true
+  build_cache_max_gb: 10
+  image_unused_hours: 48
+  exited_container_hours: 24
+  prune_anonymous_volumes: true
+  tmp_stale_hours: 48
+
+# alarm_via_relay: the host has no alarm channel of its own; a host that relays it delivers its
+# pages. A host that sets it must be named in some host's relay map.
+# aliases: the machine's short hostname (any case). The installers resolve --host auto through
+# them, and the ops_tooling_pkg clone sync installs the schedule on a host they name.
+hosts:
+  operator-mac:
+    aliases: [host-59-example-studio]
+    ledger: true
+    # No Docker engine here: the operator removed Docker from this Mac on 2026-11-06 (OMN-22478), so the
+    # Docker pass has nothing to prune and is off. (It ran against Docker Desktop's engine for the Mac's own
+    # lane-n lane and scratch containers; OMN-20887.) No stale_tmp: the sweep needs /proc to prove a path
+    # unheld, and macOS has none.
+    docker: false
+    relay:
+      lab-host-a:
+        target: 192.0.2.127
+        # Relative to the remote login's home directory.
+        latest: Code/registry_root/.onex_state/worktree-triage/latest-lab-host-a.json
+      lab-host-h:
+        target: 192.0.2.128
+        latest: /data/omninode/registry_root/.onex_state/worktree-triage/latest-lab-host-h.json
+      lab-host-c:
+        target: 192.0.2.120
+        # Registry on the data volume, independent of the remote login's home path.
+        latest: <volume>/Code/registry_root/.onex_state/worktree-triage/latest-lab-host-c.json
+      lab-host-b:
+        target: lab-host-b
+        latest: Code/registry_root/.onex_state/worktree-triage/latest-lab-host-b.json
+      lab-host-j:
+        # Reached over the tailnet by the lab-work account, as the lab_hosts overlay names it.
+        target: person@example.com
+        latest: Code/registry_root/.onex_state/worktree-triage/latest-lab-host-j.json
+  # plugin_snapshots / uv_cache (OMN-17427, node_lab_disk_growth_effect). Plugin snapshot trees under
+  # ~/lab-run/plugins keep the newest keep_newest per plugin and any tree a live process names.
+  # uv_cache puts uv's cache on the registry volume, where the worktrees live, so a lane venv
+  # hardlinks instead of copying: measured on lab-host-a, 50 MB per extra omnimarket venv against
+  # 5.89 GB. The Mac has no /proc to prove a snapshot unused, so it declares neither; lab-host-c is
+  # not measured yet.
+  lab-host-a:
+    # The lab host's ledger copy is not the rolling ledger; its runs reach the ledger
+    # through the Mac's relay.
+    ledger: false
+    relay: {}
+    aliases: [host-49-example]
+    docker: true
+    stale_tmp: [/tmp, ~/.cache/onex/dod-verify-venvs]
+    plugin_snapshots: {dir: ~/lab-run/plugins, keep_newest: 3}
+    uv_cache: {dir: .onex_state/uv-cache}
+  lab-host-h:
+    ledger: false
+    relay: {}
+    aliases: [host-54-example]
+    # No Slack credential on this host (OMN-20887: 55 "ALARM NOT DELIVERED" failures from
+    # 2026-10-07, and the unit exited non-zero on every page). Its pages travel in its report
+    # and the Mac's relay delivers them, once per run.
+    alarm_via_relay: true
+    docker: true
+    # dod-verify keeps one ~500MB venv per lock hash and never evicts (19GB on 2026-10-07).
+    stale_tmp: [/tmp, ~/.cache/onex/dod-verify-venvs]
+    plugin_snapshots: {dir: ~/lab-run/plugins, keep_newest: 3}
+    uv_cache: {dir: .onex_state/uv-cache}
+  lab-host-c:
+    ledger: false
+    relay: {}
+    aliases: [host-59-example]
+    # No Docker engine here: the operator removed Docker from this Mac on 2026-11-06 (OMN-22478), so the
+    # Docker pass is off.
+    docker: false
+  # h904 (lab-host-b) had no host key, so its installer refused and it ran no triage (OMN-21888).
+  # No docker engine and no alarm channel of its own.
+  lab-host-b:
+    ledger: false
+    relay: {}
+    aliases: [lab-host-b]
+    alarm_via_relay: true
+    docker: false
+  # host.example joined the lab 2026-10-18 with no host key here, so its installer refused and lane run
+  # trees piled up with no triage (OMN-17427). No docker engine and no alarm channel of its own.
+  lab-host-j:
+    ledger: false
+    relay: {}
+    aliases: [riverraftlabs-0000-nuc13anhh7]
+    alarm_via_relay: true
+    docker: false
+    stale_tmp: [/tmp, ~/.cache/onex/dod-verify-venvs]
+    plugin_snapshots: {dir: ~/lab-run/plugins, keep_newest: 3}
+    uv_cache: {dir: .onex_state/uv-cache}

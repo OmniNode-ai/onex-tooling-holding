@@ -1,0 +1,587 @@
+TLC2 Version 2.19 of 08 August 2024 (rev: 5a47802)
+Running breadth-first search Model-Checking with fp 64 and seed 8950896329530386466 with 4 workers on 32 cores with 3641MB heap and 64MB offheap memory [pid: 1] (Linux 7.0.0-34-generic amd64, Eclipse Adoptium 17.0.20.1 x86_64, MSBDiskFPSet, DiskStateQueue).
+Parsing file /work/LandingController.tla
+Parsing file /tmp/Naturals.tla
+Parsing file /tmp/FiniteSets.tla
+Parsing file /tmp/TLC.tla
+Parsing file /tmp/Sequences.tla
+Semantic processing of module Naturals
+Semantic processing of module Sequences
+Semantic processing of module FiniteSets
+Semantic processing of module TLC
+Semantic processing of module LandingController
+Starting... (2026-10-10 05:47:14)
+Computing initial states...
+Finished computing initial states: 1 distinct state generated at 2026-10-10 05:47:15.
+Error: Invariant PB2 is violated.
+Error: The behavior up to this point is:
+State 1: <Initial predicate>
+/\ bev = {}
+/\ spawnq = {}
+/\ escmem = {}
+/\ rec = {}
+/\ wfile = (w1 :> [k |-> "none", h |-> 0])
+/\ head = (p1 :> 1 @@ p2 :> 1 @@ p3 :> 1)
+/\ babs = (c1 :> {})
+/\ fhold = {}
+/\ susp = (p1 :> FALSE @@ p2 :> FALSE @@ p3 :> FALSE)
+/\ brun = {}
+/\ wconf = (w1 :> FALSE)
+/\ resultRecorded = (w1 :> FALSE)
+/\ ci = (p1 :> "red" @@ p2 :> "red" @@ p3 :> "red")
+/\ unc = {}
+/\ tlate = FALSE
+/\ pclaim = {}
+/\ cdisp = (c1 :> 0)
+/\ blk = (p1 :> 0 @@ p2 :> 0 @@ p3 :> 0)
+/\ merged = (p1 :> FALSE @@ p2 :> FALSE @@ p3 :> FALSE)
+/\ cpark = (c1 :> FALSE)
+/\ esc = (p1 :> 0 @@ p2 :> 0 @@ p3 :> 0)
+/\ crev = (c1 :> 0)
+/\ observe = FALSE
+/\ cclaim = {}
+/\ procAlive = (w1 :> {})
+/\ comps = {}
+/\ pfail = {}
+/\ bown = (p1 :> 0 @@ p2 :> 0 @@ p3 :> 0 @@ c1 :> 0)
+/\ cform = (c1 :> FALSE)
+/\ cfix = (c1 :> "none")
+/\ nout = << >>
+/\ cesc = (c1 :> FALSE)
+/\ nd = 0
+/\ awaitH = (p1 :> 0 @@ p2 :> 0 @@ p3 :> 0)
+/\ nst = ( <<p1, 0>> :> 0 @@
+  <<p1, 1>> :> 0 @@
+  <<p2, 0>> :> 0 @@
+  <<p2, 1>> :> 0 @@
+  <<p3, 0>> :> 0 @@
+  <<p3, 1>> :> 0 @@
+  <<c1, 0>> :> 0 @@
+  <<c1, 1>> :> 0 )
+/\ catt = (c1 :> 0)
+/\ cns = (c1 :> {})
+/\ bud = [ blk |-> 0,
+  pfail |-> 0,
+  cclaim |-> 0,
+  push |-> 0,
+  foreign |-> 0,
+  mpush |-> 0,
+  close |-> 0,
+  elig |-> 0,
+  crash |-> 0,
+  drain |-> 0,
+  hold |-> 0,
+  claim |-> 0,
+  park |-> 0,
+  brestart |-> 0 ]
+/\ token = Nil
+/\ lease = (p1 :> Nil @@ p2 :> Nil @@ p3 :> Nil @@ c1 :> Nil)
+/\ mem = {}
+/\ pinbox = {}
+/\ hist = {}
+/\ csf = (c1 :> 0)
+/\ nesc = (c1 :> 0)
+/\ revoked = {}
+/\ bad = [ p4 |-> FALSE,
+  p5 |-> FALSE,
+  p6 |-> FALSE,
+  p7 |-> FALSE,
+  p8 |-> FALSE,
+  unauth |-> FALSE,
+  legit |-> FALSE,
+  pin |-> FALSE,
+  p10 |-> FALSE,
+  p12 |-> FALSE,
+  dual |-> FALSE,
+  absorb |-> FALSE ]
+/\ draining = FALSE
+/\ open = (p1 :> TRUE @@ p2 :> TRUE @@ p3 :> TRUE)
+/\ bdec = {}
+/\ wh = (w1 :> 0)
+/\ wl = (w1 :> 0)
+/\ wp = (w1 :> Nil)
+/\ lastp = ( p1 :> [lid |-> 0, mode |-> "ff"] @@
+  p2 :> [lid |-> 0, mode |-> "ff"] @@
+  p3 :> [lid |-> 0, mode |-> "ff"] )
+/\ out = ( p1 :> [k |-> "none", fp |-> 0, why |-> ""] @@
+  p2 :> [k |-> "none", fp |-> 0, why |-> ""] @@
+  p3 :> [k |-> "none", fp |-> 0, why |-> ""] )
+/\ ereq = {}
+
+State 2: <BusEmit line 940, col 3 to line 943, col 46 of module LandingController>
+/\ bev = {<<p3, 1>>}
+/\ spawnq = {}
+/\ escmem = {}
+/\ rec = {}
+/\ wfile = (w1 :> [k |-> "none", h |-> 0])
+/\ head = (p1 :> 1 @@ p2 :> 1 @@ p3 :> 1)
+/\ babs = (c1 :> {})
+/\ fhold = {}
+/\ susp = (p1 :> FALSE @@ p2 :> FALSE @@ p3 :> FALSE)
+/\ brun = {}
+/\ wconf = (w1 :> FALSE)
+/\ resultRecorded = (w1 :> FALSE)
+/\ ci = (p1 :> "red" @@ p2 :> "red" @@ p3 :> "red")
+/\ unc = {}
+/\ tlate = FALSE
+/\ pclaim = {}
+/\ cdisp = (c1 :> 0)
+/\ blk = (p1 :> 0 @@ p2 :> 0 @@ p3 :> 0)
+/\ merged = (p1 :> FALSE @@ p2 :> FALSE @@ p3 :> FALSE)
+/\ cpark = (c1 :> FALSE)
+/\ esc = (p1 :> 0 @@ p2 :> 0 @@ p3 :> 0)
+/\ crev = (c1 :> 0)
+/\ observe = FALSE
+/\ cclaim = {}
+/\ procAlive = (w1 :> {})
+/\ comps = {}
+/\ pfail = {}
+/\ bown = (p1 :> 0 @@ p2 :> 0 @@ p3 :> 0 @@ c1 :> 0)
+/\ cform = (c1 :> FALSE)
+/\ cfix = (c1 :> "none")
+/\ nout = << >>
+/\ cesc = (c1 :> FALSE)
+/\ nd = 0
+/\ awaitH = (p1 :> 0 @@ p2 :> 0 @@ p3 :> 0)
+/\ nst = ( <<p1, 0>> :> 0 @@
+  <<p1, 1>> :> 0 @@
+  <<p2, 0>> :> 0 @@
+  <<p2, 1>> :> 0 @@
+  <<p3, 0>> :> 0 @@
+  <<p3, 1>> :> 0 @@
+  <<c1, 0>> :> 0 @@
+  <<c1, 1>> :> 0 )
+/\ catt = (c1 :> 0)
+/\ cns = (c1 :> {})
+/\ bud = [ blk |-> 0,
+  pfail |-> 0,
+  cclaim |-> 0,
+  push |-> 0,
+  foreign |-> 0,
+  mpush |-> 0,
+  close |-> 0,
+  elig |-> 0,
+  crash |-> 0,
+  drain |-> 0,
+  hold |-> 0,
+  claim |-> 0,
+  park |-> 0,
+  brestart |-> 0 ]
+/\ token = Nil
+/\ lease = (p1 :> Nil @@ p2 :> Nil @@ p3 :> Nil @@ c1 :> Nil)
+/\ mem = {}
+/\ pinbox = {}
+/\ hist = {}
+/\ csf = (c1 :> 0)
+/\ nesc = (c1 :> 0)
+/\ revoked = {}
+/\ bad = [ p4 |-> FALSE,
+  p5 |-> FALSE,
+  p6 |-> FALSE,
+  p7 |-> FALSE,
+  p8 |-> FALSE,
+  unauth |-> FALSE,
+  legit |-> FALSE,
+  pin |-> FALSE,
+  p10 |-> FALSE,
+  p12 |-> FALSE,
+  dual |-> FALSE,
+  absorb |-> FALSE ]
+/\ draining = FALSE
+/\ open = (p1 :> TRUE @@ p2 :> TRUE @@ p3 :> TRUE)
+/\ bdec = {}
+/\ wh = (w1 :> 0)
+/\ wl = (w1 :> 0)
+/\ wp = (w1 :> Nil)
+/\ lastp = ( p1 :> [lid |-> 0, mode |-> "ff"] @@
+  p2 :> [lid |-> 0, mode |-> "ff"] @@
+  p3 :> [lid |-> 0, mode |-> "ff"] )
+/\ out = ( p1 :> [k |-> "none", fp |-> 0, why |-> ""] @@
+  p2 :> [k |-> "none", fp |-> 0, why |-> ""] @@
+  p3 :> [k |-> "none", fp |-> 0, why |-> ""] )
+/\ ereq = {}
+
+State 3: <BusEmit line 940, col 3 to line 943, col 46 of module LandingController>
+/\ bev = {<<p1, 1>>, <<p3, 1>>}
+/\ spawnq = {}
+/\ escmem = {}
+/\ rec = {}
+/\ wfile = (w1 :> [k |-> "none", h |-> 0])
+/\ head = (p1 :> 1 @@ p2 :> 1 @@ p3 :> 1)
+/\ babs = (c1 :> {})
+/\ fhold = {}
+/\ susp = (p1 :> FALSE @@ p2 :> FALSE @@ p3 :> FALSE)
+/\ brun = {}
+/\ wconf = (w1 :> FALSE)
+/\ resultRecorded = (w1 :> FALSE)
+/\ ci = (p1 :> "red" @@ p2 :> "red" @@ p3 :> "red")
+/\ unc = {}
+/\ tlate = FALSE
+/\ pclaim = {}
+/\ cdisp = (c1 :> 0)
+/\ blk = (p1 :> 0 @@ p2 :> 0 @@ p3 :> 0)
+/\ merged = (p1 :> FALSE @@ p2 :> FALSE @@ p3 :> FALSE)
+/\ cpark = (c1 :> FALSE)
+/\ esc = (p1 :> 0 @@ p2 :> 0 @@ p3 :> 0)
+/\ crev = (c1 :> 0)
+/\ observe = FALSE
+/\ cclaim = {}
+/\ procAlive = (w1 :> {})
+/\ comps = {}
+/\ pfail = {}
+/\ bown = (p1 :> 0 @@ p2 :> 0 @@ p3 :> 0 @@ c1 :> 0)
+/\ cform = (c1 :> FALSE)
+/\ cfix = (c1 :> "none")
+/\ nout = << >>
+/\ cesc = (c1 :> FALSE)
+/\ nd = 0
+/\ awaitH = (p1 :> 0 @@ p2 :> 0 @@ p3 :> 0)
+/\ nst = ( <<p1, 0>> :> 0 @@
+  <<p1, 1>> :> 0 @@
+  <<p2, 0>> :> 0 @@
+  <<p2, 1>> :> 0 @@
+  <<p3, 0>> :> 0 @@
+  <<p3, 1>> :> 0 @@
+  <<c1, 0>> :> 0 @@
+  <<c1, 1>> :> 0 )
+/\ catt = (c1 :> 0)
+/\ cns = (c1 :> {})
+/\ bud = [ blk |-> 0,
+  pfail |-> 0,
+  cclaim |-> 0,
+  push |-> 0,
+  foreign |-> 0,
+  mpush |-> 0,
+  close |-> 0,
+  elig |-> 0,
+  crash |-> 0,
+  drain |-> 0,
+  hold |-> 0,
+  claim |-> 0,
+  park |-> 0,
+  brestart |-> 0 ]
+/\ token = Nil
+/\ lease = (p1 :> Nil @@ p2 :> Nil @@ p3 :> Nil @@ c1 :> Nil)
+/\ mem = {}
+/\ pinbox = {}
+/\ hist = {}
+/\ csf = (c1 :> 0)
+/\ nesc = (c1 :> 0)
+/\ revoked = {}
+/\ bad = [ p4 |-> FALSE,
+  p5 |-> FALSE,
+  p6 |-> FALSE,
+  p7 |-> FALSE,
+  p8 |-> FALSE,
+  unauth |-> FALSE,
+  legit |-> FALSE,
+  pin |-> FALSE,
+  p10 |-> FALSE,
+  p12 |-> FALSE,
+  dual |-> FALSE,
+  absorb |-> FALSE ]
+/\ draining = FALSE
+/\ open = (p1 :> TRUE @@ p2 :> TRUE @@ p3 :> TRUE)
+/\ bdec = {}
+/\ wh = (w1 :> 0)
+/\ wl = (w1 :> 0)
+/\ wp = (w1 :> Nil)
+/\ lastp = ( p1 :> [lid |-> 0, mode |-> "ff"] @@
+  p2 :> [lid |-> 0, mode |-> "ff"] @@
+  p3 :> [lid |-> 0, mode |-> "ff"] )
+/\ out = ( p1 :> [k |-> "none", fp |-> 0, why |-> ""] @@
+  p2 :> [k |-> "none", fp |-> 0, why |-> ""] @@
+  p3 :> [k |-> "none", fp |-> 0, why |-> ""] )
+/\ ereq = {}
+
+State 4: <BusHandle line 980, col 3 to line 984, col 50 of module LandingController>
+/\ bev = {<<p1, 1>>, <<p3, 1>>}
+/\ spawnq = {}
+/\ escmem = {}
+/\ rec = {}
+/\ wfile = (w1 :> [k |-> "none", h |-> 0])
+/\ head = (p1 :> 1 @@ p2 :> 1 @@ p3 :> 1)
+/\ babs = (c1 :> {})
+/\ fhold = {}
+/\ susp = (p1 :> FALSE @@ p2 :> FALSE @@ p3 :> FALSE)
+/\ brun = {c1}
+/\ wconf = (w1 :> FALSE)
+/\ resultRecorded = (w1 :> FALSE)
+/\ ci = (p1 :> "red" @@ p2 :> "red" @@ p3 :> "red")
+/\ unc = {}
+/\ tlate = FALSE
+/\ pclaim = {}
+/\ cdisp = (c1 :> 0)
+/\ blk = (p1 :> 0 @@ p2 :> 0 @@ p3 :> 0)
+/\ merged = (p1 :> FALSE @@ p2 :> FALSE @@ p3 :> FALSE)
+/\ cpark = (c1 :> FALSE)
+/\ esc = (p1 :> 0 @@ p2 :> 0 @@ p3 :> 0)
+/\ crev = (c1 :> 0)
+/\ observe = FALSE
+/\ cclaim = {}
+/\ procAlive = (w1 :> {})
+/\ comps = {}
+/\ pfail = {}
+/\ bown = (p1 :> 0 @@ p2 :> 0 @@ p3 :> 0 @@ c1 :> 1)
+/\ cform = (c1 :> FALSE)
+/\ cfix = (c1 :> "none")
+/\ nout = << >>
+/\ cesc = (c1 :> FALSE)
+/\ nd = 0
+/\ awaitH = (p1 :> 0 @@ p2 :> 0 @@ p3 :> 0)
+/\ nst = ( <<p1, 0>> :> 0 @@
+  <<p1, 1>> :> 0 @@
+  <<p2, 0>> :> 0 @@
+  <<p2, 1>> :> 0 @@
+  <<p3, 0>> :> 0 @@
+  <<p3, 1>> :> 0 @@
+  <<c1, 0>> :> 1 @@
+  <<c1, 1>> :> 0 )
+/\ catt = (c1 :> 0)
+/\ cns = (c1 :> {})
+/\ bud = [ blk |-> 0,
+  pfail |-> 0,
+  cclaim |-> 0,
+  push |-> 0,
+  foreign |-> 0,
+  mpush |-> 0,
+  close |-> 0,
+  elig |-> 0,
+  crash |-> 0,
+  drain |-> 0,
+  hold |-> 0,
+  claim |-> 0,
+  park |-> 0,
+  brestart |-> 0 ]
+/\ token = Nil
+/\ lease = ( p1 :> Nil @@
+  p2 :> Nil @@
+  p3 :> Nil @@
+  c1 :> [w |-> Nil, id |-> 0, dh |-> 0, lh |-> 0, heads |-> {}, dl |-> FALSE] )
+/\ mem = {}
+/\ pinbox = {}
+/\ hist = {}
+/\ csf = (c1 :> 0)
+/\ nesc = (c1 :> 0)
+/\ revoked = {}
+/\ bad = [ p4 |-> FALSE,
+  p5 |-> FALSE,
+  p6 |-> FALSE,
+  p7 |-> FALSE,
+  p8 |-> FALSE,
+  unauth |-> FALSE,
+  legit |-> FALSE,
+  pin |-> FALSE,
+  p10 |-> FALSE,
+  p12 |-> FALSE,
+  dual |-> FALSE,
+  absorb |-> FALSE ]
+/\ draining = FALSE
+/\ open = (p1 :> TRUE @@ p2 :> TRUE @@ p3 :> TRUE)
+/\ bdec = {<<p1, 1>>}
+/\ wh = (w1 :> 0)
+/\ wl = (w1 :> 0)
+/\ wp = (w1 :> Nil)
+/\ lastp = ( p1 :> [lid |-> 0, mode |-> "ff"] @@
+  p2 :> [lid |-> 0, mode |-> "ff"] @@
+  p3 :> [lid |-> 0, mode |-> "ff"] )
+/\ out = ( p1 :> [k |-> "none", fp |-> 0, why |-> ""] @@
+  p2 :> [k |-> "none", fp |-> 0, why |-> ""] @@
+  p3 :> [k |-> "none", fp |-> 0, why |-> ""] )
+/\ ereq = {}
+
+State 5: <BusRunEnd line 989, col 3 to line 993, col 57 of module LandingController>
+/\ bev = {<<p1, 1>>, <<p3, 1>>}
+/\ spawnq = {}
+/\ escmem = {}
+/\ rec = {}
+/\ wfile = (w1 :> [k |-> "none", h |-> 0])
+/\ head = (p1 :> 1 @@ p2 :> 1 @@ p3 :> 1)
+/\ babs = (c1 :> {})
+/\ fhold = {}
+/\ susp = (p1 :> FALSE @@ p2 :> FALSE @@ p3 :> FALSE)
+/\ brun = {}
+/\ wconf = (w1 :> FALSE)
+/\ resultRecorded = (w1 :> FALSE)
+/\ ci = (p1 :> "red" @@ p2 :> "red" @@ p3 :> "red")
+/\ unc = {}
+/\ tlate = FALSE
+/\ pclaim = {}
+/\ cdisp = (c1 :> 0)
+/\ blk = (p1 :> 0 @@ p2 :> 0 @@ p3 :> 0)
+/\ merged = (p1 :> FALSE @@ p2 :> FALSE @@ p3 :> FALSE)
+/\ cpark = (c1 :> FALSE)
+/\ esc = (p1 :> 0 @@ p2 :> 0 @@ p3 :> 0)
+/\ crev = (c1 :> 0)
+/\ observe = FALSE
+/\ cclaim = {}
+/\ procAlive = (w1 :> {})
+/\ comps = {}
+/\ pfail = {}
+/\ bown = (p1 :> 0 @@ p2 :> 0 @@ p3 :> 0 @@ c1 :> 1)
+/\ cform = (c1 :> FALSE)
+/\ cfix = (c1 :> "none")
+/\ nout = << >>
+/\ cesc = (c1 :> FALSE)
+/\ nd = 0
+/\ awaitH = (p1 :> 0 @@ p2 :> 0 @@ p3 :> 0)
+/\ nst = ( <<p1, 0>> :> 0 @@
+  <<p1, 1>> :> 0 @@
+  <<p2, 0>> :> 0 @@
+  <<p2, 1>> :> 0 @@
+  <<p3, 0>> :> 0 @@
+  <<p3, 1>> :> 0 @@
+  <<c1, 0>> :> 1 @@
+  <<c1, 1>> :> 0 )
+/\ catt = (c1 :> 0)
+/\ cns = (c1 :> {})
+/\ bud = [ blk |-> 0,
+  pfail |-> 0,
+  cclaim |-> 0,
+  push |-> 0,
+  foreign |-> 0,
+  mpush |-> 0,
+  close |-> 0,
+  elig |-> 0,
+  crash |-> 0,
+  drain |-> 0,
+  hold |-> 0,
+  claim |-> 0,
+  park |-> 0,
+  brestart |-> 0 ]
+/\ token = Nil
+/\ lease = (p1 :> Nil @@ p2 :> Nil @@ p3 :> Nil @@ c1 :> Nil)
+/\ mem = {}
+/\ pinbox = {}
+/\ hist = {}
+/\ csf = (c1 :> 0)
+/\ nesc = (c1 :> 0)
+/\ revoked = {}
+/\ bad = [ p4 |-> FALSE,
+  p5 |-> FALSE,
+  p6 |-> FALSE,
+  p7 |-> FALSE,
+  p8 |-> FALSE,
+  unauth |-> FALSE,
+  legit |-> FALSE,
+  pin |-> FALSE,
+  p10 |-> FALSE,
+  p12 |-> FALSE,
+  dual |-> FALSE,
+  absorb |-> FALSE ]
+/\ draining = FALSE
+/\ open = (p1 :> TRUE @@ p2 :> TRUE @@ p3 :> TRUE)
+/\ bdec = {<<p1, 1>>}
+/\ wh = (w1 :> 0)
+/\ wl = (w1 :> 0)
+/\ wp = (w1 :> Nil)
+/\ lastp = ( p1 :> [lid |-> 0, mode |-> "ff"] @@
+  p2 :> [lid |-> 0, mode |-> "ff"] @@
+  p3 :> [lid |-> 0, mode |-> "ff"] )
+/\ out = ( p1 :> [k |-> "none", fp |-> 0, why |-> ""] @@
+  p2 :> [k |-> "none", fp |-> 0, why |-> ""] @@
+  p3 :> [k |-> "none", fp |-> 0, why |-> ""] )
+/\ ereq = {}
+
+State 6: <BusHandle line 980, col 3 to line 984, col 50 of module LandingController>
+/\ bev = {<<p1, 1>>, <<p3, 1>>}
+/\ spawnq = {}
+/\ escmem = {}
+/\ rec = {}
+/\ wfile = (w1 :> [k |-> "none", h |-> 0])
+/\ head = (p1 :> 1 @@ p2 :> 1 @@ p3 :> 1)
+/\ babs = (c1 :> {})
+/\ fhold = {}
+/\ susp = (p1 :> FALSE @@ p2 :> FALSE @@ p3 :> FALSE)
+/\ brun = {p3}
+/\ wconf = (w1 :> FALSE)
+/\ resultRecorded = (w1 :> FALSE)
+/\ ci = (p1 :> "red" @@ p2 :> "red" @@ p3 :> "red")
+/\ unc = {}
+/\ tlate = FALSE
+/\ pclaim = {}
+/\ cdisp = (c1 :> 0)
+/\ blk = (p1 :> 0 @@ p2 :> 0 @@ p3 :> 0)
+/\ merged = (p1 :> FALSE @@ p2 :> FALSE @@ p3 :> FALSE)
+/\ cpark = (c1 :> FALSE)
+/\ esc = (p1 :> 0 @@ p2 :> 0 @@ p3 :> 0)
+/\ crev = (c1 :> 0)
+/\ observe = FALSE
+/\ cclaim = {}
+/\ procAlive = (w1 :> {})
+/\ comps = {}
+/\ pfail = {}
+/\ bown = (p1 :> 0 @@ p2 :> 0 @@ p3 :> 1 @@ c1 :> 1)
+/\ cform = (c1 :> FALSE)
+/\ cfix = (c1 :> "none")
+/\ nout = << >>
+/\ cesc = (c1 :> FALSE)
+/\ nd = 0
+/\ awaitH = (p1 :> 0 @@ p2 :> 0 @@ p3 :> 0)
+/\ nst = ( <<p1, 0>> :> 0 @@
+  <<p1, 1>> :> 0 @@
+  <<p2, 0>> :> 0 @@
+  <<p2, 1>> :> 0 @@
+  <<p3, 0>> :> 0 @@
+  <<p3, 1>> :> 1 @@
+  <<c1, 0>> :> 1 @@
+  <<c1, 1>> :> 0 )
+/\ catt = (c1 :> 0)
+/\ cns = (c1 :> {})
+/\ bud = [ blk |-> 0,
+  pfail |-> 0,
+  cclaim |-> 0,
+  push |-> 0,
+  foreign |-> 0,
+  mpush |-> 0,
+  close |-> 0,
+  elig |-> 0,
+  crash |-> 0,
+  drain |-> 0,
+  hold |-> 0,
+  claim |-> 0,
+  park |-> 0,
+  brestart |-> 0 ]
+/\ token = Nil
+/\ lease = ( p1 :> Nil @@
+  p2 :> Nil @@
+  p3 :>
+      [w |-> Nil, id |-> 0, dh |-> 1, lh |-> 1, heads |-> {1}, dl |-> FALSE] @@
+  c1 :> Nil )
+/\ mem = {}
+/\ pinbox = {}
+/\ hist = {}
+/\ csf = (c1 :> 0)
+/\ nesc = (c1 :> 0)
+/\ revoked = {}
+/\ bad = [ p4 |-> FALSE,
+  p5 |-> FALSE,
+  p6 |-> FALSE,
+  p7 |-> FALSE,
+  p8 |-> FALSE,
+  unauth |-> FALSE,
+  legit |-> FALSE,
+  pin |-> FALSE,
+  p10 |-> FALSE,
+  p12 |-> FALSE,
+  dual |-> FALSE,
+  absorb |-> TRUE ]
+/\ draining = FALSE
+/\ open = (p1 :> TRUE @@ p2 :> TRUE @@ p3 :> TRUE)
+/\ bdec = {<<p1, 1>>, <<p3, 1>>}
+/\ wh = (w1 :> 0)
+/\ wl = (w1 :> 0)
+/\ wp = (w1 :> Nil)
+/\ lastp = ( p1 :> [lid |-> 0, mode |-> "ff"] @@
+  p2 :> [lid |-> 0, mode |-> "ff"] @@
+  p3 :> [lid |-> 0, mode |-> "ff"] )
+/\ out = ( p1 :> [k |-> "none", fp |-> 0, why |-> ""] @@
+  p2 :> [k |-> "none", fp |-> 0, why |-> ""] @@
+  p3 :> [k |-> "none", fp |-> 0, why |-> ""] )
+/\ ereq = {}
+
+425 states generated, 160 distinct states found, 72 states left on queue.
+The depth of the complete state graph search is 6.
+The average outdegree of the complete state graph is 2 (minimum is 0, the maximum 6 and the 95th percentile is 5).
+Finished in 02s at (2026-10-10 05:47:15)
+rc=12

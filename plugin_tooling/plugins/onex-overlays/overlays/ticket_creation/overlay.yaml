@@ -1,0 +1,23 @@
+# Overlay for the ticket-creation guard (the public onex plugin's PreToolUse hook on a Linear create)
+# -- internal (OMN-17942).
+#
+# Read through the shared overlay resolver (plugins/onex/scripts/resolve_skill_overlay.py in the
+# public plugin) as the "ticket_creation" overlay, found under ONEX_SKILL_OVERLAY_ROOTS like every
+# other overlay in this plugin.
+#
+# The guard's plan-task exemption (RULING 2026-10-29T10:59:39Z: a create that cites a task of an
+# approved plan spends no lane ticket budget) confirms the citation against the plan repository's
+# local clone at origin/main. The public guard may not name that repository or say where it lives, so
+# its policy (lane_intake.plan_task_exemption.plan_repo_overlay) names this overlay and these two
+# keys, and nothing else. An absent overlay, or a key missing from it, refuses the citation naming
+# the key; there is no environment fallback and no default path.
+
+overlay_version: "1.0.0"
+ticket: OMN-17942
+
+# The environment variable naming the workspace root, the directory that holds the registry's
+# canonical clones. Same root the lane_dispatch overlay uses.
+workspace_root_env: registry_root
+
+# The knowledge-base clone, relative to the workspace root. Not a home-directory path.
+plan_repo_path: docs-repo

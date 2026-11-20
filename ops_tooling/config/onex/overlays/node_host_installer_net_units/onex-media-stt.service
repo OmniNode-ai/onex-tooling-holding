@@ -1,0 +1,36 @@
+# onex-media-stt.service: Whisper large-v3-turbo speech to text with segment timestamps on the h907 RTX 4090 (OMN-22757).
+#
+# Settings are the ones measured on the card on 2026-11-06 (lane h907-4090-media-2020). The card is pinned by PCI bus
+# order and never by index alone. Starting the unit waits for the server to answer /v1/models, so the media units start
+# one after another and each one profiles its memory against a card the others have settled on. A resident media unit
+# conflicts with onex-media-video.service: starting the video unit stops every resident one, and stopping it starts them
+# again.
+
+[Unit]
+Description=ONEX media model: Whisper large-v3-turbo speech to text with segment timestamps (RTX 4090, port 8103)
+After=network-online.target onex-media-embed.service
+Wants=network-online.target
+Conflicts=onex-media-video.service
+
+[Service]
+Type=simple
+User=<owner>
+Group=<owner>
+Environment=CUDA_DEVICE_ORDER=PCI_BUS_ID
+Environment=CUDA_VISIBLE_DEVICES=1
+Environment=CUDA_HOME=/opt/vllm-0.27/venv/lib/python3.12/site-packages/nvidia/cu13
+Environment=PATH=/opt/vllm-0.27/venv/lib/python3.12/site-packages/nvidia/cu13/bin:/opt/vllm-0.27/venv/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
+EnvironmentFile=-/etc/vllm/env
+WorkingDirectory=/opt/vllm-0.27
+ExecStart=/opt/vllm-0.27/venv/bin/python -m vllm.entrypoints.openai.api_server --host 0.0.0.0 --port 8103 \
+    --model /data/inference/hf-cache/whisper-large-v3-turbo --served-model-name whisper-large-v3-turbo --max-model-len 448 --max-num-seqs 8 --gpu-memory-utilization 0.12 \
+    --kernel-config '{"enable_flashinfer_autotune":false,"enable_jit_warmup":false,"enable_cutedsl_warmup":false}'
+ExecStartPost=/usr/bin/curl -sf --retry 120 --retry-delay 2 --retry-all-errors -o /dev/null http://127.0.0.1:8103/v1/models
+Restart=on-failure
+RestartSec=10
+LimitMEMLOCK=infinity
+LimitNOFILE=65535
+TimeoutStartSec=600
+
+[Install]
+WantedBy=multi-user.target

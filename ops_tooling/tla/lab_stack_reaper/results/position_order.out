@@ -1,0 +1,319 @@
+model_digest=17c4da3210b5638e9deedd06a48b61fa3b0e5875167b87560939a3a723e47e39
+TLC2 Version 2026.09.25.163503 (rev: 8f4bc8b)
+Running breadth-first search Model-Checking with fp 67 and seed -5205777718923030360 with 10 workers on 4 cores with 1820MB heap and 64MB offheap memory [pid: 2185687] (Linux 7.0.0-31-generic amd64, Ubuntu 21.0.12.1 64bit, MSBDiskFPSet, DiskStateQueue).
+Parsing file /scratch/lab-run/runs/rlane-omn20864-3aa7-62011d/tla/lab_stack_reaper/LabStackReaper.tla
+Parsing file /tmp/tlc-9913658718796663005/Integers.tla (jar:file:/scratch/lab-run/runs/rlane-omn20864-3aa7-62011d/tla/lab_stack_reaper/tla2tools.jar!/tla2sany/StandardModules/Integers.tla)
+Parsing file /tmp/tlc-9913658718796663005/Sequences.tla (jar:file:/scratch/lab-run/runs/rlane-omn20864-3aa7-62011d/tla/lab_stack_reaper/tla2tools.jar!/tla2sany/StandardModules/Sequences.tla)
+Parsing file /tmp/tlc-9913658718796663005/FiniteSets.tla (jar:file:/scratch/lab-run/runs/rlane-omn20864-3aa7-62011d/tla/lab_stack_reaper/tla2tools.jar!/tla2sany/StandardModules/FiniteSets.tla)
+Parsing file /tmp/tlc-9913658718796663005/TLC.tla (jar:file:/scratch/lab-run/runs/rlane-omn20864-3aa7-62011d/tla/lab_stack_reaper/tla2tools.jar!/tla2sany/StandardModules/TLC.tla)
+Parsing file /tmp/tlc-9913658718796663005/Naturals.tla (jar:file:/scratch/lab-run/runs/rlane-omn20864-3aa7-62011d/tla/lab_stack_reaper/tla2tools.jar!/tla2sany/StandardModules/Naturals.tla)
+Semantic processing of module Naturals
+Semantic processing of module Integers
+Semantic processing of module Sequences
+Semantic processing of module FiniteSets
+Semantic processing of module TLC
+Semantic processing of module LabStackReaper
+Linting of module LabStackReaper
+Starting... (2026-10-13 09:36:01)
+Warning: The set Stacks has been defined to be a symmetry set but contains less than two elements.
+(Use the -nowarning option to disable this warning.)
+Computing initial states...
+Finished computing initial states: 1 distinct state generated at 2026-10-13 09:36:01.
+Error: Invariant NeverRemoveLive is violated.
+Error: The behavior up to this point is:
+State 1: <Initial predicate>
+/\ users = (s1 :> {})
+/\ tsNext = 1
+/\ closedAt = (s1 :> -1)
+/\ laneSt = (l1 :> "idle" @@ l2 :> "idle")
+/\ attempts = (s1 :> 0)
+/\ copyLen = 0
+/\ current = NoStack
+/\ fence = (s1 :> FALSE)
+/\ now = 0
+/\ snapLease = (s1 :> {})
+/\ pc = "start"
+/\ view = 0
+/\ liveRemoved = FALSE
+/\ lastTickLen = 0
+/\ downInFlight = (s1 :> FALSE)
+/\ outbox = (l1 :> <<>> @@ l2 :> <<>>)
+/\ retried = FALSE
+/\ lockHeld = (s1 :> FALSE)
+/\ claims = (l1 :> 0 @@ l2 :> 0)
+/\ lease = (s1 :> {})
+/\ downFails = 0
+/\ claimTs = (l1 :> 0 @@ l2 :> 0)
+/\ removedLate = FALSE
+/\ removed = FALSE
+/\ todo = {}
+/\ up = (s1 :> FALSE)
+/\ alarm = (s1 :> FALSE)
+/\ ledger = <<>>
+/\ usedBy = (s1 :> {})
+
+State 2: <Claim(l1) line 231, col 5 to line 239, col 61 of module LabStackReaper>
+/\ users = (s1 :> {})
+/\ tsNext = 2
+/\ closedAt = (s1 :> -1)
+/\ laneSt = (l1 :> "live" @@ l2 :> "idle")
+/\ attempts = (s1 :> 0)
+/\ copyLen = 0
+/\ current = NoStack
+/\ fence = (s1 :> FALSE)
+/\ now = 0
+/\ snapLease = (s1 :> {})
+/\ pc = "start"
+/\ view = 0
+/\ liveRemoved = FALSE
+/\ lastTickLen = 0
+/\ downInFlight = (s1 :> FALSE)
+/\ outbox = (l1 :> <<>> @@ l2 :> <<>>)
+/\ retried = FALSE
+/\ lockHeld = (s1 :> FALSE)
+/\ claims = (l1 :> 1 @@ l2 :> 0)
+/\ lease = (s1 :> {})
+/\ downFails = 0
+/\ claimTs = (l1 :> 1 @@ l2 :> 0)
+/\ removedLate = FALSE
+/\ removed = FALSE
+/\ todo = {}
+/\ up = (s1 :> FALSE)
+/\ alarm = (s1 :> FALSE)
+/\ ledger = <<[kind |-> "CLAIM", lane |-> l1, ts |-> 1, closes |-> 0]>>
+/\ usedBy = (s1 :> {})
+
+State 3: <Terminal(l1) line 278, col 5 to line 293, col 83 of module LabStackReaper>
+/\ users = (s1 :> {})
+/\ tsNext = 3
+/\ closedAt = (s1 :> -1)
+/\ laneSt = (l1 :> "ended" @@ l2 :> "idle")
+/\ attempts = (s1 :> 0)
+/\ copyLen = 0
+/\ current = NoStack
+/\ fence = (s1 :> FALSE)
+/\ now = 0
+/\ snapLease = (s1 :> {})
+/\ pc = "start"
+/\ view = 0
+/\ liveRemoved = FALSE
+/\ lastTickLen = 0
+/\ downInFlight = (s1 :> FALSE)
+/\ outbox = ( l1 :> <<[kind |-> "TERMINAL", lane |-> l1, ts |-> 2, closes |-> 1]>> @@
+  l2 :> <<>> )
+/\ retried = FALSE
+/\ lockHeld = (s1 :> FALSE)
+/\ claims = (l1 :> 1 @@ l2 :> 0)
+/\ lease = (s1 :> {})
+/\ downFails = 0
+/\ claimTs = (l1 :> 1 @@ l2 :> 0)
+/\ removedLate = FALSE
+/\ removed = FALSE
+/\ todo = {}
+/\ up = (s1 :> FALSE)
+/\ alarm = (s1 :> FALSE)
+/\ ledger = <<[kind |-> "CLAIM", lane |-> l1, ts |-> 1, closes |-> 0]>>
+/\ usedBy = (s1 :> {})
+
+State 4: <Claim(l1) line 231, col 5 to line 239, col 61 of module LabStackReaper>
+/\ users = (s1 :> {})
+/\ tsNext = 4
+/\ closedAt = (s1 :> -1)
+/\ laneSt = (l1 :> "live" @@ l2 :> "idle")
+/\ attempts = (s1 :> 0)
+/\ copyLen = 0
+/\ current = NoStack
+/\ fence = (s1 :> FALSE)
+/\ now = 0
+/\ snapLease = (s1 :> {})
+/\ pc = "start"
+/\ view = 0
+/\ liveRemoved = FALSE
+/\ lastTickLen = 0
+/\ downInFlight = (s1 :> FALSE)
+/\ outbox = ( l1 :> <<[kind |-> "TERMINAL", lane |-> l1, ts |-> 2, closes |-> 1]>> @@
+  l2 :> <<>> )
+/\ retried = FALSE
+/\ lockHeld = (s1 :> FALSE)
+/\ claims = (l1 :> 2 @@ l2 :> 0)
+/\ lease = (s1 :> {})
+/\ downFails = 0
+/\ claimTs = (l1 :> 3 @@ l2 :> 0)
+/\ removedLate = FALSE
+/\ removed = FALSE
+/\ todo = {}
+/\ up = (s1 :> FALSE)
+/\ alarm = (s1 :> FALSE)
+/\ ledger = << [kind |-> "CLAIM", lane |-> l1, ts |-> 1, closes |-> 0],
+   [kind |-> "CLAIM", lane |-> l1, ts |-> 3, closes |-> 0] >>
+/\ usedBy = (s1 :> {})
+
+State 5: <Relay(l1) line 308, col 5 to line 315, col 63 of module LabStackReaper>
+/\ users = (s1 :> {})
+/\ tsNext = 4
+/\ closedAt = (s1 :> -1)
+/\ laneSt = (l1 :> "live" @@ l2 :> "idle")
+/\ attempts = (s1 :> 0)
+/\ copyLen = 0
+/\ current = NoStack
+/\ fence = (s1 :> FALSE)
+/\ now = 0
+/\ snapLease = (s1 :> {})
+/\ pc = "start"
+/\ view = 0
+/\ liveRemoved = FALSE
+/\ lastTickLen = 0
+/\ downInFlight = (s1 :> FALSE)
+/\ outbox = (l1 :> <<>> @@ l2 :> <<>>)
+/\ retried = FALSE
+/\ lockHeld = (s1 :> FALSE)
+/\ claims = (l1 :> 2 @@ l2 :> 0)
+/\ lease = (s1 :> {})
+/\ downFails = 0
+/\ claimTs = (l1 :> 3 @@ l2 :> 0)
+/\ removedLate = FALSE
+/\ removed = FALSE
+/\ todo = {}
+/\ up = (s1 :> FALSE)
+/\ alarm = (s1 :> FALSE)
+/\ ledger = << [kind |-> "CLAIM", lane |-> l1, ts |-> 1, closes |-> 0],
+   [kind |-> "CLAIM", lane |-> l1, ts |-> 3, closes |-> 0],
+   [kind |-> "TERMINAL", lane |-> l1, ts |-> 2, closes |-> 1] >>
+/\ usedBy = (s1 :> {})
+
+State 6: <Up(l1,s1) line 242, col 5 to line 253, col 63 of module LabStackReaper>
+/\ users = (s1 :> {l1})
+/\ tsNext = 4
+/\ closedAt = (s1 :> -1)
+/\ laneSt = (l1 :> "live" @@ l2 :> "idle")
+/\ attempts = (s1 :> 0)
+/\ copyLen = 0
+/\ current = NoStack
+/\ fence = (s1 :> FALSE)
+/\ now = 0
+/\ snapLease = (s1 :> {})
+/\ pc = "start"
+/\ view = 0
+/\ liveRemoved = FALSE
+/\ lastTickLen = 0
+/\ downInFlight = (s1 :> FALSE)
+/\ outbox = (l1 :> <<>> @@ l2 :> <<>>)
+/\ retried = FALSE
+/\ lockHeld = (s1 :> FALSE)
+/\ claims = (l1 :> 2 @@ l2 :> 0)
+/\ lease = (s1 :> {[lane |-> l1, stamp |-> 3]})
+/\ downFails = 0
+/\ claimTs = (l1 :> 3 @@ l2 :> 0)
+/\ removedLate = FALSE
+/\ removed = FALSE
+/\ todo = {}
+/\ up = (s1 :> TRUE)
+/\ alarm = (s1 :> FALSE)
+/\ ledger = << [kind |-> "CLAIM", lane |-> l1, ts |-> 1, closes |-> 0],
+   [kind |-> "CLAIM", lane |-> l1, ts |-> 3, closes |-> 0],
+   [kind |-> "TERMINAL", lane |-> l1, ts |-> 2, closes |-> 1] >>
+/\ usedBy = (s1 :> {[lane |-> l1, stamp |-> 3]})
+
+State 7: <ReadView line 321, col 5 to line 331, col 41 of module LabStackReaper>
+/\ users = (s1 :> {l1})
+/\ tsNext = 4
+/\ closedAt = (s1 :> -1)
+/\ laneSt = (l1 :> "live" @@ l2 :> "idle")
+/\ attempts = (s1 :> 0)
+/\ copyLen = 0
+/\ current = NoStack
+/\ fence = (s1 :> FALSE)
+/\ now = 0
+/\ snapLease = (s1 :> {})
+/\ pc = "scan"
+/\ view = 3
+/\ liveRemoved = FALSE
+/\ lastTickLen = 0
+/\ downInFlight = (s1 :> FALSE)
+/\ outbox = (l1 :> <<>> @@ l2 :> <<>>)
+/\ retried = FALSE
+/\ lockHeld = (s1 :> FALSE)
+/\ claims = (l1 :> 2 @@ l2 :> 0)
+/\ lease = (s1 :> {[lane |-> l1, stamp |-> 3]})
+/\ downFails = 0
+/\ claimTs = (l1 :> 3 @@ l2 :> 0)
+/\ removedLate = FALSE
+/\ removed = FALSE
+/\ todo = {s1}
+/\ up = (s1 :> TRUE)
+/\ alarm = (s1 :> FALSE)
+/\ ledger = << [kind |-> "CLAIM", lane |-> l1, ts |-> 1, closes |-> 0],
+   [kind |-> "CLAIM", lane |-> l1, ts |-> 3, closes |-> 0],
+   [kind |-> "TERMINAL", lane |-> l1, ts |-> 2, closes |-> 1] >>
+/\ usedBy = (s1 :> {[lane |-> l1, stamp |-> 3]})
+
+State 8: <Decide(s1) line 348, col 5 to line 362, col 74 of module LabStackReaper>
+/\ users = (s1 :> {l1})
+/\ tsNext = 4
+/\ closedAt = (s1 :> -1)
+/\ laneSt = (l1 :> "live" @@ l2 :> "idle")
+/\ attempts = (s1 :> 0)
+/\ copyLen = 0
+/\ current = s1
+/\ fence = (s1 :> TRUE)
+/\ now = 0
+/\ snapLease = (s1 :> {})
+/\ pc = "scan"
+/\ view = 3
+/\ liveRemoved = FALSE
+/\ lastTickLen = 0
+/\ downInFlight = (s1 :> TRUE)
+/\ outbox = (l1 :> <<>> @@ l2 :> <<>>)
+/\ retried = FALSE
+/\ lockHeld = (s1 :> TRUE)
+/\ claims = (l1 :> 2 @@ l2 :> 0)
+/\ lease = (s1 :> {[lane |-> l1, stamp |-> 3]})
+/\ downFails = 0
+/\ claimTs = (l1 :> 3 @@ l2 :> 0)
+/\ removedLate = FALSE
+/\ removed = FALSE
+/\ todo = {s1}
+/\ up = (s1 :> TRUE)
+/\ alarm = (s1 :> FALSE)
+/\ ledger = << [kind |-> "CLAIM", lane |-> l1, ts |-> 1, closes |-> 0],
+   [kind |-> "CLAIM", lane |-> l1, ts |-> 3, closes |-> 0],
+   [kind |-> "TERMINAL", lane |-> l1, ts |-> 2, closes |-> 1] >>
+/\ usedBy = (s1 :> {[lane |-> l1, stamp |-> 3]})
+
+State 9: <DownOk(s1) line 366, col 5 to line 384, col 43 of module LabStackReaper>
+/\ users = (s1 :> {l1})
+/\ tsNext = 4
+/\ closedAt = (s1 :> -1)
+/\ laneSt = (l1 :> "live" @@ l2 :> "idle")
+/\ attempts = (s1 :> 0)
+/\ copyLen = 0
+/\ current = NoStack
+/\ fence = (s1 :> FALSE)
+/\ now = 0
+/\ snapLease = (s1 :> {})
+/\ pc = "scan"
+/\ view = 3
+/\ liveRemoved = TRUE
+/\ lastTickLen = 0
+/\ downInFlight = (s1 :> FALSE)
+/\ outbox = (l1 :> <<>> @@ l2 :> <<>>)
+/\ retried = FALSE
+/\ lockHeld = (s1 :> FALSE)
+/\ claims = (l1 :> 2 @@ l2 :> 0)
+/\ lease = (s1 :> {})
+/\ downFails = 0
+/\ claimTs = (l1 :> 3 @@ l2 :> 0)
+/\ removedLate = FALSE
+/\ removed = TRUE
+/\ todo = {}
+/\ up = (s1 :> FALSE)
+/\ alarm = (s1 :> FALSE)
+/\ ledger = << [kind |-> "CLAIM", lane |-> l1, ts |-> 1, closes |-> 0],
+   [kind |-> "CLAIM", lane |-> l1, ts |-> 3, closes |-> 0],
+   [kind |-> "TERMINAL", lane |-> l1, ts |-> 2, closes |-> 1] >>
+/\ usedBy = (s1 :> {})
+
+2843 states generated, 1994 distinct states found, 1333 states left on queue.
+The depth of the complete state graph search is 10.
+Finished in 00s at (2026-10-13 09:36:02)
+rc=12

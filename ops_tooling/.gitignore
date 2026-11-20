@@ -1,0 +1,49 @@
+__pycache__/
+*.py[cod]
+.venv/
+.mypy_cache/
+.pytest_cache/
+.ruff_cache/
+build/
+dist/
+*.egg-info/
+
+# ─── Registry root: canonical clones (OMN-19388) ─────────────────────────────
+# This clone is the registry root. Every canonical clone the registry holds sits
+# directly inside it under the same directory name, exactly as under registry_root,
+# and is never tracked here. Work happens in worktrees under worktrees/.
+/knowledge_base/
+/docs_repo/
+# OMN-20839: the old directory name is kept as a symlink to docs_repo until every
+# consumer has adopted the rename; a symlink is not a directory to git, so it needs its own line.
+/docs-repo
+/omnibase/
+/omnibase_core/
+/omnibase_infra/
+/omnibase_spi/
+/omnibot/
+/omniclaude/
+/plugin-tooling-pkg/
+/codex-tooling-pkg/
+/omnicursor/
+/omnidash/
+/omnigemini/
+/omniintelligence/
+/omnimarket/
+/omnimemory/
+/infra_repo/
+/omnipulse/
+/omniui/
+/RSD/
+/rsd-repo/
+/steel_onslaught/
+
+# ─── Worktree root ───────────────────────────────────────────────────────────
+/worktrees/
+
+# ─── Host state ──────────────────────────────────────────────────────────────
+# Written by the lab host's clone sync (OMN-20148): install marker, log and lock.
+/.onex_state/
+
+# Deployed canonical-clone hook family and host-specific roots (OMN-19739).
+/scripts/git-hooks/

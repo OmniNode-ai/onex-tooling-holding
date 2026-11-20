@@ -1,0 +1,16 @@
+{
+  "name": "onex-overlays",
+  "description": "Contract overlays for the public onex plugin's split skills (weekly_review, session_preflight, plans_board_refresh, board_readback, comment_sweep, overseer_verify_tick, lane_dispatch): the organization-specific half that the public skills refuse to run without. Data only: no skills, no hooks.",
+  "version": "0.1.39",
+  "author": {
+    "name": "OmniNode",
+    "email": "person@example.com"
+  },
+  "repository": "https://example.invalid/private-repo",
+  "keywords": [
+    "omninode",
+    "internal",
+    "overlays",
+    "onex"
+  ]
+}

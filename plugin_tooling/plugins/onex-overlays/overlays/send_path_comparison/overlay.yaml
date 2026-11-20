@@ -1,0 +1,13 @@
+# Overlay of the send path's frozen comparison (OMN-22962; gate OMN-22478 AC-1; rebuild plan 4.2 row 12).
+#
+# The comparison file lists the inputs, every capability of the lane runner's run path that the rewritten send path
+# must keep, and the pass threshold. This overlay records the sha256 of its content: canonical JSON (sorted keys,
+# compact separators) of the file's inputs, capabilities and threshold keys, so comments and key order do not count.
+# tests/unit/test_send_path_comparison_frozen.py refuses a comparison file whose content no longer hashes to this value.
+# Changing the list, a capability's statement or the threshold is a change to the bar: it changes frozen_sha256 and
+# capability_count in the same pull request, and the pull request body names what moved and why.
+comparison_file: plugins/omni/skills/remote-lane/send_path_comparison.yaml
+frozen_sha256: dbda4f2f62534736079fd1294a9a66f16d66314a86e42b75daf05d240216c5e3
+capability_count: 30
+frozen_on: '2026-11-07'
+ticket: OMN-22962

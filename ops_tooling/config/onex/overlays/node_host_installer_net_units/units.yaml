@@ -1,0 +1,59 @@
+# Linux pool-host units of node_host_installer_net_units (omnimarket). The node reads this file and the payload
+# files beside it; it installs each payload byte for byte and refuses a payload whose sha256 differs from the pin below.
+# Installed by: onex run-node node_host_installer_net_units (a request naming this directory as overlay_root).
+schema: host_net_units.v1
+units:
+  # OMN-22692: the boot-time unit of the dev cost estimator's tailnet https listener. The port and the upstream are not
+  # here: they are the overlay of node_tailnet_https_serve_effect, which writes the env file this unit reads.
+  estimator-https:
+    kind: systemd-system-service
+    platform: linux
+    hosts: [h907]
+    service: onex-estimator-https.service
+    files:
+      - source: onex-estimator-https.service
+        destination: /etc/systemd/system/onex-estimator-https.service
+        mode: "0644"
+        sha256: 39279cc8ec665ee40537652d023f975fcb687d68803a67c0a7528629d648e8fc
+  # OMN-22757: the media and decision models of the h907 RTX 4090 (operator ruling 2026-11-06T20:15:10Z). One unit per
+  # capability, in start order: embed, stt, tts. The decision unit moved to the overlays repository and was uninstalled
+  # on 2026-11-14 (OMN-24493). The host installer enables and starts the service it names, so the
+  # on-demand video unit rides as a second file of the embed unit: it is placed and never enabled or started.
+  media-embed:
+    kind: systemd-system-service
+    platform: linux
+    hosts: [h907]
+    service: onex-media-embed.service
+    files:
+      - source: onex-media-embed.service
+        destination: /etc/systemd/system/onex-media-embed.service
+        mode: "0644"
+        sha256: ba6905f599434f2d759dd3f1b69acd7097834ebacaa3cfc8ae6799d1d91f825d
+      - source: onex-media-video.service
+        destination: /etc/systemd/system/onex-media-video.service
+        mode: "0644"
+        sha256: b1b062e5378d12ef39126ec865bef28301c2cd24b0afa708b0cb25490b2c423c
+  media-stt:
+    kind: systemd-system-service
+    platform: linux
+    hosts: [h907]
+    service: onex-media-stt.service
+    files:
+      - source: onex-media-stt.service
+        destination: /etc/systemd/system/onex-media-stt.service
+        mode: "0644"
+        sha256: 311f2d57e18db4625cfb425e50b0878ab2b2beb257a88cbfe8e8a88299c246a1
+  media-tts:
+    kind: systemd-system-service
+    platform: linux
+    hosts: [h907]
+    service: onex-media-tts.service
+    files:
+      - source: onex-media-qwen3-tts.yaml
+        destination: /etc/systemd/system/onex-media-qwen3-tts.yaml
+        mode: "0644"
+        sha256: deda061b3bf32e5fc52be7b762c0c664a594ec0c327e5cad25a47a0af7c4c475
+      - source: onex-media-tts.service
+        destination: /etc/systemd/system/onex-media-tts.service
+        mode: "0644"
+        sha256: 021f209d734d6942b3aed0ce65f84b73d832bbaef57e859cfdf26dbe6aab7d54

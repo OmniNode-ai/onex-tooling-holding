@@ -1,0 +1,109 @@
+# Deployment facts of omniintelligence's node_review_voters_overlay_compute (OMN-20910): our lab's
+# Hostile Reviewer voters, a review_voters_overlay.v1 document. Moved out of the shipped
+# omnibase_infra (docker/lane-overlays/hostile-review-voters.yaml, omnibase_infra#4817) by
+# OMN-20923 under operator RULING 2026-10-10T21:57:38Z, which re-affirms RULING
+# 2026-09-26T14:31:29Z and RULING 2026-09-30: no lab or deployment configuration in a shipped
+# repository; CI is configured by an overlay supplied by whoever runs it.
+#
+# Readers: the hostile-reviewer.yml workflows of omnibase_infra, omnimarket and omniclaude fetch
+# this file at run time from the repository the org Actions variable OMNI_CI_OVERLAY_REPO names,
+# and pass it to cli_review --voters-overlay, whose resolver validates it on every run. A local
+# reader names this directory's root in ONEX_SKILL_OVERLAY_ROOTS. A fork or customer with no CI
+# overlay gets the neutral default: the gate fails closed with "no review voters configured".
+#
+# To change a voter's model or endpoint: edit this file and merge to main. The next gate run on
+# any pull request uses it; no workflow, variable or pin moves. Each voter names its endpoint
+# directly (endpoint_url), so nothing resolves through a lab delegation overlay in a public
+# repository.
+#
+# What this file cannot change: how many voters must agree. The quorum
+# (review_quorum.min_agreeing_models, bounded at >= 2) stays in omniintelligence, and distinct
+# voters are counted by endpoint plus model.
+#
+# Substitute votes: OMN-20947, operator RULING 2026-10-11T01:52:39Z ("If the studio is timing out on
+# reviews while you are fixing them, have Codecs and Opus review the PRs."). When a required voter's
+# call times out or its endpoint is unavailable (502/503/504, a refused or failed connection, a failed
+# reachability probe or served-model read), the gate may count clean signed receipts from BOTH off-CI
+# reviewers below, posted as a pull request review by the named account on the exact head commit the
+# workflow passes as --head-sha and younger than a day, as that one voter's vote. Receipts are HMAC-signed with the key in LOCAL_LLM_SHARED_SECRET, which the review
+# step already carries. A receipt with findings refuses substitution; receipts never vote alone.
+#
+# Sampling and focus: OMN-20422. Each voter gets its own emphasis. Roster: OMN-20910, the
+# operator's words of 2026-10-26 about 13:30Z ("The reviewer models should be Sonnet and Opus using
+# our API keys."): two required Claude voters, Sonnet and Opus, both through the h906 review
+# gateway. RULING 2026-10-18T15:06:49Z had set one lab voter plus one Sonnet voter (the lab voter,
+# correctness, a local Qwen3.8-27B on 192.0.2.127:8000, left the roster here). The ruled roster
+# is declared in config/onex/overlays/node_review_voters_overlay_compute/ruled_roster.yaml, and
+# tests/test_review_voters_roster_lab_plus_sonnet_omn20910.py fails when the required voters
+# below differ from it.
+#
+# Overflow: OMN-20923, operator "Yes and yes", ledger OPERATOR-CONSENT 2026-10-11T03:42:29Z. A voter
+# may list overflow_endpoint_urls, tried in order when the endpoint before it answers 503 or 429,
+# refuses the connection, or sends no reply within overflow_after_seconds. The endpoint before the
+# last gets one attempt of overflow_after_seconds and no retry; the last gets timeout_seconds and
+# max_retries. The vote is counted against the host that cast it. The reply is not streamed, so
+# "no reply" means no complete reply: a request that is generating at the limit is given up on too.
+schema_version: "review_voters_overlay.v1"
+voters:
+  # The Claude Sonnet voter (OMN-20910; operator RULING 2026-10-12T04:56:59Z "Yes" made Sonnet the
+  # Claude API review voter). OMN-21350: the endpoint is the review gateway on h906 (onex-host-install
+  # review-gateway, launchd ai.omninode.review-gateway, port 8140). The gateway spends only the
+  # dogfood tenant's anthropic keys bound to h906, by reference, and checks the same shared-secret
+  # signature the lab endpoints get; no workflow carries a provider key (OMN-20974). It replaced the
+  # direct Claude API voter, whose key was an org Actions secret, and the h908 gateway before it,
+  # whose keys were bound to h908 alone. The model id is read from the gateway's /v1/models, so no
+  # Claude model id is written here; the host overlay on h906 names it. No overflow: a lab host
+  # answering for this voter would make a vote a lab vote. The gateway sets its own sampling, and
+  # the Claude API refuses temperature for this model, so none is sent.
+  - voter_id: sonnet
+    endpoint_url: "http://192.0.2.126:8140/v1/chat/completions"
+    model_id_source: served
+    required: true
+    # A large chunk of a diff takes longer than a short call; 300 s covers it.
+    timeout_seconds: 300
+    max_retries: 2
+    # A 1500 s chunked-review ceiling: 1500 + 1500 + 300 s setup fits omnimarket's 3600 s
+    # retry-budget check.
+    review_deadline_seconds: 1500
+    # Below the model's own window: the reviewer sizes chunks with its own token estimate.
+    context_window_tokens: 131072
+    review_focus: >-
+      Give extra scrutiny to security and contracts: untrusted input reaching a shell, query,
+      path or template; secrets, tokens or credentials in code, logs or workflow files;
+      permissions and trust boundaries; and any change to a public interface, schema, event
+      shape or workflow contract that a caller depends on without the callers being updated.
+      Keep reviewing the whole change for every other defect as well; this is added emphasis,
+      not a narrower remit. Label each finding with the category that best describes the
+      defect itself.
+  # The Claude Opus voter (OMN-20910, the operator's words of 2026-10-26 about 13:30Z). The same
+  # review gateway as the Sonnet voter, a second server on port 8141 of the same launchd agent,
+  # spending the same dogfood tenant's keys bound to h906 by reference. The model id is read from
+  # that server's /v1/models and named only by the host overlay on h906. Distinct voters are counted
+  # by endpoint plus model, so the two ports are two voters. It took over the correctness focus of
+  # the lab voter (a local Qwen3.8-27B on 192.0.2.127:8000, read from /v1/models) that left the
+  # roster here. No overflow, no sampling, for the reasons the Sonnet voter gives.
+  - voter_id: opus-api
+    endpoint_url: "http://192.0.2.126:8141/v1/chat/completions"
+    model_id_source: served
+    required: true
+    timeout_seconds: 300
+    max_retries: 2
+    review_deadline_seconds: 1500
+    context_window_tokens: 131072
+    review_focus: >-
+      Give extra scrutiny to correctness: logic errors, off-by-one and boundary conditions,
+      wrong or missing error handling, state that is read before it is written, and tests that
+      would pass whether or not the change worked. Keep reviewing the whole change for every
+      other defect as well; this is added emphasis, not a narrower remit. Label each finding
+      with the category that best describes the defect itself.
+substitute_votes:
+  reviewers:
+    # Codex CLI at high effort, run in a lane outside CI.
+    - reviewer_id: codex
+      github_logins: ["<owner>"]
+    # An Opus subagent, run in a lane outside CI.
+    - reviewer_id: opus
+      github_logins: ["<owner>"]
+  receipts_per_vote: 2
+  receipt_max_age_seconds: 86400
+  signing_key_env: LOCAL_LLM_SHARED_SECRET

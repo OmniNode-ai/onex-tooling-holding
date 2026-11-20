@@ -1,0 +1,143 @@
+# Where each item of ops_tooling_pkg goes, and which items are already published there
+# (OMN-21374, task T0b of docs-repo
+# beta/plans/2026-10-23-internal-repos-code-migration-plan.md, section 9 and appendix A).
+#
+# tests/_src_freeze.py reads this file. It refuses, in ci and in the src-freeze pre-commit hook:
+#   - an added file outside data_dirs;
+#   - an added code file anywhere (code_suffixes, or an extensionless file that starts with #!);
+#   - an added, edited or moved-in file under a published item's prefix;
+#   - an added, edited or moved-in file under a no_code directory.
+# A deletion and a move out pass. A refusal names the item, its destination and its task; a path
+# no item covers is named with the unlisted block.
+#
+# status: pending (the item still lives here), published (its destination holds it; this copy
+# only shrinks) or removed (gone from this repository).
+#
+# Seed: the 17 nodes that also exist under omnimarket's src/omnimarket/nodes/ on its dev branch,
+# as published. Appendix A was not readable where this seed was written, so the remaining items,
+# the T1 deletes and the plan's no_code list are still to be added from it; each duplicate's task
+# is T1, taken from the ticket ("the 17 duplicated nodes and the T1 deletes").
+schema_version: 1
+plan: docs-repo beta/plans/2026-10-23-internal-repos-code-migration-plan.md
+ticket: OMN-21374
+data_dirs:
+  - config/onex/overlays/
+  - config/lab/lane-overlays/
+  - config/migration/
+  - docs/tracking/
+  - vocabularies/
+  - contracts/
+code_suffixes: [.py, .sh, .bash, .zsh, .js, .mjs, .cjs, .ts, .tsx, .jsx, .go, .rs, .rb, .pl]
+unlisted:
+  item: unlisted
+  destination: the repository that owns the capability
+  task: T0b
+no_code: []
+items:
+  - id: node_automation_liveness_overlay_check_compute
+    prefixes:
+      - src/ops_tooling_pkg/nodes/node_automation_liveness_overlay_check_compute/
+    destination: omnimarket
+    task: T1
+    status: removed
+  - id: node_friction_synthesis_effect
+    prefixes:
+      - src/ops_tooling_pkg/nodes/node_friction_synthesis_effect/
+    destination: omnimarket
+    task: T1
+    status: published
+  - id: node_host_reconcile_effect
+    prefixes:
+      - src/ops_tooling_pkg/nodes/node_host_reconcile_effect/
+    destination: omnimarket
+    task: T1
+    status: published
+  - id: node_host_thermal_observe_effect
+    prefixes:
+      - src/ops_tooling_pkg/nodes/node_host_thermal_observe_effect/
+    destination: omnimarket
+    task: T1
+    status: published
+  - id: node_hourly_tick_effect
+    prefixes:
+      - src/ops_tooling_pkg/nodes/node_hourly_tick_effect/
+    destination: omnimarket
+    task: T1
+    status: published
+  - id: node_lab_disk_growth_effect
+    prefixes:
+      - src/ops_tooling_pkg/nodes/node_lab_disk_growth_effect/
+      - tests/nodes/test_lab_disk_growth_effect.py
+    destination: omnimarket
+    task: T1
+    status: published
+  - id: node_lab_disk_hygiene_effect
+    prefixes:
+      - src/ops_tooling_pkg/nodes/node_lab_disk_hygiene_effect/
+      - tests/nodes/test_lab_disk_hygiene_effect.py
+    destination: omnimarket
+    task: T1
+    status: published
+  - id: node_lab_fill_receipt_table_compute
+    prefixes:
+      - src/ops_tooling_pkg/nodes/node_lab_fill_receipt_table_compute/
+    destination: omnimarket
+    task: T1
+    status: removed
+  - id: node_lab_fill_selection_compute
+    prefixes:
+      - src/ops_tooling_pkg/nodes/node_lab_fill_selection_compute/
+      - tests/nodes/test_lab_fill_selection_compute.py
+    destination: omnimarket
+    task: T1
+    status: removed
+  - id: node_lab_secret_store_override_effect
+    prefixes:
+      - src/ops_tooling_pkg/nodes/node_lab_secret_store_override_effect/
+    destination: omnimarket
+    task: T1
+    status: removed
+  - id: node_ledger_reconcile_effect
+    prefixes:
+      - src/ops_tooling_pkg/nodes/node_ledger_reconcile_effect/
+    destination: omnimarket
+    task: T1
+    status: published
+  - id: node_legacy_worktree_audit_effect
+    prefixes:
+      - src/ops_tooling_pkg/nodes/node_legacy_worktree_audit_effect/
+    destination: omnimarket
+    task: T1
+    status: removed
+  - id: node_morning_friction_sweep_orchestrator
+    prefixes:
+      - src/ops_tooling_pkg/nodes/node_morning_friction_sweep_orchestrator/
+    destination: omnimarket
+    task: T1
+    status: published
+  - id: node_morning_ground_state_orchestrator
+    prefixes:
+      - src/ops_tooling_pkg/nodes/node_morning_ground_state_orchestrator/
+    destination: omnimarket
+    task: T1
+    status: published
+  - id: node_operator_access_mode_effect
+    prefixes:
+      - src/ops_tooling_pkg/nodes/node_operator_access_mode_effect/
+    destination: omnimarket
+    task: T1
+    status: published
+  - id: node_runtime_deploy_effect
+    prefixes:
+      - src/ops_tooling_pkg/nodes/node_runtime_deploy_effect/
+      - tests/unit/scripts/test_runtime_deploy_effect.py
+    destination: omnimarket
+    task: T1
+    status: removed
+  - id: node_silent_failure_alarm_compute
+    prefixes:
+      - src/ops_tooling_pkg/nodes/node_silent_failure_alarm_compute/
+      - tests/nodes/test_silent_failure_alarm_compute.py
+    destination: omnimarket
+    task: T1
+    status: published

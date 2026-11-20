@@ -1,0 +1,28 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "description": "throughput_tick deployment values read from the sources named on each property (OMN-21373).",
+  "additionalProperties": false,
+  "required": [
+    "host_tick_fix",
+    "host_tick_owned_fix",
+    "host_ticks_fix"
+  ],
+  "properties": {
+    "host_tick_fix": {
+      "type": "string",
+      "minLength": 1,
+      "description": "Read from plugins/omni/skills/session-start/scripts/throughput_tick.py: HOST_TICK_FIX, evaluated with ast.literal_eval."
+    },
+    "host_tick_owned_fix": {
+      "type": "string",
+      "minLength": 1,
+      "description": "Read from plugins/omni/skills/session-start/scripts/throughput_tick.py: HOST_TICK_OWNED_FIX, evaluated with ast.literal_eval."
+    },
+    "host_ticks_fix": {
+      "type": "string",
+      "minLength": 1,
+      "description": "Read from plugins/omni/skills/session-start/scripts/throughput_tick.py: HOST_TICKS_FIX, evaluated with ast.literal_eval."
+    }
+  }
+}

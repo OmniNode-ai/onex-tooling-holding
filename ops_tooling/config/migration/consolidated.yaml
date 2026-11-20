@@ -1,0 +1,45 @@
+# The open ops_tooling_pkg pull requests at 2026-10-24T12:48:08Z (the PR watcher tick the
+# consolidating lane read), folded into the one OMN-21374 pull request (task T0b).
+# A manifest of data, not documentation: the documentation-routing gate refuses an added line in a
+# .md file, so it is kept here beside destinations.yaml.
+#
+# disposition: included (merged here with git merge --no-ff), superseded (its change is already on
+# main or is replaced by this pull request) or moves-to-its-new-home (code the migration plan sends
+# out of this repository; it is not merged here). Each listed pull request is closed with a comment
+# naming the consolidated pull request after it merges.
+ticket: OMN-21374
+read_at: "2026-10-24T12:48:08Z"
+pull_requests:
+  - number: 737
+    title: "feat(OMN-19854): refuse a new code file in ops_tooling_pkg (ci and pre-commit)"
+    head: f842db2864231023b1d8a9176159713fb6cb4f54
+    disposition: superseded
+    by: OMN-21374
+    why: >-
+      The OMN-21374 freeze (tests/_src_freeze.py, the ci step and the src-freeze hook) refuses an
+      added code file anywhere, with the same suffix list and the extensionless #! rule, and also
+      refuses the other freeze cases. The ticket adopts ops_tooling_pkg#737.
+  - number: 881
+    title: "fix(OMN-17427): remove two delegation models from the routing reducer overlay (paraphrased; the model config guard refuses a model name here)"
+    head: 0f45a07f54933fc6d3937969ee92cbaddf74f512
+    disposition: superseded
+    by: "ops_tooling_pkg#884 (b8f482c1)"
+    why: >-
+      The file it edits, config/onex/overlays/node_delegation_routing_reducer/overlay.yaml, was
+      deleted on main by ops_tooling_pkg#884, which removed the private delegation ladder.
+  - number: 961
+    title: "fix(OMN-17427): declare the onex scm write client grants for the host.example lane login"
+    head: c876814bca91f095f2ebde167e438027261e5401
+    disposition: included
+    note: >-
+      Merged with the 627-row declaration now on main: 633 rows declared. Its own text keeps
+      "Operator consent: pending"; merging the declaration does not apply it to the broker.
+  - number: 963
+    title: "fix(OMN-17427): the morning watchdog reads the session goal's age as the preflight probe does"
+    head: 7e942d5328912d31c24bbcbcba84fd0c24023890
+    disposition: moves-to-its-new-home
+    why: >-
+      It edits launchd/morning-workflows/morning_tick_watchdog.sh and its test: code, which the
+      plan moves out of this repository. The fix goes with the watchdog to the destination appendix
+      A names; appendix A was not readable where this manifest was written, so that destination is
+      not stated here.

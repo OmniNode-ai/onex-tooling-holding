@@ -1,0 +1,438 @@
+# Check overlay for the session_preflight skill — internal.
+#
+# Layered over the generic runner (plugins/onex/scripts/session_preflight.py in
+# the agent plugin repository) by the overlay selector
+# SESSION_PREFLIGHT_OVERLAY_PATH. The runner declares the check KINDS, the
+# intent-driven output contract and the refusal rules, and declares no checks;
+# this file supplies every check. Loading the runner without an overlay is a
+# hard stop, not a run against an empty check set.
+#
+# WHY THIS FILE IS PRIVATE: every row below names one of our variables, our
+# clone layout or our tool servers. That is organization
+# process, the same class of content as the weekly-review rubric overlay beside
+# it, and the plugin it configures is public.
+#
+# STATUS: moved here from the onex-overlays plugin of the internal marketplace
+# (OMN-19235) by OMN-21390, the session_preflight row of the overlay move in
+# the plugin-tooling-pkg retirement plan (task T4). This file is the copy
+# edited from now on. The runner finds it when --overlay or
+# SESSION_PREFLIGHT_OVERLAY_PATH names it, when ONEX_SKILL_OVERLAY_ROOTS names
+# this config/onex/overlays/ directory, or after
+# `session_preflight.py --install-overlay` copies it into the per-user
+# directory; nothing sets any of these by default.
+#
+# PROFILES (OMN-21388, OMN-21390): the runner takes --profile operator|team
+# (default operator). A check marked `profile: operator` reads something only
+# the operator's machine has (a local controller, PR watcher, throughput
+# heartbeat, floor file, the operator's session goal, the lab projection or the
+# operator's own RULING ledger) and runs only under operator. Every check with
+# no profile key is shared and runs, and blocks, under both profiles.
+#
+# EVERY CHECK CARRIES ITS FIX, and the runner refuses the whole overlay if one
+# does not. That is deliberate: a preflight line a reader cannot act on is the
+# failure this design exists to remove.
+#
+# SEVERITY: every check is a `blocker`. A blocker fails the run (exit 1) and
+# prints under every intent including quiet. The runner still accepts
+# `warning`, which never blocks, and this overlay declares none: a warning
+# nobody acts on is drift (operator RULING 2026-10-21T18:21:36Z
+# lane=preflight-blockers-1820, "Yes, those should be blocking").
+# tests/test_session_preflight_all_blockers.py fails the build when any check
+# here is declared with another severity, so a warning cannot come back.
+
+preflight_version: "1.0.0"
+
+checks:
+  # --- identity and authentication ---------------------------------------- #
+  # The measured case for these two: sessions in the sampled window died
+  # outright on a not-logged-in error, and a separate registry cleanup ran all
+  # the way through plan and verification before failing on a missing scope.
+  # Both are one line at the start of a session or an hour lost in the middle.
+
+  # A lane runs `gh` through the lane GitHub policy (node_lane_github_budget_effect), which bounds
+  # this probe below timeout_seconds: a probe the host cannot answer in time degrades to the host's
+  # last verified answer, or to a warning for a lane that declares ONEX_LANE_GITHUB_WRITES=0, and is
+  # refused (exit 75) for a lane that writes. tests/test_lane_github_budget.py holds the bound.
+  - check_id: github_login
+    title: Signed in to the code host
+    kind: command
+    command: gh auth status
+    timeout_seconds: 15
+    severity: blocker
+    fix: "gh auth login"
+
+  - check_id: github_token_scopes
+    title: Code-host token carries the workflow scope
+    kind: command
+    command: gh auth status
+    expect_substring: "workflow"
+    timeout_seconds: 15
+    severity: blocker
+    fix: "gh auth refresh -h github.com -s workflow"
+
+  # --- required paths ------------------------------------------------------ #
+  # Each of these has NO default anywhere in the tooling, on purpose: a guessed
+  # clone surfaces another checkout's state as if it were this one. So an unset
+  # variable is a preflight line here rather than a silent wrong answer later.
+
+  - check_id: registry_root
+    title: Canonical registry root is set and resolves
+    kind: env_path
+    env: registry_root
+    severity: blocker
+    fix: "export registry_root=<absolute path to the canonical registry clone>"
+
+  - check_id: shared_knowledge_base
+    title: Shared knowledge-base path is set and resolves
+    kind: env_path
+    env: DOCS_REPO_PATH
+    severity: blocker
+    fix: "export DOCS_REPO_PATH=<absolute path to the internal knowledge-base clone>"
+
+  # The session goal's age, read from the same file the SessionStart goal hook prints and the
+  # morning tick watchdog judges. The goal sat unchanged from 2026-10-10 while standups reported
+  # the M4 board unread, because the only red it could raise was a Slack line from a Mac-local
+  # watchdog that nobody was reading; a session that opens on a stale goal now sees it as a
+  # blocker. The limit is the watchdog's own variable and default (24h).
+  #
+  # WHEN THE GOAL WAS PRODUCED, not the day it names (OMN-17427). A date-only state_as_of read as
+  # midnight UTC made a goal produced at 20:13Z on 2026-10-21 more than 24 h old at 00:05Z the
+  # next day, and every session start was refused. So the age runs from the commit time of
+  # beta/GOAL.md at the clone's HEAD (git log -1 --format=%cI -- beta/GOAL.md) when the clone is a
+  # git checkout that has the file committed and unmodified (an edit not yet committed is not
+  # described by that commit), and otherwise from state_as_of: a full timestamp
+  # as written, a date-only value as 23:59:59Z of that UTC day (the basis the SessionStart hook
+  # states, never the start of it).
+  #
+  # A missing file or a state_as_of that is absent or does not parse is red whatever the commit
+  # time says, never green. An unset path is left to shared_knowledge_base above. A remote lane
+  # host reads a snapshot clone it does not refresh, so it is not judged here.
+  - check_id: goal_fresh
+    title: Session goal (beta/GOAL.md) was produced within the last day
+    kind: command
+    command: |
+      [ -z "${DOCS_REPO_PATH:-}" ] || [ -n "${ONEX_REMOTE_LANE:-}" ] ||
+      python3 -c '
+      import datetime as dt, os, re, subprocess, sys
+
+      def produced_at(kb):
+          utc = dt.timezone.utc
+          text = open(os.path.join(kb, "beta", "GOAL.md"), encoding="utf-8").read()
+          m = re.search(r"^state_as_of:[ \t]*(\S+)", text, re.M)
+          v = m.group(1) if m else ""
+          if re.fullmatch(r"[0-9]{4}-[0-9]{2}-[0-9]{2}", v):
+              stamp = dt.datetime.strptime(v, "%Y-%m-%d").replace(tzinfo=utc, hour=23, minute=59, second=59)
+          else:
+              stamp = dt.datetime.strptime(v, "%Y-%m-%dT%H:%M:%SZ").replace(tzinfo=utc)
+          def git(*args):
+              return subprocess.run(["git", "-C", kb, *args, "--", "beta/GOAL.md"],
+                                    capture_output=True, text=True, timeout=20).stdout.strip()
+          try:
+              out = git("log", "-1", "--format=%cI")
+              return dt.datetime.fromisoformat(out).astimezone(utc) if out and not git("status", "--porcelain") else stamp
+          except (OSError, ValueError, subprocess.SubprocessError):
+              return stamp
+
+      try:
+          age = (dt.datetime.now(dt.timezone.utc) - produced_at(os.environ["DOCS_REPO_PATH"])).total_seconds()
+          sys.exit(0 if age <= int(os.environ.get("ONEX_MORNING_WATCHDOG_GOAL_MAX_AGE_S", "86400")) else 1)
+      except (OSError, ValueError):
+          sys.exit(1)
+      '
+    profile: operator
+    severity: blocker
+    fix: 'launchctl kickstart "gui/$(id -u)/ai.omninode.morning-ground-state"   # re-runs the morning ground state, which re-baselines beta/GOAL.md; when it does not land, its receipt and logs under $registry_root/.onex_state/morning-workflows/ say why'
+
+  - check_id: state_dir
+    title: Runtime state directory is declared
+    kind: env_set
+    env: ONEX_STATE_DIR
+    severity: blocker
+    fix: "export ONEX_STATE_DIR=<absolute path to the state directory>"
+
+  # --- tool servers -------------------------------------------------------- #
+  #
+  # This is the row that retires a measured class of dead session: about
+  # eighteen percent of the sampled window was nothing but the connectivity
+  # probe run twice, with no follow-up work — a session that checks, gets an
+  # unclear state, retries, and stops.
+  #
+  # HONEST LIMIT, stated rather than discovered later: the generic runner
+  # reports a check's VERDICT, not its output, so this one line cannot name
+  # WHICH server is unhealthy. Two ways to get that, neither taken here: one row
+  # per server, which re-runs the whole probe per row and is slow; or a runner
+  # change that lets a check render its probe's first output line as the
+  # failure detail. Until one of them lands, the fix command below is the
+  # one-step way to get the name, which is why it is the probe itself.
+  #
+  # The probe is slow — an unreachable server is a timeout, not a refusal — so
+  # the row carries a generous bound. A preflight that can hang is worse than
+  # one that fails.
+
+  - check_id: tool_servers_healthy
+    title: Every configured tool server is connected
+    kind: command
+    command: "! claude mcp list 2>&1 | grep -qE 'Needs authentication|Failed to connect'"
+    timeout_seconds: 90
+    severity: blocker
+    fix: "claude mcp list   # then re-authenticate or fix the server it names"
+
+  # --- workspace ----------------------------------------------------------- #
+  #
+  # Read from the reconcile tick's cached verdict rather than derived live: the
+  # live form is a revision probe per clone plus a dependency check per virtual
+  # environment, which is seconds, on a path that has to be fast. The tick
+  # writes the verdict; this reads it. A missing file fails, which is correct —
+  # no tick has run, so nothing is known, and an unknown must never render as
+  # in sync. The tick writes $ONEX_HOOKS_STATE_DIR, which the onex plugin's
+  # onex-paths.sh sets to $ONEX_STATE_DIR/hooks; a session shell has neither
+  # set by the plugin, so the path is derived the same way here (this row read
+  # $HOME/.onex_state/hooks until 2026-10-21 and failed on a host in sync). An
+  # in-sync verdict older than a day fails too: ticks run only while a session
+  # works, and a stale green is an unknown.
+
+  - check_id: clones_in_sync
+    title: Canonical clones and virtual environments are in sync
+    kind: command
+    command: >-
+      f="${ONEX_HOOKS_STATE_DIR:-${ONEX_STATE_DIR:-${registry_root:-}/.onex_state}/hooks}/workspace-reconcile.status";
+      grep -q '^clones/venv: in sync' "$f" && [ -n "$(find "$f" -mmin -1440 2>/dev/null)" ]
+    profile: operator
+    severity: blocker
+    fix: '"$registry_root/../ops_tooling_pkg/.venv/bin/onex-host-reconcile" --check --omni-home "$registry_root"   # the verdict the tick records; ONEX_RECONCILE_TICK_SECONDS=0 bash "$registry_root/omniclaude/plugins/onex/hooks/scripts/workspace_reconcile_tick.sh" rewrites the status this check reads (a DRIFT line names its receipt)'
+
+  # --- the original six ---------------------------------------------------- #
+  # Carried over from the previous, unreachable preflight skill. Machine
+  # identity and the state directory are covered above. The drive mount is
+  # here; zombie-agent detection and merge-queue health are NOT, because both
+  # were defined in that skill as prose for an agent to interpret rather than
+  # as a probe with an exit status, and transcribing them as commands would be
+  # inventing checks rather than re-homing them. They are named here so their
+  # absence is a recorded decision rather than an oversight.
+
+  # A path that exists is not a mounted drive: a mount point left behind on the
+  # boot volume passes an existence test with no drive attached (measured
+  # 2026-10-21). So the path must also sit on another device than /.
+  - check_id: overnight_drive
+    title: Overnight drive is mounted
+    kind: command
+    command: >-
+      [ -n "${OVERNIGHT_DRIVE_PATH:-}" ] && python3 -c 'import os, sys;
+      p = os.environ["OVERNIGHT_DRIVE_PATH"];
+      sys.exit(0 if os.path.isdir(p) and os.stat(p).st_dev != os.stat("/").st_dev else 1)'
+    profile: operator
+    severity: blocker
+    fix: "export OVERNIGHT_DRIVE_PATH=<the overnight drive's mount point>   # with the drive attached and mounted; a drive that is not attached is the operator's to plug in"
+
+  # --- the rolling work ledger --------------------------------------------- #
+  #
+  # The ledger is the coordination and state-history surface for every session
+  # and lane: CLAIM before work, TERMINAL at the end, MSG between lanes, RULING
+  # and OPERATOR-CONSENT for the operator's words. Every writer goes through
+  # onex-ledger, and a skill finds the file through ONEX_LEDGER_PATH,
+  # which has no default anywhere (rule 8). These five rows make a session start
+  # prove that environment once, here, instead of each skill discovering a
+  # broken one halfway through its first append.
+  #
+  # ONE CAUSE, ONE LINE. Each row after ledger_path passes vacuously when a row
+  # before it has already failed on the same input (the variable unset, the
+  # wrong basename). The run still exits 1, because the earlier row is a
+  # blocker; the deferral only stops a single unset variable from printing
+  # four blocker lines whose fixes are all the same export.
+  #
+  # NO LANDING ROW. Landing PRs is owned by the landing controller, the launchd
+  # tick that replaced the hand-run merge drain (RULING 2026-09-29T12:02:35Z); a
+  # session hands a PR to it with one MSG row (to=landing-controller) and never
+  # lands anything itself. So there is nothing about landing for a session start
+  # to validate beyond the host check at the end of this section.
+  #
+  # FOLLOW-UP: when the typed JSONL ledger (onex-ledger in ops_tooling_pkg)
+  # replaces the markdown file, ledger_basename, ledger_is_registry_ledger and
+  # ledger_grammar change to that ledger's path and its own schema probe, and
+  # coordination_host reads the controller's rows as typed actor fields instead
+  # of the cell match below.
+
+  - check_id: ledger_path
+    title: Rolling work ledger path is set and resolves
+    kind: env_path
+    env: ONEX_LEDGER_PATH
+    severity: blocker
+    fix: 'set -a; . "$HOME/env-dir/env-file"; set +a   # ONEX_LEDGER_PATH is the host route in that file'
+
+  # onex-ledger lints rows only for the governed basename (its
+  # --print-grammar output lists governed_ledgers). A ledger under any other
+  # name takes every append unlinted, so a malformed CLAIM lands silently.
+  - check_id: ledger_basename
+    title: Ledger file is named ROLLING_WORK_LEDGER.md, so appends are linted
+    kind: command
+    command: >-
+      [ -z "${ONEX_LEDGER_PATH:-}" ] || [ ! -e "$ONEX_LEDGER_PATH" ]
+      || [ "$(basename -- "$ONEX_LEDGER_PATH")" = ROLLING_WORK_LEDGER.md ]
+    severity: blocker
+    fix: 'set -a; . "$HOME/env-dir/env-file"; set +a   # ONEX_LEDGER_PATH is the host route in that file; any other file name switches the row lint off'
+
+  # Several readers still build the ledger path from registry_root rather than the
+  # variable. If the two name different files, a lane writes a HOLD that the
+  # hardcoded readers never see. realpath on both sides, so a symlink to the
+  # registry ledger is accepted. A remote lane uses a snapshot with a declared
+  # bus writer instead; prove that transport and the archive rather than accepting
+  # an arbitrary copy (OMN-20399). A team member's machine (OMN-21390) is not a
+  # remote lane and has no registry clone of the coordination host's ledger: it
+  # passes on a mirror whose bus writer is configured the same way, with the
+  # same transport, archive and path validation, without ONEX_REMOTE_LANE.
+  - check_id: ledger_is_registry_ledger
+    title: Ledger is the registry file, or a remote snapshot or member mirror with a configured bus writer
+    kind: command
+    command: >-
+      [ -z "${ONEX_LEDGER_PATH:-}" ] || [ ! -e "$ONEX_LEDGER_PATH" ] || [ -z "${registry_root:-}" ]
+      || [ "$(basename -- "$ONEX_LEDGER_PATH")" != ROLLING_WORK_LEDGER.md ]
+      || python3 -c 'import os, sys, shlex, shutil;
+      from pathlib import Path;
+      e = Path(os.environ["ONEX_LEDGER_PATH"]).resolve();
+      r = Path(os.environ["registry_root"], "docs", "tracking", "ROLLING_WORK_LEDGER.md").resolve();
+      remote = bool(os.environ.get("ONEX_REMOTE_LANE"));
+      cmd = shlex.split(os.environ.get("ONEX_LEDGER_BUS_APPEND_COMMAND", ""));
+      transport = (os.environ.get("ONEX_LEDGER_WRITE_VIA") == "bus"
+      and bool(os.environ.get("ONEX_LEDGER_HOST_NAME"))
+      and bool(cmd) and shutil.which(cmd[0]) is not None
+      and e.is_file() and (e.parent / "archive").is_dir());
+      sys.exit(0 if (transport if remote else (e == r or transport)) else 1)'
+    severity: blocker
+    fix: 'set -a; . "$HOME/env-dir/env-file"; set +a   # ONEX_LEDGER_PATH is the host route in that file, on the launching host; on a remote lane, restart it through onex-remote-lane, which sets ONEX_LEDGER_WRITE_VIA=bus, ONEX_LEDGER_HOST_NAME, an executable ONEX_LEDGER_BUS_APPEND_COMMAND and the snapshot archive/ directory'
+
+  # The grammar is a committed module the append path loads by registry_root. When
+  # it is absent every governed append is refused, so a session would find out
+  # at its first CLAIM. Remote probes use the shipped script and installed venv,
+  # without syncing dependencies into a read-only canonical clone (OMN-20399).
+  # The grammar is still loaded and validated; an absent package still refuses.
+  - check_id: ledger_grammar
+    title: The ledger row grammar loads (onex-ledger --print-grammar)
+    kind: command
+    command: >-
+      [ -z "${ONEX_LEDGER_PATH:-}" ] || [ ! -e "$ONEX_LEDGER_PATH" ] || [ -z "${registry_root:-}" ]
+      || if [ -n "${ONEX_REMOTE_LANE:-}" ]; then
+      python3 -c 'import os, sys, subprocess;
+      from pathlib import Path;
+      paths = [Path(root).parent.parent / "omni/scripts/onex_ledger.py"
+      for root in os.environ.get("ONEX_SKILL_OVERLAY_ROOTS", "").split(os.pathsep) if root];
+      script = next((p for p in paths if p.is_file()), None);
+      sys.exit(subprocess.call([sys.executable, str(script), os.environ["ONEX_LEDGER_PATH"], "--print-grammar"], env={**os.environ, "UV_NO_SYNC": "1"}) if script else 2)'
+      >/dev/null 2>&1;
+      else python3 "$registry_root/plugin-tooling-pkg/plugins/omni/scripts/onex_ledger.py" "$ONEX_LEDGER_PATH" --print-grammar >/dev/null 2>&1; fi
+    severity: blocker
+    fix: 'python3 "$registry_root/plugin-tooling-pkg/plugins/omni/scripts/onex_ledger.py" "$ONEX_LEDGER_PATH" --print-grammar   # read its error; a missing package means the ops_tooling_pkg clone is absent or behind. On a remote lane run the same script from the omni plugin shipped beside the onex-overlays plugin that $ONEX_SKILL_OVERLAY_ROOTS names'
+
+  # Every ledger entry goes over the bus (operator RULING 2026-10-22T01:05:32Z lane=ledger-over-bus-0110,
+  # OMN-19513: every ledger entry is supposed to go over the event bus, and entries kept getting dropped). It kept being
+  # dropped because nothing went red when it was: the launching host was declared a bus writer on
+  # 2026-10-17 and its writers kept appending to the file, and in the last 7 days 13,500 rows never
+  # reached the database copy. onex-ledger bus-check fails when a writer with no ledger variable on
+  # this host would append to the file, when a request waits in the host's bus outbox past its bound
+  # or was refused on replay, when a row of the last hour was appended to the file without the bus,
+  # or when a row of the last hour never reached the database copy (read through
+  # ONEX_LEDGER_BUS_READ_COMMAND; a read that fails is red). A remote lane writes a snapshot copy
+  # through the bus write mode ledger_is_registry_ledger already proves, on a lab host whose own
+  # writer and outbox the host drift item ledger-writer:bus judges, so this row passes there.
+  - check_id: ledger_writer_on_bus
+    title: This host's ledger writer is the bus, and every row of the last hour reached it
+    kind: command
+    command: >-
+      [ -z "${ONEX_LEDGER_PATH:-}" ] || [ ! -e "$ONEX_LEDGER_PATH" ] || [ -z "${registry_root:-}" ]
+      || [ -n "${ONEX_REMOTE_LANE:-}" ]
+      || python3 "$registry_root/plugin-tooling-pkg/plugins/omni/scripts/onex_ledger.py" bus-check
+      --ledger "$ONEX_LEDGER_PATH" >/dev/null 2>&1
+    timeout_seconds: 120
+    profile: operator
+    severity: blocker
+    fix: 'python3 "$registry_root/plugin-tooling-pkg/plugins/omni/scripts/onex_ledger.py" bus-check --ledger "$ONEX_LEDGER_PATH"   # each FINDING names the drift: a writer on the file (declare the host in the lab host table), a queued request (onex-ledger bus-drain), a row appended behind the bus, or a row the database copy lacks (replay it with the journal backfill)'
+
+  # The ledger is one working-tree file on one coordination host. A PR handoff
+  # is a MSG row to the landing controller, and a HOLD is a row the addressee
+  # must read; both reach nobody on a host the controller never writes to.
+  # The hand-run drain lanes (merge-drain-*, repo-drain-*) this row used to
+  # look for are retired: the landing controller owns landing (RULING
+  # 2026-09-29T12:02:35Z) and writes its rows as actor=script:landing-controller.
+  # So this host coordinates when both hold:
+  #   1. the controller is live here: its heartbeat (refreshed when a tick takes
+  #      the lock, every 60 s while it runs, and with its receipt) is younger
+  #      than twice its 300 s interval, the bound ruling_mechanisms.py and the
+  #      host installer already judge it by. LANDING_STATE_DIR moves the state
+  #      directory, as for the controller itself;
+  #   2. its rows are in this host's ledger: a typed actor= cell in the newest
+  #      2,000 lines, so a ledger the controller does not write to is detached
+  #      even when a controller runs.
+  # A remote lane reads a snapshot of the coordination host's ledger and has no
+  # controller of its own, so only the second part is judged there.
+  - check_id: coordination_host
+    title: The landing controller is live on this host and writes to its ledger
+    kind: command
+    command: >-
+      [ -z "${ONEX_LEDGER_PATH:-}" ] || [ ! -f "$ONEX_LEDGER_PATH" ]
+      || { tail -n 2000 "$ONEX_LEDGER_PATH" | grep -Eq '[|] actor=script:landing-controller [|]'
+      && { [ -n "${ONEX_REMOTE_LANE:-}" ] || python3 -c 'import os, sys, time;
+      from pathlib import Path;
+      beat = Path(os.environ.get("LANDING_STATE_DIR") or Path.home() / ".local/state/omni/landing") / "heartbeat";
+      sys.exit(0 if beat.is_file() and time.time() - beat.stat().st_mtime <= 600 else 1)'; }; }
+    profile: operator
+    severity: blocker
+    fix: 'bash "$registry_root/../ops_tooling_pkg/launchd/landing-controller/install.sh" --status | head -8   # a loaded controller with a stale heartbeat: rerun with --kickstart; no controller on this host, or no actor=script:landing-controller row in its ledger: this host is detached (/omni:way-of-working section 5.5) and a session starts on the coordination host instead'
+
+  # --- lab delegation ------------------------------------------------------ #
+  #
+  # Delegation stopping silently is the failure this row exists for: on
+  # 2026-09-27 the operator had to ask whether delegation ran on the lab host at
+  # all (RULING 2026-09-27T10:50:10Z lane=delegation-ruling-83, OMN-19855). The
+  # check reads the lab delegation record through the delegation_health overlay
+  # beside this one and fails when an expected rung (the local model, or GLM)
+  # had zero events in two hours while lanes ran, or when the read itself
+  # fails. A blocker, as every check here is: a session does not start on a
+  # lab that stopped delegating. The fix is the health check itself, whose FIX
+  # line names the one command for the reason it found. The probe runs the
+  # script shipped beside the overlay root (ONEX_SKILL_OVERLAY_ROOTS), so it
+  # judges with the installed plugin; with none, the launching host falls back
+  # to its plugin-tooling-pkg clone, and a remote lane, which has no such
+  # clone, is red.
+  - check_id: lab_delegation_flowing
+    title: Lab delegation has events from every expected rung in the last two hours
+    kind: command
+    command: >-
+      script="$(python3 -c 'import os, sys;
+      from pathlib import Path;
+      roots = [Path(r).parent.parent for r in os.environ.get("ONEX_SKILL_OVERLAY_ROOTS", "").split(os.pathsep) if r];
+      print(next((str(p / sys.argv[1]) for p in roots if (p / sys.argv[1]).is_file()), ""))' omni/skills/delegation-health/scripts/delegation_health.py)";
+      [ -n "$script" ] || [ -n "${ONEX_REMOTE_LANE:-}" ]
+      || script="$registry_root/plugin-tooling-pkg/plugins/omni/skills/delegation-health/scripts/delegation_health.py";
+      [ -n "$script" ] && python3 "$script" --quiet --no-silent
+    timeout_seconds: 60
+    profile: operator
+    severity: blocker
+    fix: 'python3 "$registry_root/plugin-tooling-pkg/plugins/omni/skills/delegation-health/scripts/delegation_health.py"   # read its VERDICT and run its FIX line (/omni:delegation-health)'
+
+  # --- operator rulings ------------------------------------------------------ #
+  #
+  # A RULING that changes a standing process names what enforces it
+  # (mechanism=<repo path> or mechanism-ticket=<OMN-n>), or it is remembered
+  # only while someone remembers it (OMN-19854). The operator-ruling skill
+  # refuses to build one without either; this row lists the rulings of the last
+  # 14 days that still have neither, or whose mechanism path no longer exists.
+  # A blocker, as every check here is: an unmechanized ruling is the drift the
+  # 2026-10-21 ruling names. The scan took 67 s on 2026-10-21, past this bound;
+  # it now parses each ledger stamp once and reads a repository's required jobs
+  # once per read (OMN-17427), about 12 s on a loaded host. The script resolves
+  # as lab_delegation_flowing's does.
+  - check_id: ruling_mechanisms
+    title: Every recent process ruling names its mechanism
+    kind: command
+    command: >-
+      [ -z "${registry_root:-}" ]
+      || { script="$(python3 -c 'import os, sys;
+      from pathlib import Path;
+      roots = [Path(r).parent.parent for r in os.environ.get("ONEX_SKILL_OVERLAY_ROOTS", "").split(os.pathsep) if r];
+      print(next((str(p / sys.argv[1]) for p in roots if (p / sys.argv[1]).is_file()), ""))' omni/skills/queue-status/scripts/ruling_mechanisms.py)";
+      [ -n "$script" ] || [ -n "${ONEX_REMOTE_LANE:-}" ]
+      || script="$registry_root/plugin-tooling-pkg/plugins/omni/skills/queue-status/scripts/ruling_mechanisms.py";
+      [ -n "$script" ] && python3 "$script" --days 14 --quiet; }
+    timeout_seconds: 60
+    profile: operator
+    severity: blocker
+    fix: 'python3 "$registry_root/plugin-tooling-pkg/plugins/omni/skills/queue-status/scripts/ruling_mechanisms.py" --days 14   # per UNMECHANIZED line: /omni:create-ticket for its mechanism, then a CORRECTION row with corrects=<ruling ts> and mechanism-ticket=<OMN-n> (or mechanism=<repo path>) through /omni:ledger-write'

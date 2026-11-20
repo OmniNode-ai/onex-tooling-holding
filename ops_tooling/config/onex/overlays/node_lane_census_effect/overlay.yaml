@@ -1,0 +1,38 @@
+# Overlay of the node_lane_census_effect node (omnimarket): the lab deployment facts of the lane census.
+# Read by the node itself (`schedule check`, `schedule install`, `registry path`, found under
+# ONEX_SKILL_OVERLAY_ROOTS) and, through the LANE_CENSUS_REGISTRY variable the installed unit carries,
+# by the census collector (lane-census-check.sh and lane_census_plan.py in omnibase_infra), which reads
+# `registry:` from this file.
+# The hosts registry left the frozen lane manifest for this overlay under RULING 2026-11-03T00:52:51Z
+# (OMN-22152); the manifest's own `hosts:` block and each lane's `hosts:` list are no longer read.
+# The schema is omnimarket's ModelLaneCensusScheduleOverlay: two independent keys, no defaults.
+
+# hosts: which hosts INSTALL the census schedule (each a Docker Engine host on a systemd user timer).
+hosts:
+  - name: h901
+    scheduler: systemd-user
+    docker: engine
+
+# registry: which hosts EXIST for the census and the lanes each may host. A lane running on a host
+# that does not list it reads as lane_on_undeclared_host. Lanes and aliases below are the frozen
+# manifest's, inverted from lane to host; the last row is the census host, which lists the dev lane
+# because its Phoenix runs there, and any other lane found there is a finding.
+registry:
+  - name: lab-host-a
+    aliases: [host-49-example]
+    lanes: [lane-i, dev, <owner>, principal-issuer, lane-q, lane-r, lane-s]
+  - name: lab-host-c
+    aliases: [host-59-example]
+    lanes: []
+  - name: lab-host-b
+    aliases: [lab-host-b]
+    lanes: [dogfood, lane-m]
+  - name: lab-host-d
+    aliases: [host-59-example-studio]
+    lanes: []
+  - name: lab-host-h
+    aliases: [host-54-example]
+    lanes: [<owner>, lane-p, lane-o]
+  - name: lab-host-i
+    aliases: [lab-host-e]
+    lanes: [dev]

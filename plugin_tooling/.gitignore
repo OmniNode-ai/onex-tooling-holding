@@ -1,0 +1,6 @@
+__pycache__/
+.pytest_cache/
+.venv/
+.ruff_cache/
+# validate-plugin.yml's pinned onex-ledger source checkout (OMN-19626/OMN-19683)
+/_external/

@@ -1,0 +1,19 @@
+# Overlay for the one off switch of the throughput tick's own fill (OMN-23728).
+#
+# Read by node_idle_slot_fill_effect (load_fill_switch) as the "tick_fill" overlay, found under ONEX_SKILL_OVERLAY_ROOTS or the
+# installed onex-overlays plugin like every other overlay in this plugin. Flat `key: value` lines only.
+#
+# fill_sends: on  -> the tick's fill (the cloud pool and the lab decision) sends as it always has.
+# fill_sends: off -> the tick sends no fill lane, cloud or lab, and its `NOTE fill-switch` line says so. Two fills sending
+#                    at once break the one-writer rule; the operator turns this off in the change that turns the floor fill's
+#                    sends on (RULING 2026-11-11T11:15:31Z and go RULING 2026-11-11T11:18:27Z, OMN-22847).
+# An overlay that is here and cannot be read (a missing or unknown key, a value other than on or off) turns the fill off and
+# the tick prints an UNKNOWN line. With no overlay at all the switch is undeclared and the fill is as it was.
+# Deleted with the tick.
+overlay_version: "1.0.0"
+ticket: OMN-23728
+
+# OFF by RULING 2026-11-15T01:57:48Z lane=orchestrator-31d9 (OMN-24562): one thing at a time, strictly from the bottom up; the lab
+# fill sent lanes across every layer and most produced nothing. Turn it back on (`fill_sends: on`) when the layer the fill's work
+# belongs to reads red-free and the fill's waste fix (plugin-tooling-pkg 1926) is installed and read.
+fill_sends: off

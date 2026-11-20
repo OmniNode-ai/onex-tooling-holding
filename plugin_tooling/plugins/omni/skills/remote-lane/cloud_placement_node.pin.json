@@ -1,0 +1,11 @@
+{
+  "commit": "91fa0fa98036a74b88e2fcb35eb24ef40a3d7d4b",
+  "node": "src/omnimarket/models/cloud_session_placement",
+  "package_files": [
+    "src/omnimarket/__init__.py",
+    "src/omnimarket/models/__init__.py"
+  ],
+  "repo": "OmniNode-ai/omnimarket",
+  "ticket": "OMN-22244",
+  "what": "The cloud placement node's request models (omnimarket.models.cloud_session_placement, OMN-22243 at omnimarket dev 91fa0fa9). The remote-lane runner's cloud tests validate every request the runner builds against ModelCloudSessionPlacementRequest from these files, so a request shape the live node refuses (the bare host names the pick request once carried) fails here and not on a real cloud start. Pydantic only; CI fetches exactly these paths at this commit."
+}

@@ -1,0 +1,24 @@
+# onex-estimator-https.service: re-asserts the tailnet https listener in front of the dev cost estimator at boot (OMN-22692).
+#
+# The listener itself is installed, read back and removed by the node node_tailnet_https_serve_effect, which also writes
+# the env file below from its overlay; this unit only puts the same listener back after a reboot. It has no ExecStop on
+# purpose: a restart of the unit (a file replacement by node_host_installer_net_units) must not turn the listener off, so
+# the listener is taken away only by the node's uninstall.
+
+[Unit]
+Description=ONEX tailnet https listener for the dev cost estimator (OMN-22692)
+Wants=network-online.target
+After=network-online.target tailscaled.service docker.service
+Requires=tailscaled.service
+
+[Service]
+Type=oneshot
+RemainAfterExit=yes
+EnvironmentFile=/etc/omninode/estimator-https/serve.env
+ExecStart=/usr/bin/tailscale serve --bg --https=${ESTIMATOR_HTTPS_PORT} ${ESTIMATOR_UPSTREAM}
+Restart=on-failure
+RestartSec=15
+TimeoutStartSec=60
+
+[Install]
+WantedBy=multi-user.target

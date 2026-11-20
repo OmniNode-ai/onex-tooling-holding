@@ -1,0 +1,35 @@
+TLC2 Version 2.19 of 08 August 2024 (rev: 5a47802)
+Running breadth-first search Model-Checking with fp 3 and seed 5894513396370836577 with 8 workers on 32 cores with 7282MB heap and 64MB offheap memory [pid: 1] (Linux 7.0.0-34-generic amd64, Eclipse Adoptium 17.0.20.1 x86_64, MSBDiskFPSet, DiskStateQueue).
+Parsing file /work/LandingController.tla
+Parsing file /tmp/Naturals.tla
+Parsing file /tmp/FiniteSets.tla
+Parsing file /tmp/TLC.tla
+Parsing file /tmp/Sequences.tla
+Semantic processing of module Naturals
+Semantic processing of module Sequences
+Semantic processing of module FiniteSets
+Semantic processing of module TLC
+Semantic processing of module LandingController
+Starting... (2026-10-10 06:50:34)
+Implied-temporal checking--satisfiability problem has 20 branches.
+Computing initial states...
+Finished computing initial states: 1 distinct state generated at 2026-10-10 06:50:35.
+Checking 20 branches of temporal properties for the current state space with 48900 total distinct states at (2026-10-10 06:50:38)
+Finished checking temporal properties in 00s at 2026-10-10 06:50:39
+Progress(13) at 2026-10-10 06:50:39: 7,404 states generated (7,404 s/min), 2,445 distinct states found (2,445 ds/min), 833 states left on queue.
+Checking 20 branches of temporal properties for the current state space with 1166320 total distinct states at (2026-10-10 06:51:39)
+Finished checking temporal properties in 00s at 2026-10-10 06:51:39
+Progress(26) at 2026-10-10 06:51:39: 250,670 states generated (243,266 s/min), 58,324 distinct states found (55,879 ds/min), 6,163 states left on queue.
+Progress(32) at 2026-10-10 06:52:00: 330,400 states generated, 73,359 distinct states found, 0 states left on queue.
+Checking 20 branches of temporal properties for the complete state space with 1467180 total distinct states at (2026-10-10 06:52:00)
+Finished checking temporal properties in 00s at 2026-10-10 06:52:00
+Model checking completed. No error has been found.
+  Estimates of the probability that TLC did not check all reachable states
+  because two distinct states had the same fingerprint:
+  calculated (optimistic):  val = 1.0E-9
+  based on the actual fingerprints:  val = 2.5E-9
+330400 states generated, 73359 distinct states found, 0 states left on queue.
+The depth of the complete state graph search is 32.
+The average outdegree of the complete state graph is 1 (minimum is 0, the maximum 6 and the 95th percentile is 3).
+Finished in 01min 27s at (2026-10-10 06:52:00)
+rc=0

@@ -1,0 +1,8 @@
+# The bus `onex run-node node_baseline_compare` reaches this node on (OMN-22362; operator ruling 2026-11-03, "The default
+# broker should be in the contract overlay"). Read by `onex run-node` from this file and from nothing
+# else: no KAFKA_BOOTSTRAP_SERVERS, flag or code default. The node runs in the dev lane's runtime, the
+# shared bus of this workspace (config/onex/runtime/runtime_config.yaml); the broker address and the
+# client transport stay in config/lab/ci_bus_lanes.yaml.
+event_bus:
+  type: kafka
+  lane: dev

@@ -1,0 +1,11 @@
+{
+  "commit": "a5f86dd8c09e2e08d56f40b490f32bc375f2c8f6",
+  "node": "src/omnimarket/nodes/node_hook_parse_probe_compute",
+  "package_files": [
+    "src/omnimarket/__init__.py",
+    "src/omnimarket/nodes/__init__.py"
+  ],
+  "repo": "OmniNode-ai/omnimarket",
+  "ticket": "OMN-22676",
+  "what": "The hook parse probe node (node_hook_parse_probe_compute) that renders the script a lab host runs to judge the hook scripts its Claude loads. The placement script calls it in the dispatch venv and the suites render the script from this commit; a node that cannot run prints HOOKPARSE unknown, so the host is refused. Raise dispatch_venv_floor.json to this commit or later in the same change, as the venv must hold the node."
+}

@@ -1,0 +1,125 @@
+[project]
+name = "ops-tooling-pkg"
+version = "0.1.0"
+description = "Private operator tooling for the OmniNode registry: the work-ledger append, the ledger publisher, the worktree reaper and prune, and the morning launchd trigger."
+readme = "README.md"
+requires-python = ">=3.12"
+dynamic = ["entry-points"]
+dependencies = [
+    "pyyaml>=6.0",
+    "jsonschema>=4.26.0",
+    "omnibase-core[kafka]>=0.47.47,<0.48.0",
+    "omnibase-infra>=0.38.67,<0.39.0",
+    "omnimarket>=0.4.312,<0.5",
+    "pydantic>=2.11,<3",
+]
+
+[project.scripts]
+onex-host-reconcile = "ops_tooling_pkg.nodes.node_host_reconcile_effect.handlers.handler_host_reconcile_cli:main"
+onex-hourly-tick = "ops_tooling_pkg.nodes.node_hourly_tick_effect.handlers.handler_hourly_tick_cli:main"
+onex-arm-green-prs = "ops_tooling_pkg.arm_green_prs:main"
+onex-article-export = "ops_tooling_pkg.article_export:main"
+onex-capability-catalog = "ops_tooling_pkg.nodes.node_capability_catalog_effect.handlers.handler_capability_catalog_cli:main"
+onex-capability-catalog-publish = "ops_tooling_pkg.nodes.node_capability_catalog_effect.handlers.handler_capability_catalog_publish:main"
+onex-canonical-clone-install = "ops_tooling_pkg.nodes.node_canonical_clone_guard_effect.handlers.handler_canonical_clone_installer_cli:main"
+onex-claim-index = "ops_tooling_pkg.claim_index:main"
+onex-commit-lock = "ops_tooling_pkg.commit_lock:main"
+onex-decisions-classifier = "ops_tooling_pkg.handlers.handler_decisions_classifier:main"
+onex-decisions-register = "ops_tooling_pkg.handlers.handler_decisions_register:main"
+onex-default-branch-audit = "ops_tooling_pkg.nodes.node_default_branch_audit_effect.handlers.handler_default_branch_audit_cli:main"
+onex-delegation-accounting = "ops_tooling_pkg.delegation_accounting:main"
+onex-delegation-receipt-check = "ops_tooling_pkg.delegation_receipt_check:main"
+onex-drain-watchdog-node = "ops_tooling_pkg.nodes.node_drain_watchdog_effect.handlers.handler_drain_watchdog_cli:main"
+onex-friction-rollup = "ops_tooling_pkg.friction_rollup:main"
+onex-friction-rollup-timer = "ops_tooling_pkg.friction_rollup_timer:main"
+onex-friction-ticket-aging = "ops_tooling_pkg.friction_ticket_aging:main"
+onex-gh-read = "ops_tooling_pkg.gh_reader_token:gh_main"
+onex-gh-reader-token = "ops_tooling_pkg.gh_reader_token:main"
+onex-host-install = "ops_tooling_pkg.nodes.node_host_installer_effect.handlers.handler_host_installer_cli:main"
+onex-host-thermal = "ops_tooling_pkg.nodes.node_host_thermal_observe_effect.handlers.handler_host_thermal_cli:main"
+onex-access-mode = "ops_tooling_pkg.nodes.node_operator_access_mode_effect.handlers.handler_operator_hook_cli:mode_main"
+onex-internal-clone-sync = "ops_tooling_pkg.internal_clone_sync:main"
+lane-k-disk-growth = "ops_tooling_pkg.nodes.node_lab_disk_growth_effect.handlers.handler_lab_disk_growth_cli:main"
+lane-k-removal = "ops_tooling_pkg.nodes.node_lab_removal_effect.handlers.handler_lab_removal_cli:main"
+lane-k-stack-reaper = "ops_tooling_pkg.nodes.node_lab_stack_reaper_effect.handlers.handler_lab_stack_reaper_cli:main"
+lane-k-run = "ops_tooling_pkg.lab_run:main"
+lane-k-broker-acls = "ops_tooling_pkg.lab_broker_acls.reconcile:main"
+onex-landing-metrics = "ops_tooling_pkg.landing_metrics:main"
+onex-lane-closeout = "ops_tooling_pkg.worktrees.lane_closeout:main"
+onex-ledger = "ops_tooling_pkg.ledger.lock:main"
+onex-ledger-emit-backfill = "ops_tooling_pkg.ledger.emit_backfill:main"
+onex-ledger-publish = "ops_tooling_pkg.ledger_publish:main"
+onex-ledger-reconcile = "ops_tooling_pkg.nodes.node_ledger_reconcile_effect.handlers.handler_reconcile_cli:main"
+onex-ledger-roll = "ops_tooling_pkg.handlers.handler_ledger_roll:main"
+onex-ledger-roll-install = "ops_tooling_pkg.handlers.handler_ledger_roll_hook:main"
+onex-omni-home-freeze-gate = "ops_tooling_pkg.registry_root_freeze_gate:main"
+onex-pillar-owner = "ops_tooling_pkg.nodes.node_pillar_owner_effect.handlers.handler_pillar_owner:main"
+onex-pr-watcher = "ops_tooling_pkg.nodes.node_pr_watcher_effect.handlers.handler_pr_watcher_cli:main"
+onex-shared-doc-scrub = "ops_tooling_pkg.handlers.handler_shared_doc_scrub:main"
+onex-silent-failure-alarm = "ops_tooling_pkg.nodes.node_silent_failure_alarm_effect.handlers.handler_silent_failure_alarm_cli:main"
+onex-velocity-friction = "ops_tooling_pkg.nodes.node_velocity_friction_snapshot_effect.handlers.handler_velocity_friction_snapshot:main"
+onex-triage-fences-node = "ops_tooling_pkg.nodes.node_triage_fences_effect.handlers.handler_triage_fences_cli:main"
+onex-triage-started-node = "ops_tooling_pkg.nodes.node_triage_started_effect.handlers.handler_triage_started_cli:main"
+onex-user-hooks-install = "ops_tooling_pkg.user_hooks.install:main"
+onex-worktree-backup-pin = "ops_tooling_pkg.worktrees.backup_pin:main"
+onex-worktree-reaper = "ops_tooling_pkg.nodes.node_merged_worktree_reaper_effect.handlers.handler_merged_worktree_reaper_cli:main"
+onex-worktree-triage = "ops_tooling_pkg.worktrees.triage.runner:main"
+onex-worktree-prune = "ops_tooling_pkg.nodes.node_unattended_worktree_prune_effect.handlers.handler_unattended_prune_cli:main"
+
+[dependency-groups]
+dev = [
+    "hatchling>=1.27",
+    "mypy>=1.13",
+    "nodejs-wheel>=24,<25",
+    "pytest>=8.3",
+    "pytest-xdist>=3.6",
+    "ruff>=0.8",
+    "shellcheck-py>=0.11.0.1",
+    "types-jsonschema>=4.26.0",
+    "types-pyyaml>=6.0.12.20260906",
+]
+
+[build-system]
+requires = ["hatchling", "pyyaml>=6.0"]
+build-backend = "hatchling.build"
+
+[tool.hatch.metadata.hooks.custom]
+path = "src/ops_tooling_pkg/nodes/node_entry_point_registry_compute/handlers/handler_hatch_metadata_hook.py"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/ops_tooling_pkg"]
+
+[tool.uv]
+# An editable install's entry points are written when uv builds it; rebuild when a contract changes.
+cache-keys = [
+    { file = "pyproject.toml" },
+    { file = "src/ops_tooling_pkg/nodes/node_entry_point_registry_compute/handlers/handler_hatch_metadata_hook.py" },
+    { file = "src/ops_tooling_pkg/nodes/node_entry_point_registry_compute/**/*.py" },
+    { file = "src/ops_tooling_pkg/nodes/*/contract.yaml" },
+]
+
+[tool.ruff]
+line-length = 100
+target-version = "py312"
+# pre-commit hands ruff explicit paths, which skip an exclude unless it is forced.
+force-exclude = true
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "UP", "B", "SIM", "RUF"]
+
+[tool.mypy]
+python_version = "3.12"
+strict = true
+files = ["src", "tests"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "-ra --strict-markers"
+# A passing test removes its tmp_path directory. The default keeps every one for the last three runs: a
+# full run wrote 2490 MiB under TMPDIR on host-33-example (2026-11-05), and a runner TMPDIR is RAM charged
+# to the runner container, so the kept directories left a shard 900 MiB of the 6144 MiB limit and it stalled.
+tmp_path_retention_policy = "failed"
+tmp_path_retention_count = 1
+markers = [
+    "unit: fast, isolated tests",
+]

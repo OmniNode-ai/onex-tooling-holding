@@ -1,0 +1,376 @@
+TLC2 Version 2.19 of 08 August 2024 (rev: 5a47802)
+Running breadth-first search Model-Checking with fp 28 and seed 5574919063736468303 with 8 workers on 32 cores with 3641MB heap and 64MB offheap memory [pid: 1] (Linux 7.0.0-34-generic amd64, Eclipse Adoptium 17.0.20.1 x86_64, MSBDiskFPSet, DiskStateQueue).
+Parsing file /work/LabGroupProver.tla
+Parsing file /tmp/Naturals.tla
+Parsing file /tmp/FiniteSets.tla
+Parsing file /tmp/Sequences.tla
+Parsing file /tmp/TLC.tla
+Semantic processing of module Naturals
+Semantic processing of module Sequences
+Semantic processing of module FiniteSets
+Semantic processing of module TLC
+Semantic processing of module LabGroupProver
+Starting... (2026-09-29 12:46:03)
+Computing initial states...
+Finished computing initial states: 1 distinct state generated at 2026-09-29 12:46:03.
+Error: Invariant NoFailReprove is violated.
+Error: The behavior up to this point is:
+State 1: <Initial predicate>
+/\ mergedHeads = {}
+/\ job = NONE
+/\ spawning = FALSE
+/\ badSpawn = FALSE
+/\ lease = NONE
+/\ hist = {}
+/\ st = (p1 :> "open" @@ p2 :> "open" @@ p3 :> "open")
+/\ readback = {}
+/\ failRec = {}
+/\ provenPass = {}
+/\ procs = 0
+/\ result = NONE
+/\ held = {}
+/\ budget = [ push |-> 0,
+  hold |-> 0,
+  close |-> 0,
+  crash |-> 0,
+  pdie |-> 0,
+  inc |-> 0,
+  nohost |-> 0,
+  expire |-> 0 ]
+/\ head = (p1 :> 1 @@ p2 :> 1 @@ p3 :> 1)
+
+State 2: <Spawn line 93, col 5 to line 100, col 35 of module LabGroupProver>
+/\ mergedHeads = {}
+/\ job = NONE
+/\ spawning = TRUE
+/\ badSpawn = FALSE
+/\ lease = [m |-> {<<p1, 1>>, <<p2, 1>>, <<p3, 1>>}, pend |-> {}]
+/\ hist = {}
+/\ st = (p1 :> "open" @@ p2 :> "open" @@ p3 :> "open")
+/\ readback = {}
+/\ failRec = {}
+/\ provenPass = {}
+/\ procs = 0
+/\ result = NONE
+/\ held = {}
+/\ budget = [ push |-> 0,
+  hold |-> 0,
+  close |-> 0,
+  crash |-> 0,
+  pdie |-> 0,
+  inc |-> 0,
+  nohost |-> 0,
+  expire |-> 0 ]
+/\ head = (p1 :> 1 @@ p2 :> 1 @@ p3 :> 1)
+
+State 3: <Push line 227, col 5 to line 231, col 48 of module LabGroupProver>
+/\ mergedHeads = {}
+/\ job = NONE
+/\ spawning = TRUE
+/\ badSpawn = FALSE
+/\ lease = [m |-> {<<p1, 1>>, <<p2, 1>>, <<p3, 1>>}, pend |-> {}]
+/\ hist = {}
+/\ st = (p1 :> "open" @@ p2 :> "open" @@ p3 :> "open")
+/\ readback = {}
+/\ failRec = {}
+/\ provenPass = {}
+/\ procs = 0
+/\ result = NONE
+/\ held = {}
+/\ budget = [ push |-> 1,
+  hold |-> 0,
+  close |-> 0,
+  crash |-> 0,
+  pdie |-> 0,
+  inc |-> 0,
+  nohost |-> 0,
+  expire |-> 0 ]
+/\ head = (p1 :> 2 @@ p2 :> 1 @@ p3 :> 1)
+
+State 4: <StartProc line 103, col 5 to line 107, col 51 of module LabGroupProver>
+/\ mergedHeads = {}
+/\ job = NONE
+/\ spawning = FALSE
+/\ badSpawn = FALSE
+/\ lease = [m |-> {<<p1, 1>>, <<p2, 1>>, <<p3, 1>>}, pend |-> {}]
+/\ hist = {}
+/\ st = (p1 :> "open" @@ p2 :> "open" @@ p3 :> "open")
+/\ readback = {}
+/\ failRec = {}
+/\ provenPass = {}
+/\ procs = 1
+/\ result = NONE
+/\ held = {}
+/\ budget = [ push |-> 1,
+  hold |-> 0,
+  close |-> 0,
+  crash |-> 0,
+  pdie |-> 0,
+  inc |-> 0,
+  nohost |-> 0,
+  expire |-> 0 ]
+/\ head = (p1 :> 2 @@ p2 :> 1 @@ p3 :> 1)
+
+State 5: <Begin line 139, col 5 to line 147, col 58 of module LabGroupProver>
+/\ mergedHeads = {}
+/\ job = [ base |-> {},
+  prefix |-> {},
+  passed |-> {},
+  appended |-> {},
+  failed |-> {},
+  queue |-> <<{<<p2, 1>>, <<p3, 1>>}>>,
+  done |-> FALSE,
+  written |-> FALSE ]
+/\ spawning = FALSE
+/\ badSpawn = FALSE
+/\ lease = [m |-> {<<p1, 1>>, <<p2, 1>>, <<p3, 1>>}, pend |-> {}]
+/\ hist = {}
+/\ st = (p1 :> "open" @@ p2 :> "open" @@ p3 :> "open")
+/\ readback = {}
+/\ failRec = {}
+/\ provenPass = {}
+/\ procs = 1
+/\ result = NONE
+/\ held = {}
+/\ budget = [ push |-> 1,
+  hold |-> 0,
+  close |-> 0,
+  crash |-> 0,
+  pdie |-> 0,
+  inc |-> 0,
+  nohost |-> 0,
+  expire |-> 0 ]
+/\ head = (p1 :> 2 @@ p2 :> 1 @@ p3 :> 1)
+
+State 6: <RunUnit line 152, col 5 to line 187, col 37 of module LabGroupProver>
+/\ mergedHeads = {}
+/\ job = [ base |-> {},
+  prefix |-> {},
+  passed |-> {},
+  appended |-> {},
+  failed |-> {},
+  queue |-> <<{<<p2, 1>>}, {<<p3, 1>>}>>,
+  done |-> FALSE,
+  written |-> FALSE ]
+/\ spawning = FALSE
+/\ badSpawn = FALSE
+/\ lease = [m |-> {<<p1, 1>>, <<p2, 1>>, <<p3, 1>>}, pend |-> {}]
+/\ hist = {}
+/\ st = (p1 :> "open" @@ p2 :> "open" @@ p3 :> "open")
+/\ readback = {}
+/\ failRec = {}
+/\ provenPass = {}
+/\ procs = 1
+/\ result = NONE
+/\ held = {}
+/\ budget = [ push |-> 1,
+  hold |-> 0,
+  close |-> 0,
+  crash |-> 0,
+  pdie |-> 0,
+  inc |-> 0,
+  nohost |-> 0,
+  expire |-> 0 ]
+/\ head = (p1 :> 2 @@ p2 :> 1 @@ p3 :> 1)
+
+State 7: <RunUnit line 152, col 5 to line 187, col 37 of module LabGroupProver>
+/\ mergedHeads = {}
+/\ job = [ base |-> {},
+  prefix |-> {p2},
+  passed |-> {<<p2, 1>>},
+  appended |-> {},
+  failed |-> {},
+  queue |-> <<{<<p3, 1>>}>>,
+  done |-> FALSE,
+  written |-> FALSE ]
+/\ spawning = FALSE
+/\ badSpawn = FALSE
+/\ lease = [m |-> {<<p1, 1>>, <<p2, 1>>, <<p3, 1>>}, pend |-> {}]
+/\ hist = {}
+/\ st = (p1 :> "open" @@ p2 :> "open" @@ p3 :> "open")
+/\ readback = {}
+/\ failRec = {}
+/\ provenPass = {<<p2, 1>>}
+/\ procs = 1
+/\ result = NONE
+/\ held = {}
+/\ budget = [ push |-> 1,
+  hold |-> 0,
+  close |-> 0,
+  crash |-> 0,
+  pdie |-> 0,
+  inc |-> 0,
+  nohost |-> 0,
+  expire |-> 0 ]
+/\ head = (p1 :> 2 @@ p2 :> 1 @@ p3 :> 1)
+
+State 8: <RunUnit line 152, col 5 to line 187, col 37 of module LabGroupProver>
+/\ mergedHeads = {}
+/\ job = [ base |-> {},
+  prefix |-> {p2},
+  passed |-> {<<p2, 1>>},
+  appended |-> {},
+  failed |-> {<<p3, 1>>},
+  queue |-> <<>>,
+  done |-> FALSE,
+  written |-> FALSE ]
+/\ spawning = FALSE
+/\ badSpawn = FALSE
+/\ lease = [m |-> {<<p1, 1>>, <<p2, 1>>, <<p3, 1>>}, pend |-> {}]
+/\ hist = {}
+/\ st = (p1 :> "open" @@ p2 :> "open" @@ p3 :> "open")
+/\ readback = {}
+/\ failRec = {}
+/\ provenPass = {<<p2, 1>>}
+/\ procs = 1
+/\ result = NONE
+/\ held = {}
+/\ budget = [ push |-> 1,
+  hold |-> 0,
+  close |-> 0,
+  crash |-> 0,
+  pdie |-> 0,
+  inc |-> 0,
+  nohost |-> 0,
+  expire |-> 0 ]
+/\ head = (p1 :> 2 @@ p2 :> 1 @@ p3 :> 1)
+
+State 9: <AppendRB line 191, col 5 to line 196, col 51 of module LabGroupProver>
+/\ mergedHeads = {}
+/\ job = [ base |-> {},
+  prefix |-> {p2},
+  passed |-> {<<p2, 1>>},
+  appended |-> {<<p2, 1>>},
+  failed |-> {<<p3, 1>>},
+  queue |-> <<>>,
+  done |-> FALSE,
+  written |-> FALSE ]
+/\ spawning = FALSE
+/\ badSpawn = FALSE
+/\ lease = [m |-> {<<p1, 1>>, <<p2, 1>>, <<p3, 1>>}, pend |-> {}]
+/\ hist = {}
+/\ st = (p1 :> "open" @@ p2 :> "open" @@ p3 :> "open")
+/\ readback = {<<p2, 1>>}
+/\ failRec = {}
+/\ provenPass = {<<p2, 1>>}
+/\ procs = 1
+/\ result = NONE
+/\ held = {}
+/\ budget = [ push |-> 1,
+  hold |-> 0,
+  close |-> 0,
+  crash |-> 0,
+  pdie |-> 0,
+  inc |-> 0,
+  nohost |-> 0,
+  expire |-> 0 ]
+/\ head = (p1 :> 2 @@ p2 :> 1 @@ p3 :> 1)
+
+State 10: <WriteResult line 199, col 5 to line 205, col 50 of module LabGroupProver>
+/\ mergedHeads = {}
+/\ job = [ base |-> {},
+  prefix |-> {p2},
+  passed |-> {<<p2, 1>>},
+  appended |-> {<<p2, 1>>},
+  failed |-> {<<p3, 1>>},
+  queue |-> <<>>,
+  done |-> FALSE,
+  written |-> TRUE ]
+/\ spawning = FALSE
+/\ badSpawn = FALSE
+/\ lease = [m |-> {<<p1, 1>>, <<p2, 1>>, <<p3, 1>>}, pend |-> {}]
+/\ hist = {}
+/\ st = (p1 :> "open" @@ p2 :> "open" @@ p3 :> "open")
+/\ readback = {<<p2, 1>>}
+/\ failRec = {}
+/\ provenPass = {<<p2, 1>>}
+/\ procs = 1
+/\ result = [fail |-> {<<p3, 1>>}]
+/\ held = {}
+/\ budget = [ push |-> 1,
+  hold |-> 0,
+  close |-> 0,
+  crash |-> 0,
+  pdie |-> 0,
+  inc |-> 0,
+  nohost |-> 0,
+  expire |-> 0 ]
+/\ head = (p1 :> 2 @@ p2 :> 1 @@ p3 :> 1)
+
+State 11: <Exit line 208, col 5 to line 212, col 51 of module LabGroupProver>
+/\ mergedHeads = {}
+/\ job = NONE
+/\ spawning = FALSE
+/\ badSpawn = FALSE
+/\ lease = [m |-> {<<p1, 1>>, <<p2, 1>>, <<p3, 1>>}, pend |-> {}]
+/\ hist = {}
+/\ st = (p1 :> "open" @@ p2 :> "open" @@ p3 :> "open")
+/\ readback = {<<p2, 1>>}
+/\ failRec = {}
+/\ provenPass = {<<p2, 1>>}
+/\ procs = 0
+/\ result = [fail |-> {<<p3, 1>>}]
+/\ held = {}
+/\ budget = [ push |-> 1,
+  hold |-> 0,
+  close |-> 0,
+  crash |-> 0,
+  pdie |-> 0,
+  inc |-> 0,
+  nohost |-> 0,
+  expire |-> 0 ]
+/\ head = (p1 :> 2 @@ p2 :> 1 @@ p3 :> 1)
+
+State 12: <Reap line 119, col 5 to line 125, col 43 of module LabGroupProver>
+/\ mergedHeads = {}
+/\ job = NONE
+/\ spawning = FALSE
+/\ badSpawn = FALSE
+/\ lease = NONE
+/\ hist = {}
+/\ st = (p1 :> "open" @@ p2 :> "open" @@ p3 :> "open")
+/\ readback = {<<p2, 1>>}
+/\ failRec = {<<p3, 1>>}
+/\ provenPass = {<<p2, 1>>}
+/\ procs = 0
+/\ result = NONE
+/\ held = {}
+/\ budget = [ push |-> 1,
+  hold |-> 0,
+  close |-> 0,
+  crash |-> 0,
+  pdie |-> 0,
+  inc |-> 0,
+  nohost |-> 0,
+  expire |-> 0 ]
+/\ head = (p1 :> 2 @@ p2 :> 1 @@ p3 :> 1)
+
+State 13: <Spawn line 93, col 5 to line 100, col 35 of module LabGroupProver>
+/\ mergedHeads = {}
+/\ job = NONE
+/\ spawning = TRUE
+/\ badSpawn = TRUE
+/\ lease = [m |-> {<<p1, 2>>, <<p3, 1>>}, pend |-> {p2}]
+/\ hist = {}
+/\ st = (p1 :> "open" @@ p2 :> "open" @@ p3 :> "open")
+/\ readback = {<<p2, 1>>}
+/\ failRec = {<<p3, 1>>}
+/\ provenPass = {<<p2, 1>>}
+/\ procs = 0
+/\ result = NONE
+/\ held = {}
+/\ budget = [ push |-> 1,
+  hold |-> 0,
+  close |-> 0,
+  crash |-> 0,
+  pdie |-> 0,
+  inc |-> 0,
+  nohost |-> 0,
+  expire |-> 0 ]
+/\ head = (p1 :> 2 @@ p2 :> 1 @@ p3 :> 1)
+
+1055 states generated, 550 distinct states found, 31 states left on queue.
+The depth of the complete state graph search is 15.
+The average outdegree of the complete state graph is 1 (minimum is 0, the maximum 9 and the 95th percentile is 4).
+Finished in 00s at (2026-09-29 12:46:03)
+rc=12

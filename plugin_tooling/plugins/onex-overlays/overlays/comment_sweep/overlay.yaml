@@ -1,0 +1,67 @@
+# Overlay for the comment_sweep skill — internal.
+#
+# Layered over the skill's committed base by the overlay selector
+# COMMENT_SWEEP_OVERLAY_PATH. The base declares structure and no content.
+#
+# Status: shipped in the onex-overlays plugin of the internal marketplace
+# (OMN-19235), moved from docs-repo marketplace-internal/.
+# Nothing sets the selector by default: the skill reads this file only when a
+# session points the selector at it.
+#
+# Catalogue row: comment_sweep (omniclaude plugins/onex/process_catalogue.yaml)
+
+overlay_version: "1.0.0"
+catalogue_row: comment_sweep
+ticket: OMN-18368
+
+workspace_root_env: registry_root
+
+# The workflow this row is the interface to. It is the single largest measured
+# token consumer of any process in the catalogue -- 70 runs, 252 agents, 11.1%
+# of all workflow tokens in the window it was measured in -- and it is the one
+# with no invocable name, which is why it is a row.
+wraps_workflow: ../ops_tooling_pkg/src/ops_tooling_pkg/handlers/hourly_tick/linear-comments-hourly.js
+
+tracker:
+  kind: linear
+  access: read-only in this process, always
+  note: >-
+    The sweep reads and drafts. It never posts, edits, resolves or reacts. The
+    held replies are posted by a separate, explicitly authorized step, because a
+    sweep that can post is a sweep that will post something nobody read.
+    Classify agent-posted comments by the first-line actor: <lane> (<model>)
+    attribution, not the account author. Collect unmarked operator comments as
+    human, and preserve the exact comment text including its first line.
+
+tracker_read_command: >-
+  the tracker's comment listing for the configured identity, over the sweep
+  window, ordered by age
+positive_control_command: >-
+  the same listing against an identity known to have unanswered comments in the
+  window, so a zero can be told apart from a broken query
+
+draft_directory: the session scratchpad, one lane-prefixed file per draft
+
+cadence:
+  interval: hourly
+  note: >-
+    The workflow does not surface as an invocable name in a session opened in
+    the registry repository, which is why it is invoked from memory and why it
+    is the row with a measured failure history.
+
+known_failure_modes:
+  - >-
+    The query errors and its standard error is discarded. It returns zero rows
+    and reads exactly like a clean inbox. Four consecutive confident false
+    zero readings were produced this way in one measured window; re-running
+    without the suppression found thirty real rows.
+  - >-
+    A draft is posted rather than written to a file, which converts a read-only
+    process into an unreviewed write.
+
+verification_contract: >-
+  Replies are drafted to files, never posted, and the run is proven read-only by
+  a zero count of write calls -- with a positive control on the read path. Never
+  suppress standard error on either command.
+
+mechanical_replacement: none yet

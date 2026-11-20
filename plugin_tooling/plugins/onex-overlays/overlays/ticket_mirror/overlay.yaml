@@ -1,0 +1,48 @@
+# Overlay for the brief check's ticket reads (OMN-22866): read ticket state from the read-only Linear mirror
+# first, live Linear only when the mirror lacks the ticket or its copy is older than max_age_s.
+# Read by omni.nodes.node_ticket_text_effect.handlers.handler_ticket_text (HandlerTicketMirror) (selector TICKET_MIRROR_OVERLAY_PATH).
+overlay_version: "1.0.0"
+ticket: OMN-22866
+
+mirror:
+  # Files the floor already reads (node_factory_floor_effect: plans_today_dir, linear_snapshot_glob,
+  # linear_titles_glob). The newest file by name of each glob is read; ${VAR} is expanded from the environment.
+  # The date form only: the snapshot job writes linear-snapshot-state.json beside linear-<date>.json, and as the newest file by name
+  # (s sorts after 2) a plain linear-*.json would pick the sidecar and hide every ticket (read on the real snapshot, 2026-11-08).
+  globs:
+    - "${registry_root}/.claude_scratch/plans-today/linear-[0-9][0-9][0-9][0-9]-[0-9][0-9]-[0-9][0-9].json"
+    - "${registry_root}/.claude_scratch/plans-today/linear-[0-9][0-9][0-9][0-9]-[0-9][0-9]-[0-9][0-9].txt"
+  # A lab host has no plans-today directory: the launching host ships the cited tickets' records to a file
+  # and names it in this variable of the unit's environment.
+  shipped_file_env: LANE_BRIEF_MIRROR_FILE
+  # Every live read is written here as <ticket>.json (the read's own state, attachments and children), so the next
+  # check within max_age_s reads it from here; ${VAR} is expanded from the environment.
+  cache_dir: "${registry_root}/.onex_state/ticket-mirror"
+  # A mirror copy older than this (seconds, by the file's own read_at, else its modification time) is read live.
+  max_age_s: 21600
+
+live:
+  # One ticket's live read is tried this many times; a refusal waits retry_wait_s * attempt, capped at retry_wait_max_s.
+  attempts: 3
+  retry_wait_s: 5
+  retry_wait_max_s: 20
+  # A live refusal with one of these HTTP statuses (or an unreachable Linear) is retried and then degraded; any other
+  # refusal (a rejected key, a malformed query) still fails the check.
+  retry_http_statuses: [429, 500, 502, 503, 504]
+  # After one ticket's live read has been refused on every attempt, no further live read is tried in the same
+  # check (the next ticket would be refused the same way).
+  stop_live_after_refusal: true
+  # unverified: a ticket whose live read is refused after the attempts is reported as unverified on the
+  # check's output and never refuses the dispatch; its mirror copy, however old, answers what it holds.
+  on_refusal: unverified
+
+# The status name of a text snapshot line -> the Linear state type.
+status_types:
+  backlog: backlog
+  todo: unstarted
+  in progress: started
+  in review: started
+  done: completed
+  canceled: canceled
+  cancelled: canceled
+  duplicate: canceled

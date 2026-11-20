@@ -1,0 +1,34 @@
+{
+  "ticket": "OMN-20864",
+  "what": "Required check contexts whose verdict comes from outside the PR and the sources each reads; the controller reruns a PR's red copy once every source is green again, mirroring omnibase_infra config/delegation_health_check.yaml.",
+  "checks": [
+    {
+      "context": "delegation-health-check / Delegation Health Check",
+      "source_config": "OmniNode-ai/omnibase_infra:config/delegation_health_check.yaml",
+      "sources": [
+        {
+          "name": "delegation-regression-nightly",
+          "repo": "OmniNode-ai/omnimarket",
+          "workflow": "delegation-regression-nightly.yml",
+          "branch": "dev",
+          "max_age_hours": 26,
+          "events": [
+            "schedule",
+            "workflow_dispatch"
+          ],
+          "dispatch_title_contains": "lane=lane-i"
+        },
+        {
+          "name": "m4-c17-customer-surface-verdict",
+          "repo": "OmniNode-ai/infra_repo",
+          "workflow": "m4-c17-customer-surface-verdict.yml",
+          "branch": "dev",
+          "max_age_hours": 8,
+          "events": [
+            "schedule"
+          ]
+        }
+      ]
+    }
+  ]
+}

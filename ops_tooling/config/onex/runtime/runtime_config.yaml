@@ -1,0 +1,39 @@
+# =============================================================================
+# Registry workspace tier-1 runtime configuration (OMN-19193)
+# =============================================================================
+# The tier-1 (self-hosted) runtime configuration of THIS workspace. An embedded
+# runtime here -- the `onex delegate` CLI's -- resolves this file through
+# omnibase_infra's service_kernel.resolve_embedded_runtime_config() when the
+# workspace root is bound (--omni-home / $OMNIBASE_PATH, which the sanctioned
+# wrapper omnibase_infra/scripts/onex binds) and no ONEX_CONTRACTS_DIR
+# bootstrap pointer is set. The resolver reads this owning config repository
+# through ONEX_WORKSPACE_CONFIG_ROOT (default: the sibling ops_tooling_pkg),
+# materializing origin/main with repository/SHA attribution into workspace state.
+# It never reads the retiring registry_root config. It composes on top of the
+# shipped tier-0 default (in-memory bus), per the OMN-17304 ruling.
+#
+# WHY IT LIVES IN ops_tooling_pkg. It names our lab: which lane the workspace
+# shares. The retiring registry and the product do not own this operator data. Lab configuration is never hardcoded in the
+# product every customer runs (OMN-19184). The product ships only the
+# resolution tier and the optional event_bus.lane field.
+#
+# WHY IT MUST EXIST. A bound workspace root with no file here is REFUSED, not
+# answered with tier-0: the in-memory default is how this workspace's
+# delegation evidence stranded in local SQLite after OMN-17304 retired
+# ONEX_EVENT_BUS_TYPE (OMN-14376's regression).
+#
+# WHAT IT DECLARES. The shared bus is the lab-host-a dev lane, addressed through the
+# lane declaration (omnimarket/config/ci_bus_lanes.yaml), never through
+# KAFKA_BOOTSTRAP_SERVERS, which on the operator host names the governed
+# lane-i proof lane (OMN-16871).
+#
+# WHEN THE LANE IS DOWN, a default delegation is refused, naming the lane. Every
+# dev-lane rebuild is therefore a delegation-outage window for this workspace
+# (OMN-18843 shortens them). `onex delegate --bus inmemory` is the explicit
+# offline override; its evidence stays in the local store.
+description: "Registry workspace tier-1 runtime configuration: dev-lane shared bus, local profile"
+event_bus:
+  type: "kafka"
+  profile: "local"
+  environment: "local"
+  lane: "dev"

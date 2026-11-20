@@ -1,0 +1,27 @@
+# Who a new ticket is assigned to, by pillar (OMN-17427).
+#
+# Operator rulings 2026-09-30 (ruling ts 15:02:43Z): dashboard tickets, including the data layer
+# behind the dashboard, go to the dashboard owner; onboarding tickets go to the onboarding owner;
+# everything else goes to the creator (not listed here).
+# Operator ruling 2026-10-19 (ruling ts 19:03:06Z): the remaining delegation work goes to the
+# onboarding owner.
+# Values are Linear user ids (config, not secrets). Read by the create-ticket skill through
+# `onex-pillar-owner <pillar>` and by omnimarket's node_create_ticket from this same file.
+#
+# Operator, 2026-10-22 ~06:56Z, after lanes assigned the dashboard owner tickets and the landing
+# controller sent fix workers to his own pull requests: "why does it keep breaking ... Why are there
+# not guards to make sure we don't break [the dashboard owner's] work?" Two optional keys per pillar:
+#   owner_github_login: the owner's GitHub account. The landing controller reads it (with
+#     node_pillar_area_guard_effect/pillar_areas.json) to find the pull requests that owner authored
+#     and sends none of them a fix worker, rerun, update-branch or push until the owner approves.
+#   assignable_by_lanes: false. node_create_ticket, run from a lane (ONEX_LANE set, or a subagent or
+#     headless session), refuses to assign this pillar's owner; the operator or the owner files it.
+pillars:
+  dashboard:
+    owner_linear_user_id: <owner>
+    owner_github_login: <owner>
+    assignable_by_lanes: false
+  onboarding:
+    owner_linear_user_id: <owner>
+  delegation:
+    owner_linear_user_id: <owner>

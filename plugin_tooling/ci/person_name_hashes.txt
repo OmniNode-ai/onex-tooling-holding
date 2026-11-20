@@ -1,0 +1,8 @@
+# synthetic placeholder fixture, no real data (hashes of invented words)
+# Salted SHA-256 hashes of the person-name wordlist (one per token).
+# Regenerate with: python3 scripts/validate_plugin.py --hash-names <wordlist>
+salt: 959bbaf202edbf95357f7bbf24d7f7ec
+37f3554572ebab9444c3c2c70856c49ba5117e1f540880c2a23a169f3c36dbe9
+60ce587b2d07f3c7f3323a7ea7ebdf734a6c3f376274c6818012e6f6b7aebc33
+7757352fffd6777b65d1c394dc78abb178579948e4f24b6fc069a063be3e552f
+a2933615340393575af4abc71efb251bd49f93963a52af7e164a7b5c8d39b997

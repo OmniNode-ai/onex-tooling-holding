@@ -1,0 +1,9 @@
+# Deployment facts of omnimarket's node_claude_review_gateway_effect (OMN-20910): the privacy overlay
+# `onex models review-gateway --privacy-overlay` reads. A review whose metadata.repository is listed here, or
+# names no repository, answers 503 before any key is read. Operator RULING 2026-10-13T20:50:03Z: the internal
+# knowledge base is the one repository kept from cloud models.
+# Readers: the launchd review-gateway unit of node_host_installer_effect passes this path as --privacy-overlay and
+# ONEX_REVIEW_GATEWAY_OVERLAY, the systemd twin as --privacy-overlay only. To change it: edit, merge, re-run the installer.
+cloud_review_refused_repositories:
+  - docs_repo
+key_set_aside_ttl_seconds: 900  # a refused or out-of-credit key is set aside this long

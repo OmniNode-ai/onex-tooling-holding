@@ -1,0 +1,46 @@
+TLC2 Version 2026.09.25.163503 (rev: 8f4bc8b)
+Running breadth-first search Model-Checking with fp 56 and seed -4864308464415123259 with 3 workers on 32 cores with 2731MB heap and 64MB offheap memory [pid: 1] (Linux 7.0.0-30-generic amd64, Eclipse Adoptium 17.0.20.1 64bit, MSBDiskFPSet, DiskStateQueue).
+Parsing file /work/PrLanding.tla
+Parsing file /tmp/tlc-16370307709911747168/Naturals.tla (jar:file:/work/tla2tools.jar!/tla2sany/StandardModules/Naturals.tla)
+Parsing file /tmp/tlc-16370307709911747168/FiniteSets.tla (jar:file:/work/tla2tools.jar!/tla2sany/StandardModules/FiniteSets.tla)
+Parsing file /tmp/tlc-16370307709911747168/Sequences.tla (jar:file:/work/tla2tools.jar!/tla2sany/StandardModules/Sequences.tla)
+Parsing file /tmp/tlc-16370307709911747168/TLC.tla (jar:file:/work/tla2tools.jar!/tla2sany/StandardModules/TLC.tla)
+Parsing file /tmp/tlc-16370307709911747168/_TLCTrace.tla (jar:file:/work/tla2tools.jar!/tla2sany/StandardModules/_TLCTrace.tla)
+Parsing file /tmp/tlc-16370307709911747168/TLCExt.tla (jar:file:/work/tla2tools.jar!/tla2sany/StandardModules/TLCExt.tla)
+Parsing file /tmp/tlc-16370307709911747168/Integers.tla (jar:file:/work/tla2tools.jar!/tla2sany/StandardModules/Integers.tla)
+Semantic processing of module Naturals
+Semantic processing of module Sequences
+Semantic processing of module FiniteSets
+Semantic processing of module TLC
+Semantic processing of module Integers
+Semantic processing of module TLCExt
+Semantic processing of module _TLCTrace
+Semantic processing of module PrLanding
+Linting of module TLCExt
+Linting of module _TLCTrace
+Linting of module PrLanding
+Starting... (2026-09-28 07:18:38)
+Warning: The set PRs has been defined to be a symmetry set but contains less than two elements.
+(Use the -nowarning option to disable this warning.)
+Computing initial states...
+Finished computing initial states: 2 distinct states generated at 2026-09-28 07:18:39.
+Progress(9) at 2026-09-28 07:18:42: 158,502 states generated (158,502 s/min), 53,622 distinct states found (53,622 ds/min), 27,277 states left on queue.
+Progress(16) at 2026-09-28 07:19:42: 9,946,560 states generated (9,788,058 s/min), 2,759,566 distinct states found (2,705,944 ds/min), 874,294 states left on queue.
+Progress(18) at 2026-09-28 07:20:42: 18,901,426 states generated (8,954,866 s/min), 4,906,938 distinct states found (2,147,372 ds/min), 1,248,875 states left on queue.
+Progress(19) at 2026-09-28 07:21:42: 28,239,468 states generated (9,338,042 s/min), 7,015,080 distinct states found (2,108,142 ds/min), 1,457,159 states left on queue.
+Progress(21) at 2026-09-28 07:22:42: 37,865,961 states generated (9,626,493 s/min), 9,127,940 distinct states found (2,112,860 ds/min), 1,606,054 states left on queue.
+Progress(22) at 2026-09-28 07:23:42: 47,743,333 states generated (9,877,372 s/min), 11,195,154 distinct states found (2,067,214 ds/min), 1,662,435 states left on queue.
+Progress(23) at 2026-09-28 07:24:42: 57,874,252 states generated (10,130,919 s/min), 13,235,743 distinct states found (2,040,589 ds/min), 1,638,992 states left on queue.
+Progress(25) at 2026-09-28 07:25:42: 68,076,040 states generated (10,201,788 s/min), 15,153,304 distinct states found (1,917,561 ds/min), 1,521,770 states left on queue.
+Progress(26) at 2026-09-28 07:26:42: 78,978,312 states generated (10,902,272 s/min), 17,110,117 distinct states found (1,956,813 ds/min), 1,293,988 states left on queue.
+Progress(28) at 2026-09-28 07:27:42: 90,654,306 states generated (11,675,994 s/min), 19,014,028 distinct states found (1,903,911 ds/min), 839,988 states left on queue.
+Model checking completed. No error has been found.
+  Estimates of the probability that TLC did not check all reachable states
+  because two distinct states had the same fingerprint:
+  calculated (optimistic):  val = 9.0E-5
+  based on the actual fingerprints:  val = 5.1E-4
+101761269 states generated, 20544166 distinct states found, 0 states left on queue.
+The depth of the complete state graph search is 38.
+The average outdegree of the complete state graph is 1 (minimum is 0, the maximum 14 and the 95th percentile is 3).
+Finished in 10min 02s at (2026-09-28 07:28:40)
+rc=0

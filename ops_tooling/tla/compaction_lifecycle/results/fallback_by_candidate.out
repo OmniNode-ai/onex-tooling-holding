@@ -1,0 +1,183 @@
+model-sha256: 4dc128716d1286c684046e049622c600700406b5ee79139aaac676e70533ff76
+cfg-sha256: 33ce3705e78a57efab99adf155fe857071c0fd450e8491b236803b6eff0f035c
+TLC2 Version 2.19 of 08 August 2024 (rev: 5a47802)
+Running breadth-first search Model-Checking with fp 93 and seed 4716642490964226220 with 3 workers on 4 cores with 4551MB heap and 64MB offheap memory [pid: 8322] (Linux 7.0.0-34-generic amd64, Eclipse Adoptium 21.0.12.1 x86_64, MSBDiskFPSet, DiskStateQueue).
+Parsing file CompactionLifecycle.tla
+Parsing file Naturals.tla
+Parsing file FiniteSets.tla
+Parsing file Sequences.tla
+Semantic processing of module Naturals
+Semantic processing of module Sequences
+Semantic processing of module FiniteSets
+Semantic processing of module CompactionLifecycle
+Starting... (2026-10-15 02:40:41)
+Computing initial states...
+Finished computing initial states: 1 distinct state generated at 2026-10-15 02:40:42.
+Error: Invariant FallbackNeverConflictsWithAnotherInvocation is violated.
+Error: The behavior up to this point is:
+State 1: <Initial predicate>
+/\ completed = {}
+/\ ist = <<"idle", "idle">>
+/\ actVV = <<0, 0>>
+/\ nb = 0
+/\ cvv = <<0, 0>>
+/\ dups = 0
+/\ pe = <<0, 0>>
+/\ dropped = {}
+/\ rcv = {}
+/\ kind = <<"real", "real">>
+/\ cap = {}
+/\ kept = {}
+/\ bcontent = <<<<"none", 0>>, <<"none", 0>>>>
+/\ tb = <<0, 0>>
+/\ acc = <<"none", "none">>
+/\ edgeDone = <<FALSE, FALSE>>
+/\ pub = {}
+/\ capTail = {}
+/\ implAct = <<"none", "none">>
+/\ vv = 1
+/\ pkg = <<FALSE, FALSE>>
+
+State 2: <Start line 133, col 5 to line 140, col 55 of module CompactionLifecycle>
+/\ completed = {}
+/\ ist = <<"started", "idle">>
+/\ actVV = <<0, 0>>
+/\ nb = 0
+/\ cvv = <<0, 0>>
+/\ dups = 0
+/\ pe = <<0, 0>>
+/\ dropped = {}
+/\ rcv = {}
+/\ kind = <<"real", "real">>
+/\ cap = {}
+/\ kept = {}
+/\ bcontent = <<<<"none", 0>>, <<"none", 0>>>>
+/\ tb = <<1, 0>>
+/\ acc = <<"none", "none">>
+/\ edgeDone = <<FALSE, FALSE>>
+/\ pub = {}
+/\ capTail = {}
+/\ implAct = <<"none", "none">>
+/\ vv = 1
+/\ pkg = <<FALSE, FALSE>>
+
+State 3: <Build line 143, col 5 to line 150, col 59 of module CompactionLifecycle>
+/\ completed = {}
+/\ ist = <<"built", "idle">>
+/\ actVV = <<0, 0>>
+/\ nb = 0
+/\ cvv = <<1, 0>>
+/\ dups = 0
+/\ pe = <<0, 0>>
+/\ dropped = {}
+/\ rcv = {}
+/\ kind = <<"real", "real">>
+/\ cap = {}
+/\ kept = {1}
+/\ bcontent = <<<<"none", 0>>, <<"none", 0>>>>
+/\ tb = <<1, 0>>
+/\ acc = <<"none", "none">>
+/\ edgeDone = <<FALSE, FALSE>>
+/\ pub = {<<"prep", 1, "-">>}
+/\ capTail = {}
+/\ implAct = <<"none", "none">>
+/\ vv = 1
+/\ pkg = <<FALSE, FALSE>>
+
+State 4: <Fail line 165, col 5 to line 169, col 68 of module CompactionLifecycle>
+/\ completed = {}
+/\ ist = <<"fellback", "idle">>
+/\ actVV = <<0, 0>>
+/\ nb = 0
+/\ cvv = <<1, 0>>
+/\ dups = 0
+/\ pe = <<0, 0>>
+/\ dropped = {}
+/\ rcv = {}
+/\ kind = <<"real", "real">>
+/\ cap = {}
+/\ kept = {1}
+/\ bcontent = <<<<"none", 0>>, <<"none", 0>>>>
+/\ tb = <<1, 0>>
+/\ acc = <<"none", "none">>
+/\ edgeDone = <<FALSE, FALSE>>
+/\ pub = {<<"fb", 1, "-">>, <<"prep", 1, "-">>}
+/\ capTail = {}
+/\ implAct = <<"none", "none">>
+/\ vv = 1
+/\ pkg = <<FALSE, FALSE>>
+
+State 5: <Start line 133, col 5 to line 140, col 55 of module CompactionLifecycle>
+/\ completed = {}
+/\ ist = <<"fellback", "started">>
+/\ actVV = <<0, 0>>
+/\ nb = 0
+/\ cvv = <<1, 0>>
+/\ dups = 0
+/\ pe = <<0, 0>>
+/\ dropped = {}
+/\ rcv = {}
+/\ kind = <<"real", "pre">>
+/\ cap = {}
+/\ kept = {1}
+/\ bcontent = <<<<"none", 0>>, <<"none", 0>>>>
+/\ tb = <<1, 1>>
+/\ acc = <<"none", "none">>
+/\ edgeDone = <<FALSE, TRUE>>
+/\ pub = {<<"fb", 1, "-">>, <<"prep", 1, "-">>}
+/\ capTail = {}
+/\ implAct = <<"none", "none">>
+/\ vv = 1
+/\ pkg = <<FALSE, FALSE>>
+
+State 6: <Build line 143, col 5 to line 150, col 59 of module CompactionLifecycle>
+/\ completed = {}
+/\ ist = <<"fellback", "kept">>
+/\ actVV = <<0, 0>>
+/\ nb = 0
+/\ cvv = <<1, 1>>
+/\ dups = 0
+/\ pe = <<0, 0>>
+/\ dropped = {}
+/\ rcv = {}
+/\ kind = <<"real", "pre">>
+/\ cap = {}
+/\ kept = {1}
+/\ bcontent = <<<<"none", 0>>, <<"none", 0>>>>
+/\ tb = <<1, 1>>
+/\ acc = <<"none", "none">>
+/\ edgeDone = <<FALSE, TRUE>>
+/\ pub = {<<"fb", 1, "-">>, <<"prep", 1, "-">>}
+/\ capTail = {}
+/\ implAct = <<"none", "none">>
+/\ vv = 1
+/\ pkg = <<FALSE, FALSE>>
+
+State 7: <Deliver line 240, col 5 to line 244, col 64 of module CompactionLifecycle>
+/\ completed = {}
+/\ ist = <<"fellback", "kept">>
+/\ actVV = <<0, 0>>
+/\ nb = 0
+/\ cvv = <<1, 1>>
+/\ dups = 0
+/\ pe = <<0, 0>>
+/\ dropped = {}
+/\ rcv = {<<"fb", 1, "-">>}
+/\ kind = <<"real", "pre">>
+/\ cap = {}
+/\ kept = {1}
+/\ bcontent = <<<<"none", 0>>, <<"none", 0>>>>
+/\ tb = <<1, 1>>
+/\ acc = <<"none", "none">>
+/\ edgeDone = <<FALSE, TRUE>>
+/\ pub = {<<"fb", 1, "-">>, <<"prep", 1, "-">>}
+/\ capTail = {}
+/\ implAct = <<"none", "conflict">>
+/\ vv = 1
+/\ pkg = <<FALSE, FALSE>>
+
+2234 states generated, 1133 distinct states found, 764 states left on queue.
+The depth of the complete state graph search is 7.
+The average outdegree of the complete state graph is 3 (minimum is 0, the maximum 9 and the 95th percentile is 6).
+Finished in 01s at (2026-10-15 02:40:42)
+rc=12

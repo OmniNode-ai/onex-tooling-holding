@@ -1,0 +1,21 @@
+# Standing authorization for the UNATTENDED morning worktree prune (OMN-19399).
+#
+# Read by unattended.py on every run. This file is the operator's revoke switch:
+# set `enabled: false`, or delete the file, and the next 04:20 fire still
+# classifies and publishes its report but removes NOTHING, and says so in a
+# FRICTION row and a Slack page. No code change is involved.
+#
+# The consent row is named by its leading UTC stamp and its lane, never by a
+# line number. The rolling ledger is split into docs/tracking/archive/ files as
+# it grows, and a line citation stops resolving the day that happens: the older
+# omnibase_infra timer (ai.omninode.worktree-prune) cited
+# ROLLING_WORK_LEDGER.md:2717 and has refused every run since 2026-09-20,
+# because line 2717 became a NOTE row. A stamp plus a lane survives a roll.
+#
+# The row is re-read on every run and must still be an OPERATOR-CONSENT row
+# carrying both an APPROVED SCOPE and an OUT OF SCOPE list, with the approved
+# scope naming the safe class and empty orphan ticket dirs. Operator ruling,
+# 2026-09-24 (firm): the prune workflow must remove the safe class unattended.
+enabled: true
+consent_stamp: "2026-09-24T13:50:25Z"
+consent_lane: "worktree-prune-execute-2026-09-24"

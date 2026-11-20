@@ -1,0 +1,54 @@
+# Deployment overlay for the omni plugin's delegation-health check — internal (OMN-19855).
+#
+# Read by plugins/omni/skills/delegation-health/scripts/delegation_health.py, which is also run by
+# /omni:queue-status and by the session_preflight row lab_delegation_flowing. The script names no
+# lab, host, compose project or database of its own; every such fact is here, in a private repo,
+# per the operator ruling of 2026-09-26 that deployment facts come from overlays.
+#
+# Selector: --overlay, DELEGATION_HEALTH_OVERLAY_PATH, or <root>/delegation_health/overlay.yaml for
+# each root in ONEX_SKILL_OVERLAY_ROOTS (the same root the session preflight runner reads).
+
+overlay_version: "1.0.0"
+
+# The environment variable that holds the ssh target of the host running the lane. The value is a
+# machine fact set per operator machine; the overlay names only the variable.
+ssh_host_env: ONEX_RUNTIME_SSH_HOST
+
+# The lab dev lane: the compose project whose projection the dashboards read.
+compose_project: omnibase-infra
+postgres_service: postgres
+runtime_service: omninode-runtime
+database: omnidash_analytics
+db_user: postgres
+
+# The delegation contract the runtime rendered at boot (config provenance sits beside it).
+contract_path: /app/data/delegation/bifrost_delegation.yaml
+
+# A provider is expected to carry traffic when it is the first model with a live endpoint in one
+# of these routing tiers (OMN-19855).
+expected_tiers: [local, cheap_cloud]
+
+# Harness rungs (OMN-17427): GLM runs only through Claude Code, and the direct cloud-glm rung is
+# retired, so the rendered contract has no GLM endpoint. harness-delegate writes harness:<name>:<model>
+# attempts; the check judges every harness rung it sees and lists these names even when idle.
+harness_rungs: [claude-glm]
+
+# An expected provider with zero events for this long while lanes run makes the verdict DEGRADED.
+quiet_minutes: 120
+
+# Below five expected attempts, zero draws is plausible by chance.
+# The share is the placement weight divided by the routing group's weights.
+spread_peer_min_expected: 5
+
+# A lane counts as running when it has an open CLAIM and wrote a ledger row this recently.
+lanes_live_minutes: 120
+
+# The jev count (typed decisions claimed in TERMINAL rows in 24h) reads the ledger through the work-ledger reader node
+# (OMN-19998, ledger readers off the file) instead of scanning the ledger file. jev_reader is the name the reader overlay
+# lists in moved_readers (the overlays repository's node_work_ledger_reader_effect overlay); a failed, stale or
+# not-moved read prints no jev line and the file is never read in its place. Remove jev_reader here to roll back to the
+# file scan. The interpreter is the first word of the command the named variable holds (the lane inbox guard's way).
+jev_reader: delegation-health
+jev_reader_module: omnimarket.nodes.node_work_ledger_reader_effect
+jev_reader_interpreter_env: ONEX_LEDGER_BUS_APPEND_COMMAND
+jev_reader_timeout_s: 300

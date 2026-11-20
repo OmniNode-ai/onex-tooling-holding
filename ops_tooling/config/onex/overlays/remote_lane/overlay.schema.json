@@ -1,0 +1,105 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "description": "remote_lane deployment values read from the sources named on each property (OMN-21373).",
+  "additionalProperties": false,
+  "required": [
+    "runtime_config_rel",
+    "cloud_excluded_roles",
+    "store_project_id",
+    "store_environment",
+    "store_folder",
+    "store_identity_env_file",
+    "store_reader_host",
+    "store_lane_env",
+    "store_bootstrap_env",
+    "store_intake_host",
+    "store_intake_env_file",
+    "store_sensitive_name_parts"
+  ],
+  "properties": {
+    "runtime_config_rel": {
+      "type": "string",
+      "minLength": 1,
+      "description": "Read from plugins/omni/skills/remote-lane/scripts/onex_remote_lane.py: RUNTIME_CONFIG_REL."
+    },
+    "cloud_excluded_roles": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "string",
+        "minLength": 1
+      },
+      "description": "Read from plugins/omni/skills/remote-lane/scripts/onex_remote_lane.py: CLOUD_EXCLUDED_REPOS, expressed as repos overlay roles."
+    },
+    "store_project_id": {
+      "type": "string",
+      "minLength": 1,
+      "pattern": "^[A-Za-z0-9._/~-]+$",
+      "description": "Read from plugins/omni/skills/remote-lane/scripts/onex_remote_lane.py: ship_store_secrets (OMN-21672)."
+    },
+    "store_environment": {
+      "type": "string",
+      "minLength": 1,
+      "pattern": "^[A-Za-z0-9._/~-]+$",
+      "description": "Read from plugins/omni/skills/remote-lane/scripts/onex_remote_lane.py: ship_store_secrets (OMN-21672)."
+    },
+    "store_folder": {
+      "type": "string",
+      "minLength": 1,
+      "pattern": "^[A-Za-z0-9._/~-]+$",
+      "description": "Read from plugins/omni/skills/remote-lane/scripts/onex_remote_lane.py: ship_store_secrets (OMN-21672)."
+    },
+    "store_identity_env_file": {
+      "type": "string",
+      "minLength": 1,
+      "pattern": "^[A-Za-z0-9._/~-]+$",
+      "description": "Read from plugins/omni/skills/remote-lane/scripts/onex_remote_lane.py: ship_store_secrets (OMN-21672)."
+    },
+    "store_reader_host": {
+      "type": "string",
+      "minLength": 1,
+      "pattern": "^[A-Za-z0-9._/~-]+$",
+      "description": "Read from plugins/omni/skills/remote-lane/scripts/onex_remote_lane.py: ship_store_secrets (OMN-21672)."
+    },
+    "store_lane_env": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "string",
+        "pattern": "^[A-Z][A-Z0-9_]*$"
+      },
+      "description": "Read from plugins/omni/skills/remote-lane/scripts/onex_remote_lane.py: ship_store_secrets (OMN-21672)."
+    },
+    "store_bootstrap_env": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "string",
+        "pattern": "^[A-Z][A-Z0-9_]*$"
+      },
+      "description": "Read from plugins/omni/skills/remote-lane/scripts/onex_remote_lane.py: ship_store_secrets (OMN-21672)."
+    },
+    "store_intake_host": {
+      "type": "string",
+      "minLength": 1,
+      "pattern": "^[A-Za-z0-9._/~-]+$",
+      "description": "Read from src/ops_tooling_pkg/nodes/node_launchd_drift_effect/handlers/handler_host_drift_observe.py: the env-file check (OMN-21672)."
+    },
+    "store_intake_env_file": {
+      "type": "string",
+      "minLength": 1,
+      "pattern": "^[A-Za-z0-9._/~-]+$",
+      "description": "Read from src/ops_tooling_pkg/nodes/node_launchd_drift_effect/handlers/handler_host_drift_observe.py: the env-file check (OMN-21672)."
+    },
+    "store_sensitive_name_parts": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "string",
+        "pattern": "^[A-Z][A-Z0-9_*]*$"
+      },
+      "description": "Read from src/ops_tooling_pkg/nodes/node_launchd_drift_effect/handlers/handler_host_drift_observe.py: the env-file check (OMN-21672)."
+    }
+  }
+}

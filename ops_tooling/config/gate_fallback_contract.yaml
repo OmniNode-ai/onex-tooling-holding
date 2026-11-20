@@ -1,0 +1,363 @@
+# Gate fallback contract (OMN-20864, ruling 2026-10-12T05:03:28Z). Read by
+# tests/test_gate_fallback_contract_omn20864.py; that test states the rules.
+#
+# One entry per gate first added on or after 2026-10-08 (the date comes from git history).
+# `strict: true` over a replaced path needs `replacement_success: ledger:<timestamp>`; no entry
+# below needs one yet, because none replaces a path that has proved out.
+gates:
+  - gate: hook:team-retrospective
+    replaces: none
+    strict: true
+    basis: OMN-17427 adds the first CI and pre-commit check of the Friday retrospective timer, its typed Slack publish request and checked completion receipt; no earlier gate covered this process.
+  - gate: hook:lab-git-author-admission
+    replaces: none
+    strict: true
+    basis: OMN-21287 adds the first required-CI and pre-commit check of declared per-host Git author identities and commit-and-push admission; the existing lane-account checks remain in place and no earlier gate checked admission against a commit-and-push probe.
+  - gate: hook:lab-broker-acls
+    replaces: none
+    strict: true
+    basis: OMN-17427 adds a pre-commit hook for the existing broker ACL suite and its host credential registration regression; existing reconciliation checks remain in CI.
+  - gate: hook:delegation-free-frontier-overlay
+    replaces: none
+    strict: true
+    basis: OMN-17427 adds the first check that private deployment settings leave the delegation ladder to its owning contract and that the runtime loader accepts the ladder with its registered backend placements; no existing gate checked this ownership boundary.
+  - gate: hook:prepr-slot-model
+    replaces: none
+    strict: true
+    basis: OMN-17427 adds the first required-CI and pre-commit validation of the pre-PR model host-scoped slot bounds and digest-bound TLC results; the existing model has no enforcement path to replace.
+  - gate: hook:ledger-renderer-release
+    replaces: none
+    strict: true
+    basis: The OMN-17427 dependency update adds tests/ledger/test_ledger_renderer_release_omn17427.py and its CI and pre-commit checks; this is the first check of the published core renderer against the consuming ledger grammar and replaces no enforcement path.
+  - gate: hook:repository-documentation-routing
+    replaces: none
+    strict: true
+    basis: RULING 2026-10-17T23:53:24Z (OMN-17427); this repository has no documentation placement hook and the existing fleet validator rejects generated ledger snapshots, so this new check replaces no enforced path.
+  - gate: hook:lab-hosts-ledger-writer
+    replaces: none
+    strict: true
+    basis: OMN-17427 adds the first pre-commit comparison of every pool host's ledger writer with the installer contract; existing ledger bus checks remain in place.
+  - gate: hook:ruling-guard-wiring
+    replaces: none
+    strict: true
+    basis: OMN-17427 adds this check of the existing ruling guards' CI and pre-commit path references; their behavioral suites remain in place and no earlier hook checked those references.
+  - gate: hook:omni-home-freeze-policy
+    replaces: none
+    strict: true
+    basis: OMN-17427 adds this behavioral-suite hook for the existing registry growth checker; the checker and its pytest coverage remain in place and no earlier hook ran this suite.
+  - gate: hook:host-installer-lab-stack-reaper
+    replaces: none
+    strict: true
+    basis: The OMN-17427 reaper installer change adds this check over the existing host installer and leased-stack reaper; the existing reaper checks remain in CI and pre-commit, and no earlier gate checks installation or drift repair of its timer.
+  - gate: hook:retired-repository-targets
+    replaces: none
+    strict: true
+    basis: OMN-17427 adds retirement target and product-contract resolver negative controls to required CI and pre-commit; no earlier gate enforced the retired target exclusions.
+  - gate: hook:watcher-database-branch-claim
+    replaces: none
+    strict: true
+    basis: OMN-17427 adds the first required-CI and pre-commit check of the watcher's database branch-claim request producer; no earlier gate enforced this producer.
+  - gate: ci-job:operator-hooks-installed-payloads
+    replaces: none
+    strict: true
+    basis: ops_tooling_pkg#546 commit message read 2026-10-13; it names no replaced enforcement path
+  - gate: ci-job:operator-question-dedupe
+    replaces: none
+    strict: true
+    basis: ops_tooling_pkg#535 commit message read 2026-10-13; it names no replaced enforcement path
+  - gate: ci-job:pytest
+    replaces: none
+    strict: true
+    basis: ops_tooling_pkg#376 commit message read 2026-10-13; it names no replaced enforcement path
+  - gate: ci-job:registry-off-occ
+    replaces: none
+    strict: true
+    basis: RULING 2026-10-14T05:30:13Z names ticket OMN-20074 and no enforcement path before this job; it replaces no gate
+  - gate: ci-job:shape-gates
+    replaces: the standalone direct-model-call.yml and canonical-file-shape.yml workflows as the enforcing path
+    strict: false
+    fallback:
+      old_path: .github/workflows/direct-model-call.yml and .github/workflows/canonical-file-shape.yml, both still present and running
+      log: the run logs of those two workflows
+    basis: ops_tooling_pkg#536 commit message
+  - gate: hook:anthropic-key-scan
+    replaces: none
+    strict: true
+    basis: ops_tooling_pkg#490 commit message read 2026-10-13; it names no replaced enforcement path
+  - gate: hook:capability-tool-collectors
+    replaces: none
+    strict: true
+    basis: ops_tooling_pkg#324 commit message read 2026-10-13; it names no replaced enforcement path
+  - gate: hook:compaction-lifecycle-model
+    replaces: none
+    strict: true
+    basis: The declaration for hook:compaction-lifecycle-model with strict true and replaces none is based on contracts/OMN-18531.yaml and tests/tla/test_compaction_lifecycle_model_omn18531.py, which add checks for the new compaction lifecycle model, its retained TLC results and its design note, and name no replaced enforcement path.
+  - gate: hook:claude-key-registration-by-script
+    replaces: none
+    strict: true
+    basis: ledger RULING 2026-10-12T04:58:27Z (mechanism-ticket OMN-20994) read 2026-10-13; the hook is new in this change and takes over from no enforcement path
+  - gate: hook:decisions-classifier-attribution
+    replaces: none
+    strict: true
+    basis: ops_tooling_pkg#366 commit message read 2026-10-13; it names no replaced enforcement path
+  - gate: hook:decisions-classifier-confidence
+    replaces: none
+    strict: true
+    basis: ops_tooling_pkg#370 commit message read 2026-10-13; it names no replaced enforcement path
+  - gate: hook:default-branch-audit
+    replaces: none
+    strict: true
+    basis: ops_tooling_pkg#548 commit 96a7a97d9577b6e0196836a5a8fe0af0221f28af and node_default_branch_audit_effect/contract.yaml read 2026-10-13; the branch-protection audit carried no default-branch check
+  - gate: hook:gh-reader-token-guards
+    replaces: none
+    strict: true
+    basis: ops_tooling_pkg#353 commit message read 2026-10-13; it names no replaced enforcement path
+  - gate: hook:omni-home-freeze-gate-suite
+    replaces: none
+    strict: true
+    basis: The ops_tooling_pkg pull request for OMN-17427 adds this hook over the existing tests/test_registry_root_freeze_gate.py suite, which the pytest shards keep running, and names no replaced enforcement path.
+  - gate: hook:ledger-friction-guard
+    replaces: none
+    strict: true
+    basis: The ops_tooling_pkg pull request for OMN-17427 adds this hook over the existing tests/ledger/test_ledger_lock_friction_guard.py suite, which the pytest shards keep running, and names no replaced enforcement path.
+  - gate: hook:heavy-work-guard-registration
+    replaces: none
+    strict: true
+    basis: ops_tooling_pkg#496 commit message read 2026-10-13; it names no replaced enforcement path
+  - gate: hook:host-drift-landing-units
+    replaces: none
+    strict: true
+    basis: The ops_tooling_pkg pull request for OMN-20780 adds this hook over tests the pytest shards keep running, and names no replaced enforcement path.
+  - gate: hook:host-drift-ci-overlay-pin
+    replaces: none
+    strict: true
+    basis: this change adds the check (OMN-21087); no earlier gate or check judged the CI overlay pin against the overlay paths, so it replaces no enforcement path
+  - gate: hook:host-drift-notify-reduce-sync
+    replaces: none
+    strict: true
+    basis: ops_tooling_pkg#562 body and contracts/OMN-20780.yaml read 2026-10-13; they name no replaced enforcement path
+  - gate: hook:host-drift-one-model-studio
+    replaces: none
+    strict: true
+    basis: ops_tooling_pkg#497 commit message read 2026-10-13; it names no replaced enforcement path
+  - gate: hook:host-reconcile-entry-per-lab-host
+    replaces: none
+    strict: true
+    basis: ops_tooling_pkg#375 commit message read 2026-10-13; it names no replaced enforcement path
+  - gate: hook:hourly-tick-failed-read
+    replaces: none
+    strict: true
+    basis: OMN-20047 description read 2026-10-15; it names no replaced enforcement path
+  - gate: hook:lab-removal-checked
+    replaces: none
+    strict: true
+    basis: The ops_tooling_pkg pull request for OMN-20864 adds this hook over the existing tests/nodes/test_lab_removal_effect.py suite, which the pytest shards keep running, and names no replaced enforcement path.
+  - gate: hook:drain-watchdog-repo-stall
+    replaces: none
+    strict: true
+    basis: The ops_tooling_pkg pull request for OMN-19998 adds this hook over the new repo_stall tests of tests/test_drain_watchdog_repo_stall.py, which the pytest shards also run, and names no replaced enforcement path.
+  - gate: hook:lane-delegate-command-single-source
+    replaces: none
+    strict: true
+    basis: ops_tooling_pkg#323 commit message read 2026-10-13; it names no replaced enforcement path
+  - gate: hook:launchd-gh-shim-path
+    replaces: none
+    strict: true
+    basis: ops_tooling_pkg#374 commit message read 2026-10-13; it names no replaced enforcement path
+  - gate: hook:launchd-heredoc-quote
+    replaces: none
+    strict: true
+    basis: ops_tooling_pkg#530 commit message read 2026-10-13; it names no replaced enforcement path
+  - gate: hook:ledger-bus-dual-write
+    replaces: none
+    strict: true
+    basis: The ops_tooling_pkg pull request for OMN-20780 adds this hook over the existing tests/ledger/test_ledger_bus_emit_omn19513.py and tests/ledger/test_ledger_bus_write_omn20275.py, which the pytest shards keep running, and names no replaced enforcement path.
+  - gate: hook:ledger-bus-pending-relay
+    replaces: none
+    strict: true
+    basis: The ops_tooling_pkg pull request for OMN-20708 adds tests/ledger/test_ledger_bus_pending_relay_omn20708.py, which checks a new behaviour of the bus append (a row with no receipt is queued in the relay outbox), and names no replaced enforcement path.
+  - gate: hook:ledger-publish-target-policy
+    replaces: none
+    strict: true
+    basis: RULING 2026-10-08T15:35:53Z keeps the ledger bridge target in ops_tooling_pkg; this OMN-17427 change adds target-policy refusal controls beside the existing publisher tests and replaces no enforcement path.
+  - gate: hook:ledger-projection-model
+    replaces: none
+    strict: true
+    basis: The declaration for hook:ledger-projection-model with strict true and replaces none is based on ops_tooling_pkg#555, commit 0e1fba5f506c0c02802772bf38669b3bdfff6455, and contracts/OMN-20275.yaml, which add checks for the new ledger projection model, its retained TLC results, and its review verdict, and name no replaced enforcement path.
+  - gate: hook:ledger-terminal-delegation-cells
+    replaces: none
+    strict: true
+    basis: ops_tooling_pkg#534 commit message read 2026-10-13; it names no replaced enforcement path
+  - gate: hook:ledger-test-write-guard
+    replaces: none
+    strict: true
+    basis: ops_tooling_pkg#533 commit message read 2026-10-13; it names no replaced enforcement path
+  - gate: hook:live-state-isolation
+    replaces: none
+    strict: true
+    basis: ops_tooling_pkg#429 commit message read 2026-10-13; it names no replaced enforcement path
+  - gate: hook:morning-watcher-inventory
+    replaces: none
+    strict: true
+    basis: ops_tooling_pkg#391 commit message read 2026-10-13; it names no replaced enforcement path
+  - gate: hook:no-direct-infisical-provider-key
+    replaces: none
+    strict: true
+    basis: RULING 2026-10-11T15:00:01Z names mechanism-ticket OMN-20967 and no enforcement path before this hook; the ruling row records no replaced path
+  - gate: hook:operator-hooks-installed-payloads
+    replaces: none
+    strict: true
+    basis: ops_tooling_pkg#546 commit message read 2026-10-13; it names no replaced enforcement path
+  - gate: hook:operator-capture-obligations
+    replaces: none
+    strict: true
+    basis: ops_tooling_pkg#551 commit 869b385d76a121e2d94ee9508070d7da81287298 and contracts/OMN-20905.yaml read 2026-10-13; the hook adds operator capture obligation fixtures and names no replaced enforcement path
+  - gate: hook:operator-question-dedupe
+    replaces: none
+    strict: true
+    basis: ops_tooling_pkg#535 commit message read 2026-10-13; it names no replaced enforcement path
+  - gate: hook:plist-templates-well-formed
+    replaces: none
+    strict: true
+    basis: The ops_tooling_pkg pull request for OMN-17427 adds tests/triggers/test_plist_templates_well_formed_omn17427.py, which checks a new property (every tracked launchd plist template renders to a plist that parses), and names no replaced enforcement path.
+  - gate: hook:registry-off-occ
+    replaces: none
+    strict: true
+    basis: RULING 2026-10-14T05:30:13Z names ticket OMN-20074 and no enforcement path before this hook; it replaces no gate
+  - gate: hook:release-cut-tick-declared
+    replaces: none
+    strict: true
+    basis: ops_tooling_pkg#552 commit d6a11d664f214c1a9d33c9755232188d24a54d9f and contracts/OMN-18595.yaml read 2026-10-13; the hook adds release-cut tick declaration and evidence replay checks and names no replaced enforcement path
+  - gate: hook:shape-gates-negative-control
+    replaces: the standalone direct-model-call.yml and canonical-file-shape.yml workflows as the enforcing path
+    strict: false
+    fallback:
+      old_path: .github/workflows/direct-model-call.yml and .github/workflows/canonical-file-shape.yml, both still present and running
+      log: the run logs of those two workflows
+    basis: ops_tooling_pkg#536 commit message
+  - gate: workflow:branch-protection-audit.yml
+    replaces: the copies of the branch-protection auditor in onex_change_control and omnibase_infra
+    strict: false
+    fallback:
+      old_path: the auditor copies in onex_change_control and omnibase_infra, which ops_tooling_pkg#462 deletes only after the scheduled job here is green
+      log: the run log of .github/workflows/branch-protection-audit.yml
+    basis: ops_tooling_pkg#462 commit message
+  - gate: workflow:launchd-gh-shim-path.yml
+    replaces: none
+    strict: true
+    basis: ops_tooling_pkg#374 commit message read 2026-10-13; it names no replaced enforcement path
+  - gate: workflow:hook-push-rehearsal.yml
+    replaces: none
+    strict: true
+    basis: OMN-17427 adds this caller of the omnibase_core hook push rehearsal on 2026-10-17; it replaces no enforcement path
+  - gate: ci-job:nonblocking-path-inventory
+    replaces: none
+    strict: true
+    basis: ops_tooling_pkg#549 commit message read 2026-10-13; it names no replaced enforcement path
+  - gate: hook:observe-only-inventory
+    replaces: none
+    strict: true
+    basis: ops_tooling_pkg#549 commit message read 2026-10-13; it names no replaced enforcement path
+  - gate: workflow:observe-only-inventory-cleanup.yml
+    replaces: none
+    strict: true
+    basis: OMN-17427, this change adds it; it gates no change (schedule, workflow_dispatch and repository_dispatch only) and deletes the inventory entries ci-job:nonblocking-path-inventory no longer fails a change on, so it replaces no enforcement path
+  - gate: hook:installer-tick-declared
+    replaces: none
+    strict: true
+    basis: ops_tooling_pkg#550 commit message read 2026-10-13; it names no replaced enforcement path
+  - gate: hook:gate-fallback-contract
+    replaces: none
+    strict: true
+    basis: this change adds the check; no earlier path enforced the contract
+  - gate: hook:host-drift-ruling-shape
+    replaces: none
+    strict: true
+    basis: RULING 2026-10-07T07:11:23Z and the ruling_mechanisms audit line for it, read 2026-10-13; no earlier gate held the shape of the host drift nodes, so it replaces no enforcement path
+  - gate: hook:lab-work-serve-every-pool-host
+    replaces: none
+    strict: true
+    basis: RULING 2026-10-05T14:45:29Z and the ruling_mechanisms audit line for it, read 2026-10-14; no earlier gate held that every pool host's lab-work serve is watched by host drift, so it replaces no enforcement path
+  - gate: hook:merge-sweep-workflow-brief
+    replaces: none
+    strict: true
+    basis: RULING 2026-10-14T04:56:52Z names mechanism-ticket OMN-20864; tests/test_workflow_brief_merge_sweep.py ran in no named ci step and no hook before this one, so it replaces no enforcement path
+  - gate: hook:merge-group-required-checks
+    replaces: none
+    strict: true
+    basis: RULING 2026-10-13T22:42:38Z; no earlier gate held that the required ci check runs on a merge queue entry, so it replaces no enforcement path
+  - gate: hook:lab-stack-reaper
+    replaces: none
+    strict: true
+    basis: this change (plan unit M47 deliverable 2) adds the first check of the reaper node and names no replaced enforcement path
+  - gate: hook:ci-setup-budget
+    replaces: none
+    strict: true
+    basis: OMN-19998, this change adds it; no earlier gate held the time budget of a check step in the required ci graph, so it replaces no enforcement path
+  - gate: hook:lab-stack-reaper-model
+    replaces: none
+    strict: true
+    basis: ops_tooling_pkg#563 commit b27359ee48808c39a59a593ec0b9584bdcc2c06b read 2026-10-14; a new TLA+ model check for plan unit M47 that names no replaced enforcement path
+  - gate: ci-job:model-config-guard
+    replaces: none
+    strict: true
+    basis: the OMN-21147 change commit message read 2026-10-15; it names no replaced enforcement path
+  - gate: hook:check-hardcoded-model-config-compute
+    replaces: none
+    strict: true
+    basis: the OMN-21147 change commit message read 2026-10-15; it names no replaced enforcement path
+  - gate: hook:closeout-unreached-and-orphan-contract
+    replaces: none
+    strict: true
+    basis: The ops_tooling_pkg pull request for OMN-20718 adds this hook over the existing closer tests of tests/test_dod_closeout_sweep.py, which the pytest shards keep running, and names no replaced enforcement path.
+  - gate: hook:ledger-emit-survives-parent-exit
+    replaces: none
+    strict: true
+    basis: OMN-20734 scope read 2026-10-14; the emit tests ran under the whole-package pytest job only and none killed the appending parent, so it replaces no enforcement path
+  - gate: hook:scheduled-ledger-writers-omni-home
+    replaces: none
+    strict: true
+    basis: OMN-20734 scope read 2026-10-14; no earlier gate held that a scheduled ledger writer's unit sets registry_root, so it replaces no enforcement path
+  - gate: hook:stuck-hours-daily
+    replaces: none
+    strict: true
+    basis: OMN-19998 adds tests/nodes/test_stuck_hours_daily.py and its hook for the new daily stuck-hours capability; contracts/OMN-19998.yaml req-omn19998-daily-stuck-hours names no replaced enforcement path.
+  - gate: ci-job:plan
+    replaces: the full sixteen-shard pytest run on every pull request, merge queue entry and push to main (OMN-19998)
+    strict: false
+    fallback:
+      old_path: the full suite, still run by the same pytest job of ci.yml on its nightly schedule and on workflow_dispatch
+      log: the scheduled and dispatched ci.yml run logs
+    basis: branch omn-19998-ci-impact-freeze commit message (OMN-19998); the plan narrows each change's pytest run and the nightly run keeps the whole suite
+  - gate: hook:src-freeze
+    replaces: none
+    strict: true
+    basis: branch omn-19998-ci-impact-freeze commit message (OMN-19998); a new gate from operator RULING 2026-10-16T07:14:01Z, it names no replaced enforcement path
+  - gate: hook:hosted-placement-ruling
+    replaces: none
+    strict: true
+    basis: branch omn-17427-hosted-placement-ruling commit message (OMN-17427); a new gate from operator RULING 2026-10-16T17:44:31Z, it names no replaced enforcement path
+  - gate: hook:required-context-mint
+    replaces: none
+    strict: true
+    basis: The ops_tooling_pkg pull request for OMN-17427 adds this hook over the existing tests/test_merge_group_required_checks_omn20497.py trigger check, which the pytest shards keep running; no earlier gate compared a required context with the check names the workflows mint.
+  - gate: hook:launchd-ledger-record
+    replaces: none
+    strict: true
+    basis: OMN-19513 scope read 2026-10-18; no earlier gate held that a launchd unit appending ledger rows declares ONEX_LEDGER_PATH (the OMN-20734 hook holds registry_root only), so it replaces no enforcement path.
+  - gate: hook:lab-collector-ticks
+    replaces: none
+    strict: true
+    basis: OMN-21275 adds fleet collector declaration, installation and recorded cleanup checks in tests/triggers/test_host_installer_lab_collectors_omn21275.py and tests/worktrees/test_lab_collectors_omn21275.py; no earlier gate held these fleet collector ticks.
+  - gate: hook:landing-metrics-tick
+    replaces: none
+    strict: true
+    basis: The ops_tooling_pkg pull request for OMN-19852 adds this hook over the two landing-metrics tick test files, which the pytest shards keep running; no earlier gate held the tick's declaration or its heartbeat-first order, so it replaces no enforcement path.
+  - gate: hook:lane-s-lanes-local-lane
+    replaces: none
+    strict: true
+    basis: OMN-20824 adds the first check of the lane table's local lane for the developer-run broker, with every other lane held to its digest from before the change, in the existing lane table test file because the data-only freeze (OMN-21374) refuses a new test file; no earlier gate checked the local lane, so it replaces no enforcement path.
+  - gate: ci-job:change-scan
+    replaces: none
+    strict: true
+    basis: OMN-21270 adds the first CI scan of what a change adds, with the backup scan's secret scanner and hygiene gate (RULING 2026-09-26T21:59:47Z), so a ledger-only change that skips the pytest shards is still scanned; no earlier CI job scanned additions, so it replaces no enforcement path.

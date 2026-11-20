@@ -1,0 +1,31 @@
+# Overlay for the cloud pool of the throughput tick's lab fill (OMN-21732).
+#
+# Read by node_idle_slot_fill_effect (cloud_fill.load_overlay) as the "cloud_fill" overlay, found under
+# ONEX_SKILL_OVERLAY_ROOTS like every other overlay in this plugin. Flat `key: value` lines only. An absent or invalid
+# overlay sends no cloud lane and the tick's cloud line says why; no value below has a default in code.
+#
+# Operator rulings: 2026-10-21T21:14:58Z (start sending backlog tickets to the cloud), 2026-10-30T01:25:29Z (run more work
+# in the cloud) and 2026-10-31 (push as much as possible to cloud). About 1300 dollars of cloud credit expire 2026-11-05.
+overlay_version: "1.0.0"
+ticket: OMN-21732
+
+# Cloud sessions the fill may have starting at once, counted apart from the lab's slots. The cloud placement node's own
+# per-account cap (cloud-credit --slots) still bounds what can start.
+slots: 8
+
+# Dollars of cloud credit the fill may rely on across the accounts, and the dollars one cloud lane is assumed to use until
+# a run's measured cost replaces it (cloud-lanes-1155 measures it from receipts). With a fresh reading the fill sends at most
+# floor(min(credit read, credit_budget) / lane_credit) lanes.
+credit_budget: 1300
+lane_credit: 20
+
+# The credit lapses after this date (YYYY-MM-DD); the fill sends nothing past it.
+credit_expires: 2026-11-05
+
+# A reading of an account's credit older than this many hours is unread. Anthropic documents no programmatic read: a
+# person records one with `onex_remote_lane.py cloud-credit --account <a> --remaining <dollars>`.
+credit_max_age_hours: 48
+
+# What an unread credit allows: send (sends are bounded by slots) or hold (sends nothing). The credit lapses on
+# credit_expires, so unread credit sends until then.
+unread_credit: send

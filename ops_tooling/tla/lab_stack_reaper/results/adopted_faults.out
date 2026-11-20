@@ -1,0 +1,33 @@
+model_digest=17c4da3210b5638e9deedd06a48b61fa3b0e5875167b87560939a3a723e47e39
+TLC2 Version 2026.09.25.163503 (rev: 8f4bc8b)
+Running breadth-first search Model-Checking with fp 40 and seed -8120798399656350794 with 10 workers on 4 cores with 1820MB heap and 64MB offheap memory [pid: 2127492] (Linux 7.0.0-31-generic amd64, Ubuntu 21.0.12.1 64bit, MSBDiskFPSet, DiskStateQueue).
+Parsing file /scratch/lab-run/runs/rlane-omn20864-3aa7-62011d/tla/lab_stack_reaper/LabStackReaper.tla
+Parsing file /tmp/tlc-10030049628326697924/Integers.tla (jar:file:/scratch/lab-run/runs/rlane-omn20864-3aa7-62011d/tla/lab_stack_reaper/tla2tools.jar!/tla2sany/StandardModules/Integers.tla)
+Parsing file /tmp/tlc-10030049628326697924/Sequences.tla (jar:file:/scratch/lab-run/runs/rlane-omn20864-3aa7-62011d/tla/lab_stack_reaper/tla2tools.jar!/tla2sany/StandardModules/Sequences.tla)
+Parsing file /tmp/tlc-10030049628326697924/FiniteSets.tla (jar:file:/scratch/lab-run/runs/rlane-omn20864-3aa7-62011d/tla/lab_stack_reaper/tla2tools.jar!/tla2sany/StandardModules/FiniteSets.tla)
+Parsing file /tmp/tlc-10030049628326697924/TLC.tla (jar:file:/scratch/lab-run/runs/rlane-omn20864-3aa7-62011d/tla/lab_stack_reaper/tla2tools.jar!/tla2sany/StandardModules/TLC.tla)
+Parsing file /tmp/tlc-10030049628326697924/Naturals.tla (jar:file:/scratch/lab-run/runs/rlane-omn20864-3aa7-62011d/tla/lab_stack_reaper/tla2tools.jar!/tla2sany/StandardModules/Naturals.tla)
+Semantic processing of module Naturals
+Semantic processing of module Integers
+Semantic processing of module Sequences
+Semantic processing of module FiniteSets
+Semantic processing of module TLC
+Semantic processing of module LabStackReaper
+Linting of module LabStackReaper
+Starting... (2026-10-13 09:32:48)
+Warning: The set Stacks has been defined to be a symmetry set but contains less than two elements.
+(Use the -nowarning option to disable this warning.)
+Computing initial states...
+Finished computing initial states: 1 distinct state generated at 2026-10-13 09:32:48.
+Progress(13) at 2026-10-13 09:32:51: 221,128 states generated (221,128 s/min), 123,189 distinct states found (123,189 ds/min), 77,353 states left on queue.
+Progress(20) at 2026-10-13 09:33:51: 21,182,988 states generated (20,961,860 s/min), 9,238,661 distinct states found (9,115,472 ds/min), 2,174,092 states left on queue.
+Model checking completed. No error has been found.
+  Estimates of the probability that TLC did not check all reachable states
+  because two distinct states had the same fingerprint:
+  calculated (optimistic):  val = 2.2E-5
+  based on the actual fingerprints:  val = 1.7E-5
+40644713 states generated, 16893214 distinct states found, 0 states left on queue.
+The depth of the complete state graph search is 32.
+The average outdegree of the complete state graph is 1 (minimum is 0, the maximum 8 and the 95th percentile is 3).
+Finished in 01min 57s at (2026-10-13 09:34:44)
+rc=0

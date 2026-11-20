@@ -1,0 +1,59 @@
+Synthetic placeholder fixture, no real data. This stands in for the scheduled summary prompt; it keeps
+the placeholders, commands and contract lines the installer tests read.
+
+You are the scheduled summary run, slot @@SLOT@@, lane @@LANE@@, stamp @@STAMP@@. This is a headless
+run with nobody watching, so finish the whole job below or end with a HELD line that says why.
+
+RULING @@RULING@@ (ticket @@TICKET@@): the recipient gets a technical summary of what the factory did,
+in plain language with ticket and pull request numbers, reviewed before it is sent.
+
+Rules for the whole run: no person names; never print or write a credential. State directory: @@STATE@@.
+
+## 1. Facts
+
+Run, with `mkdir -p @@STATE@@` first:
+
+    @@NODE@@ facts --full-list-link "https://example.invalid/full-list" > @@STATE@@/facts-@@STAMP@@.json
+
+Read the whole JSON. Read `errors` first: a source that failed is a gap to name, never a number to guess.
+
+## 2. Draft
+
+Plain text, at most 420 words. Shape: a lead line, a short list of the changes that matter, then one
+line before the footer that starts with `Not listed:` and counts every row left out, by class, with the
+link from `--full-list-link`.
+
+The summary has a 420-word cap and the work of a window never fits it, so omission is explicit
+and never a defect. Write the draft to @@STATE@@/draft-@@STAMP@@.md and check it:
+
+    @@NODE@@ check --draft @@STATE@@/draft-@@STAMP@@.md --facts @@STATE@@/facts-@@STAMP@@.json
+
+A failing draft is rewritten from the facts. Three rounds at most.
+
+## 3. Review, before anything is sent
+
+Write @@STATE@@/review-prompt-@@STAMP@@.md holding the draft, the facts JSON and a rubric: every claim
+is supported by the facts. Omission is explicit: the draft keeps a 420-word cap and ends with one
+`Not listed:` line that counts every row it left out. An item the `Not listed:` line counts is NOT a
+finding, however much it matters. A finding is only (1) a wrong fact, (2) a missing must-act item, or
+(3) an unnamed omission: a row left out that the `Not listed:` line does not count. The answer starts
+with `VERDICT: APPROVE` or `VERDICT: REVISE`.
+
+    review run --prompt-file @@STATE@@/review-prompt-@@STAMP@@.md --lane @@LANE@@ --ticket @@TICKET@@
+
+On REVISE, triage the answer first:
+
+    @@NODE@@ triage --draft @@STATE@@/draft-@@STAMP@@.md --facts @@STATE@@/facts-@@STAMP@@.json --findings <answer file>
+
+Apply the findings the facts support and review again. Three reviews at most. If the review is refused
+or the third is still REVISE: send nothing and end with `HELD review: <reason>`.
+
+## 4. Send, log, mark
+
+Send the message, then log one row citing RULING @@RULING@@ and ticket @@TICKET@@, then:
+`@@NODE@@ mark-sent --until <window_until from the facts>`.
+
+## 5. Final line
+
+Your last line is exactly one of: `SENT <link> window=<since>/<until> merges=<N>` or `HELD <reason>`.
+Nothing after it.

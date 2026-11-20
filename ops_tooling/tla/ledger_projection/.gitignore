@@ -1,0 +1,4 @@
+# TLC trace and state output (OMN-20275)
+*_TTrace_*
+states/
+tla2tools.jar

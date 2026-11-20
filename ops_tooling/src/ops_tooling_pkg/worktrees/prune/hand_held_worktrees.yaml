@@ -1,0 +1,67 @@
+# Hand-held worktrees — the rescue-only prune's exclusion list (OMN-18442).
+#
+# WHAT THIS FILE IS. A worktree named here is NEVER a rescue-only removal
+# candidate, whatever its age, whatever its pull-request state, and whatever the
+# ledger says. It is the half of the operator's 2026-09-16 ruling that BOUNDS the
+# grant: "Seven days is fine" was answered to a recommendation that carried an
+# explicit exclusion for hand-held worktrees, so a list with no way to say
+# "not this one" would be a different ruling than the one that was given.
+#
+# Authorization of record:
+# docs/tracking/archive/ROLLING_WORK_LEDGER_2026-09-18-split.md:2368 —
+# OPERATOR-CONSENT, 2026-09-16T14:34:06Z, approved_by=operator (first cited at
+# docs/tracking/ROLLING_WORK_LEDGER.md:3624, before the 2026-09-18 ledger roll).
+#
+# WHAT HAND-HELD MEANS. A worktree a person is working in directly, by hand, in
+# this session or across sessions — not one a lane created and abandoned. The
+# rescue-only class exists because a rescued tree has no PR and no live owner; a
+# hand-held tree has a live owner who is simply not a lane, and no mechanical
+# signal distinguishes the two. This file is that signal, supplied by hand.
+#
+# WHY A DECLARED FILE RATHER THAN A LIST IN THE BRIEF. A list inside an agent
+# brief is read by exactly one caller, cannot be tested against a fixture, and
+# goes stale silently. This file is read by `rescue_only_policy.load_hand_held`,
+# is pinned by `tests/test_morning_lane_rules.py`, and appears in the prune
+# report's own held-back table, so an entry that stops matching anything is
+# visible rather than merely inert.
+#
+# HOW A ROW MATCHES. Each entry names EITHER a `branch` or a `path_contains`
+# (a substring matched against the worktree path relative to the worktrees
+# root), never both. Every entry also carries a `reason` and an `added` date, so
+# a future reader can tell a live exclusion from a fossil. Matching is exact on
+# `branch` and substring on `path_contains`; nothing here is a regular
+# expression, deliberately — a regex in an exclusion list is how an exclusion
+# quietly grows to cover more than it was written for.
+#
+# REVIEWING THIS FILE. An entry is not permanent. When the person holding a
+# worktree is done with it, delete the entry rather than leaving it: a stale
+# exclusion is indistinguishable from a live one at removal time, and the whole
+# population this policy exists to drain is made of worktrees nobody remembered
+# to release.
+
+hand_held:
+  # Seeded with the operator's own registry_root refresh line. The canonical clone
+  # sat on `<owner>/omni-home-refresh-20260820` carrying uncommitted
+  # `docs/articles` edits when this policy was written; that work has since
+  # landed and the branch is gone locally, but the refresh line is a recurring
+  # hand-held surface (a `-20260915` branch exists on the same pattern), so the
+  # exclusion is seeded against the line rather than against one dated instance.
+  # Verified 2026-09-16: no worktree under the worktrees root currently matches
+  # either branch — the entries are a standing fence, not a live hold.
+  - branch: <owner>/omni-home-refresh-20260820
+    reason: >-
+      The operator's own registry_root refresh branch, which carried uncommitted
+      docs/articles edits directly in the canonical clone on 2026-09-16.
+    added: 2026-09-16
+
+  - branch: <owner>/omni-home-refresh-20260915
+    reason: >-
+      The live instance of the same recurring hand-held refresh line.
+    added: 2026-09-16
+
+  - path_contains: /articles
+    reason: >-
+      Any worktree carved out to hold article drafts by hand. Article work is
+      edited directly rather than through a lane, so it has no pull request and
+      would otherwise read as rescue-only the moment it goes a week untouched.
+    added: 2026-09-16

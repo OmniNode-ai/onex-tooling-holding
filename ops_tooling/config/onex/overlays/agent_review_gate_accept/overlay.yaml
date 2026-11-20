@@ -1,0 +1,4 @@
+# Read by omnimarket node_agent_review_gate_accept_effect (OMN-22345); changes with the dispatch and verifier overlays.
+# verifier_endpoint is the subprocess binding of omnimarket#4946 to the omniintelligence receipt verifier.
+publisher_login: "bot-account[bot]"
+verifier_endpoint: "subprocess:../omniintelligence"

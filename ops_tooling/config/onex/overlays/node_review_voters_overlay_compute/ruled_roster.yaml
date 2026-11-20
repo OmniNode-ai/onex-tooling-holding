@@ -1,0 +1,19 @@
+# The Hostile Reviewer roster the operator has ruled (OMN-20910): the voters the review voters
+# overlay must require, and no others. tests/test_review_voters_roster_lab_plus_sonnet_omn20910.py
+# fails when the required voters of
+# config/onex/overlays/node_review_voters_overlay_compute/overlay.yaml differ from this list, so a
+# voter swap is two deliberate lines in two files, one of them naming the ruling.
+#
+# Source: the operator's words of 2026-10-26 about 13:30Z, "The reviewer models should be Sonnet and
+# Opus using our API keys.", recorded by the operator-capture row cap-75732658e3 of the rolling
+# ledger (2026-10-26T13:32:35Z). It follows RULING 2026-10-12T04:56:59Z (Sonnet is the Claude API
+# review voter) and RULING 2026-10-18T15:06:49Z (one lab reviewer and one Sonnet reviewer), and
+# OPERATOR-CONSENT 2026-10-19T02:15:52Z (use the existing company Anthropic API keys).
+#
+# A model id is a deployment fact kept on the host (operator ruling 2026-10-15T13:54:36Z), so the
+# roster names voters only: voter sonnet is served the Sonnet model and voter opus-api the Opus
+# model by the host's gateways overlay, and the served ids are read from each server's /v1/models.
+schema_version: "review_voters_ruled_roster.v1"
+voters:
+  - voter_id: sonnet
+  - voter_id: opus-api

@@ -1,0 +1,13 @@
+# Overlay for omnimarket's landing worker engine node (node_landing_worker_engine_compute), OMN-19998.
+#
+# Read as the "landing_worker_engine" overlay under ONEX_SKILL_OVERLAY_ROOTS. It lays the two Codex routes over the node
+# contract's defaults: `mechanical` is a code or mechanical class on the first rung running as Codex first, and `fallback` is a
+# worker no Claude host can take running as Codex instead of waiting.
+#
+# Operator, 2026-11-05: "<removed>" A landing fix worker is work, so both routes are off and
+# there is no Codex-last fallback: a worker whose Claude account limits goes to the next pool token, then the lab and GLM, and
+# otherwise waits. Reviews do not run through this node. The plugin's own copy of the same decision is `codex_roles` in
+# merge-drain/scripts/landing_engines.json.
+codex_routes:
+  mechanical: false
+  fallback: false

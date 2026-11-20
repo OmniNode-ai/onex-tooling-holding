@@ -1,0 +1,30 @@
+# Deployment facts of the moved host-drift family (the nodes live in omnimarket, a public repository).
+# The two data files stay here, in this repository, and are found by path: nothing in omnimarket
+# names this repository. A path may use $registry_root; an unresolved variable fails loud when read.
+policy_path: $registry_root/../ops_tooling_pkg/src/ops_tooling_pkg/nodes/node_host_drift_reducer/host_drift_sync_policy.yaml
+manifest_path: $registry_root/../ops_tooling_pkg/src/ops_tooling_pkg/nodes/node_launchd_drift_effect/host_drift_manifest.yaml
+git_identity_source: $registry_root/../ops_tooling_pkg/src/ops_tooling_pkg/nodes/node_host_installer_effect/contract.yaml
+host_table_path: $HOME/.local/state/onex/overlay-store/lab_hosts/overlay.yaml
+workspace_config_overlay: $registry_root/../ops_tooling_pkg/config/onex/overlays/node_host_installer_effect/workspace-config-root.yaml
+package_copy_name: ops_tooling_pkg
+# Consumer group prefixes as the frozen copy resolved them, so a request published before the
+# switch is consumed after it, once.
+bus_identities:
+  sync_group_prefix: local.ops_tooling_pkg.host_drift_sync
+  hub_group_prefix: local.ops_tooling_pkg.host_drift_sync.hub
+  fleet_group_prefix: local.ops_tooling_pkg.host_drift_fleet
+# The family units each host is expected to run (the check and the fix serve). Declared per host,
+# not derived from the manifest role: the lab-capacity role declares only the lab-work serve.
+family_units:
+  h907: [onex-host-drift, onex-host-drift-sync-fix]
+  h908: [onex-host-drift, onex-host-drift-sync-fix]
+  h901: [onex-host-drift, onex-host-drift-sync-fix]
+  h902: [onex-host-drift, onex-host-drift-sync-fix]
+  h905: [onex-host-drift, onex-host-drift-sync-fix]
+  h903: [ai.omninode.host-drift, ai.omninode.host-drift-sync-fix]
+  h904: [ai.omninode.host-drift, ai.omninode.host-drift-sync-fix]
+  h906: [ai.omninode.host-drift, ai.omninode.host-drift-sync-fix]
+# Bounds that were module constants in the frozen copy, with the same values.
+command_timeout_seconds: 300
+action_fix_timeout_seconds:
+  install-plugin-tree: 900

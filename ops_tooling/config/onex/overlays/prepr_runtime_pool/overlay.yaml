@@ -1,0 +1,33 @@
+# Contract overlay of the pre-merge runtime pool driver
+# (omnibase_infra scripts/runtime_build/prepr_runtime_pool.py, read through
+# pool_setting from the workspace config root). Its operational numbers, the
+# command prefixes it puts in front of every pool command and the git host the
+# on-host prove script clones from. The driver declares none of them and
+# refuses to start a run when one is missing. (OMN-22153)
+schema_version: 1
+# The host the on-host script clones from; the organisation comes from the
+# repository layer map in omnibase_core.
+git_host: github.com
+# Seconds ssh waits to connect to a pool host.
+ssh_connect_timeout_s: 10
+# Seconds one probe command to a pool host may run.
+probe_timeout_s: 30
+# Seconds one lease acquire, break or release call to a pool host may run.
+lease_call_timeout_s: 30
+# Seconds the remote work directory creation and cleanup commands may run.
+remote_setup_timeout_s: 30
+# Seconds one lab fact publication may run.
+fact_publish_timeout_s: 120
+# Seconds the receipt check-run dispatch may run.
+check_run_dispatch_timeout_s: 60
+# Seconds resolving a ref in the local clone may run.
+git_resolve_timeout_s: 60
+# Seconds between health polls in the on-host probe phase.
+probe_poll_s: 15
+# Prepended to every ssh and local pool command: a non-login ssh shell on a
+# Docker Desktop Mac has no docker on PATH, and a bare `docker ps` there reads
+# zero containers and is false.
+remote_command_prefix: "export PATH=/Applications/Docker.app/Contents/Resources/bin:/usr/local/bin:$HOME/.local/bin:/opt/homebrew/bin:$PATH; "
+# Prepended to a pool command that runs on this machine, so it starts in the
+# home directory like an ssh session does.
+local_command_prefix: 'cd "$HOME" || exit 1; '

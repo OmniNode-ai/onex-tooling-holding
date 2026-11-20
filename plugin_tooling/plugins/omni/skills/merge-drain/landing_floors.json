@@ -1,0 +1,221 @@
+{
+  "default_per_hour": 0,
+  "per_repo": {
+    "omnibase_core": 1,
+    "omnibase_infra": 1,
+    "ops_tooling_pkg": 1,
+    "omnibase_spi": 1,
+    "omniclaude": 1,
+    "plugin-tooling-pkg": 1,
+    "omnidash": 1,
+    "omniintelligence": 1,
+    "omnimarket": 1,
+    "registry_root": 1
+  },
+  "evidence": {
+    "method": "Merges per UTC clock hour from git first-parent on origin/dev over 7 full days ending at the last full hour. Busy hour = the pr-watcher tick log shows at least one PR of that repo green (ready) for at least half of that hour's ticks. Readiness history exists for only 32 hours (pr-watcher ticks.jsonl, 2026-09-27T14:57Z onward), so the busy-hour sample is 32 hours at most, not 7 days. Readiness is reconstructed from newly_green, newly_red, merged, closed and GREEN handoff events: a lower bound (PRs green before the first tick are unseen) and an upper bound (PRs merged with no earlier event are counted ready from the window start). Armed vs unarmed is not distinguished.",
+    "window": [
+      "2026-09-27 14:57:17+00:00",
+      "2026-09-28 23:27:01+00:00"
+    ],
+    "start7": "2026-09-21 23:00:00+00:00",
+    "end7": "2026-09-28 23:00:00+00:00",
+    "per_repo": {
+      "omnibase_core": {
+        "merges_7d": 58,
+        "per_hour_7d_mean": 0.35,
+        "all_hours_p10_p25_median": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "busy_hours_lower_bound": {
+          "busy_n": 16,
+          "busy_p10": 0.0,
+          "busy_p25": 0.0,
+          "busy_med": 0.0
+        },
+        "busy_hours_upper_bound": {
+          "busy_n": 16,
+          "busy_p10": 0.0,
+          "busy_p25": 0.0,
+          "busy_med": 0.0
+        }
+      },
+      "omnibase_infra": {
+        "merges_7d": 286,
+        "per_hour_7d_mean": 1.7,
+        "all_hours_p10_p25_median": [
+          0.0,
+          0.0,
+          1.0
+        ],
+        "busy_hours_lower_bound": {
+          "busy_n": 32,
+          "busy_p10": 0.0,
+          "busy_p25": 0.75,
+          "busy_med": 2.0
+        },
+        "busy_hours_upper_bound": {
+          "busy_n": 32,
+          "busy_p10": 0.0,
+          "busy_p25": 0.75,
+          "busy_med": 2.0
+        }
+      },
+      "ops_tooling_pkg": {
+        "branch": "origin/main",
+        "head_sha": "d45a30235437bf38ba6f4529c4739db367a3c52a",
+        "start7": "2026-10-10 07:00:00+00:00",
+        "end7": "2026-10-17 07:00:00+00:00",
+        "merges_7d": 282,
+        "per_hour_7d_mean": 1.68,
+        "all_hours_p10_p25_median": [
+          0.0,
+          0.0,
+          1.0
+        ],
+        "zero_hours_of_168": 53
+      },
+      "omnibase_spi": {
+        "branch": "origin/dev",
+        "head_sha": "41ad090065acd3e8637628d35451f09824a9b930",
+        "start7": "2026-10-10 07:00:00+00:00",
+        "end7": "2026-10-17 07:00:00+00:00",
+        "merges_7d": 32,
+        "per_hour_7d_mean": 0.19,
+        "all_hours_p10_p25_median": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "zero_hours_of_168": 141
+      },
+      "omniclaude": {
+        "merges_7d": 92,
+        "per_hour_7d_mean": 0.55,
+        "all_hours_p10_p25_median": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "busy_hours_lower_bound": {
+          "busy_n": 4,
+          "busy_p10": 0.0,
+          "busy_p25": 0.0,
+          "busy_med": 0.5
+        },
+        "busy_hours_upper_bound": {
+          "busy_n": 32,
+          "busy_p10": 0.0,
+          "busy_p25": 0.0,
+          "busy_med": 0.0
+        }
+      },
+      "plugin-tooling-pkg": {
+        "branch": "origin/main",
+        "head_sha": "543c73589963328b03629fff66bf580bbcf1fd3e",
+        "start7": "2026-10-10 07:00:00+00:00",
+        "end7": "2026-10-17 07:00:00+00:00",
+        "merges_7d": 285,
+        "per_hour_7d_mean": 1.7,
+        "all_hours_p10_p25_median": [
+          0.0,
+          1.0,
+          2.0
+        ],
+        "zero_hours_of_168": 37
+      },
+      "omnidash": {
+        "branch": "origin/dev",
+        "head_sha": "4f3f245f37eb2a16928986dbf2749c2f761234ee",
+        "start7": "2026-10-10 07:00:00+00:00",
+        "end7": "2026-10-17 07:00:00+00:00",
+        "merges_7d": 32,
+        "per_hour_7d_mean": 0.19,
+        "all_hours_p10_p25_median": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "zero_hours_of_168": 141
+      },
+      "omniintelligence": {
+        "branch": "origin/dev",
+        "head_sha": "1a9d3d96a5f85f74eaf2d84c414cbfcf9ceb04b2",
+        "start7": "2026-10-10 07:00:00+00:00",
+        "end7": "2026-10-17 07:00:00+00:00",
+        "merges_7d": 62,
+        "per_hour_7d_mean": 0.37,
+        "all_hours_p10_p25_median": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "zero_hours_of_168": 114
+      },
+      "omnimarket": {
+        "merges_7d": 263,
+        "per_hour_7d_mean": 1.57,
+        "all_hours_p10_p25_median": [
+          0.0,
+          0.0,
+          1.0
+        ],
+        "busy_hours_lower_bound": {
+          "busy_n": 8,
+          "busy_p10": 0.0,
+          "busy_p25": 0.0,
+          "busy_med": 0.5
+        },
+        "busy_hours_upper_bound": {
+          "busy_n": 19,
+          "busy_p10": 0.0,
+          "busy_p25": 0.0,
+          "busy_med": 1.0
+        }
+      },
+      "registry_root": {
+        "branch": "origin/dev",
+        "head_sha": "c472b800fdcf657e82751c0c3ca0695f8c2f60ad",
+        "start7": "2026-10-30 01:00:00+00:00",
+        "end7": "2026-11-06 01:00:00+00:00",
+        "merges_7d": 4,
+        "per_hour_7d_mean": 0.02,
+        "all_hours_p10_p25_median": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "zero_hours_of_168": 164
+      }
+    },
+    "conclusion": "p10 of busy hours is 0 in every repo under both bounds, so the proposed floor is the rule minimum of 1. The data supports only that: a busy hour with zero merges is common (infra 8 of 32, core 14 of 16, at the upper bound), so a floor above 1 would page on ordinary hours. Re-derive once armed-state history accumulates.",
+    "addendum_2026_10_17": {
+      "ticket": "OMN-19998",
+      "repos": [
+        "omnibase_compat",
+        "ops_tooling_pkg",
+        "omnibase_spi",
+        "plugin-tooling-pkg",
+        "omnidash",
+        "omniintelligence"
+      ],
+      "method": "Same merge count as the method above (first-parent commits on the repository's default branch per UTC clock hour), over the 7 full days 2026-10-10T07:00Z to 2026-10-17T07:00Z, each repository's branch and head_sha recorded in its entry. busy-hour sample not derived: the pr-watcher ticks.jsonl readiness history is not readable from the lab host this entry was derived on, so busy_hours_* are absent rather than guessed.",
+      "conclusion": "The all-hours p10 is 0 in all six repositories, so the proposed floor is the rule minimum of 1, the only value that data supports (a floor above 1 would page on ordinary hours: 37 to 153 of 168 hours had no merge). Re-derive once armed-state history accumulates."
+    },
+    "addendum_2026_10_18": {
+      "ticket": "OMN-19998",
+      "removed": [
+        "omnibase_compat"
+      ],
+      "reason": "omnibase_compat left the landing scope (merge-sweep/sweep_scope.json out_of_scope): it is frozen for retirement, and a frozen repository has no landing floor."
+    },
+    "addendum_2026_11_06": {
+      "ticket": "OMN-19998",
+      "added": [
+      ],
+      "reason": "registry_root entered the landing scope (RULING 2026-11-04T21:10:32Z unparked it permanently, merge-sweep/sweep_scope.json). Its evidence is the file's method over the 7 days ending 2026-11-06T01:00Z on origin/dev first-parent; its all-hours p10 is 0, which supports the rule minimum of 1 and nothing higher."
+    }
+  }
+}

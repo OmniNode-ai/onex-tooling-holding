@@ -1,0 +1,18 @@
+# synthetic placeholder fixture, no real data
+#
+# What a developer machine's lab bus principal may do: the policy, in the shape the
+# reconcile loader reads. The grants are not typed here; `grants_from` names the derived
+# document, `machine_grants_from` the supplement for a `role: machine` overlay row, and
+# `principal_grants_from` the additions of one named principal.
+schema: developer-principal-grants.v1
+lane: dev
+principal_prefix: dev-
+max_devices_per_login: 8
+allowed_login_domains: []
+grants_from: developer-principal-derived-grants.json
+machine_grants_from: machine-principal-derived-grants.json
+# A role: read_only row is issued the shared set less these topics.
+read_only_withholds:
+  - onex.cmd.omnimarket.work-ledger-append-from-{principal}.v1
+principal_grants_from:
+  dev-<owner>-lab-host-b: lab-host-b-scm-pr-create-derived-grants.json

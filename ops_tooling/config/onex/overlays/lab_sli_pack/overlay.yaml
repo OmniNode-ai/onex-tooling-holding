@@ -1,0 +1,4 @@
+# Our lab's opt-in to omnimarket's lab SLI pack.
+# The pack is off by default in every deployment that does not carry this file.
+# A reader names the root directory in ONEX_SKILL_OVERLAY_ROOTS.
+status: enabled

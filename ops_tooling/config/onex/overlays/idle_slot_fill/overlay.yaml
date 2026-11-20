@@ -1,0 +1,122 @@
+process_fix_roles:
+- private_data
+- plugin_source
+mvp_repos:
+- omnibase_infra
+- omnibase_core
+- omnimarket
+- omniclaude
+- omnidash
+always_out_roles:
+- deploy
+cloud_backlog:
+  ruling: 'RULING 2026-10-21T21:14:58Z lane=cloud-backlog-2115 (OMN-17427): start sending backlog tickets
+    to the cloud; a cloud session may use mocks and CI catches issues.'
+  note: What a free cloud slot may take from the backlog (cloud_backlog.py). A ticket qualifies when its
+    repository is one of repos and none of excluded_repos, its title and fact name none of lab_markers
+    (work that needs a lab host, a deploy, a migration or a live runtime to write the code, which a cloud
+    session cannot reach), its estimate is at most max_estimate (or unset), and no live CLAIM, open PR,
+    merge on the default branch, closed Linear state or earlier cloud send holds it. A sprint ticket also
+    has to be not started (sprint_state_types) and unassigned or the operator's. Changing a list is a
+    new ruling and an edit here, never a lane's own call.
+  repos:
+  - omnibase_core
+  - omnibase_spi
+  - omnibase_infra
+  - omnimarket
+  - omniclaude
+  - plugin-tooling-pkg
+  - ops_tooling_pkg
+  - omniintelligence
+  - omnimemory
+  excluded_repos:
+  - infra_repo
+  - docs_repo
+  - docs-repo
+  - omnidash
+  - RSD
+  - rsd-repo
+  lab_markers:
+  - lab host
+  - on the lab
+  - 'lab-host-a'
+  - 'lab-host-d'
+  - h903
+  - h904
+  - h905
+  - h906
+  - h908
+  - host.example
+  - host-53-example
+  - swap
+  - redpanda
+  - kafka broker
+  - broker principal
+  - kubectl
+  - k8s
+  - kustomize
+  - helm
+  - deploy
+  - migration
+  - hot-patch
+  - hotpatch
+  - dev lane
+  - dev-lane
+  - prepr
+  - pre-pr verify slot
+  - launchd
+  - systemd
+  - credential
+  - secret
+  - dashboard
+  - readback
+  - experiment
+  - .github
+  - workflow
+  - workflows
+  - .yml
+  sprint_state_types:
+  - unstarted
+  - backlog
+  max_estimate: 3
+  window_hours: 24
+experiment_designs:
+- id: glm-flash-vs-glm53-pr-bodies
+  title: GLM flash versus GLM PR bodies
+  repo: plugin-tooling-pkg
+  design: Draft PR bodies from the same recorded fact tables on glm-5.3-flash and glm-5.3 through the
+    harness. Grade each body against its fact table with the same check and compare factual errors.
+  measure: Record the number of factual errors per model and the number of bodies graded
+- id: jev-ci-cause-option-wording
+  title: CI cause option names versus raw state
+  repo: omnimarket
+  design: Run the ci-cause preset on the same recorded CI reds, asking once by option name and once with
+    raw state. Compare the returned cause against the recorded cause using the same check.
+  measure: Record the number of correct cause classifications and the sample size for each wording
+- id: codex-vs-glm-test-scaffolds
+  title: Codex versus GLM test scaffolds
+  repo: omnibase_infra
+  design: Run the same test-scaffold task through delegation_step.py code with Codex and with GLM in separate
+    clean worktrees. Run the task's checks and compare checks passed and edits needed before the scaffold
+    passes.
+  measure: Record checks passed and edits needed for each model
+- id: lab-crush-context-cap
+  title: Lab crush output cap truncation
+  repo: omniclaude
+  design: Run crush on Qwen3.8-27B over the same recorded tasks with the 32768 output cap and with 16384.
+    Compare which runs truncate using the same completion check.
+  measure: Record the number of truncated runs and the sample size for each cap
+- id: fact-table-vs-prose-prompts
+  title: Fact tables versus prose for document drafts
+  repo: plugin-tooling-pkg
+  design: Ask onex delegate for document drafts from a fact table and from a prose paragraph containing
+    the same facts. Grade both drafts against the original facts with the same check and compare incorrect
+    facts.
+  measure: Record the number of facts each draft got wrong and the number of drafts graded
+- id: delegate-lab-vs-glm-ledger-summaries
+  title: Lab versus GLM TERMINAL summaries
+  repo: omniclaude
+  design: Draft TERMINAL prose from the same recorded lane facts through the lab route and through GLM.
+    Grade both drafts with the same check against those facts and compare errors without appending the
+    drafts to the live ledger.
+  measure: Record the number of grading failures and the sample size for each route

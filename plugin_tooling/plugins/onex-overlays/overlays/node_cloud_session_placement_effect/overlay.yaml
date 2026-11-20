@@ -1,0 +1,47 @@
+# Deployment overlay for omnimarket's node_cloud_session_placement_effect (OMN-22243 registry, OMN-22245 data) -- internal.
+#
+# The cloud account registry: one entry per consented claude.ai login. A cloud session's capacity is counted per account,
+# never per host, and a start goes through any host whose fresh login matches an account's hash pair, whatever the host's
+# lab availability says. The remote-lane runner reads this file (node_lane_placement_recovery_effect cloud_overlay) and puts
+# its keys on every request to the node; the node holds none of them. Shape: the node's overlay.example.yaml.
+#
+# org_hash and email_hash are the first 10 hex of the sha256 of the login's orgId and of its lowercased email, read from
+# `claude auth status --json` on the host. Hashes only: never an email, an organization id or a name.
+#
+# Consent is only ever a ledger row the operator wrote:
+#   lab-primary: RULING 2026-10-17T00:01:50Z ("on all accounts" until the credit runs out) and the consent row of
+#     2026-11-02T02:30:18Z, whose scope ends 2026-11-05T08:00:00Z. h906 and h907 report the same hash pair (one login, one
+#     account, one cap), measured 2026-11-03 for the cloud accounts plan.
+#   lab-h901, lab-h902: OPERATOR-CONSENT 2026-11-03T01:36:14Z ("cloud sessions started through the claude.ai logins on h901
+#     and h902 until 2026-11-05"); the narrower reading of "until" is the consent end. Hash pairs read on each host
+#     2026-11-03 by lane cloud-c2-1425; each is a different organization from lab-primary.
+# credit_expires is the cloud_fill overlay's date (the one-time credit lapses after it).
+accounts:
+  - label: lab-primary
+    org_hash: "b647240703"
+    email_hash: "be8748ccd1"
+    consent: "2026-10-17T00:01:50Z"
+    consent_expires: "2026-11-05T08:00:00Z"
+    credit_expires: "2026-11-05"
+    legacy_hosts: [h906, h907]
+    transport_exclude: [h904, h908]
+  - label: lab-h901
+    org_hash: "37b583a891"
+    email_hash: "83de387e1a"
+    consent: "2026-11-03T01:36:14Z"
+    consent_expires: "2026-11-05T00:00:00Z"
+    credit_expires: "2026-11-05"
+    legacy_hosts: []
+    transport_exclude: []
+  - label: lab-h902
+    org_hash: "bb715cdd42"
+    email_hash: "212cf40e26"
+    consent: "2026-11-03T01:36:14Z"
+    consent_expires: "2026-11-05T00:00:00Z"
+    credit_expires: "2026-11-05"
+    legacy_hosts: []
+    transport_exclude: []
+
+# Seconds a login observation stays usable, and seconds the caller allows each auth and cloud probe (today's constants).
+login_fresh_s: 1800
+probe_timeout_s: 120

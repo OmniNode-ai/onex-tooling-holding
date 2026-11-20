@@ -1,0 +1,35 @@
+# The lane-inbox guard values queue_status.py --lane-inbox-guard reads through inbox_overlay: the reader and its module,
+# the window, the refresh interval of the detached refresher, the reader's timeout, how long the very first call (no cache
+# yet) waits for the first refresh, the listing cap, the interpreter and lane environment variables, the state and journal
+# file names, the cache and refresh-log file names, the refresher script, the fallback inbox script, the HOLD cells that
+# mark a surface lease and the commands a HOLD in force refuses. The outbox keys say how the lane's own MSG, ACK, HOLD and
+# RELEASE rows, which the ledger tool queues in the relay outbox file the outbox_env variable names, are delivered to the
+# canonical ledger by the detached refresher through outbox_append_script while the lane runs, each delivered row's sha256
+# digest recorded in outbox_delivered_file_name and each append bounded by outbox_timeout_s seconds. The handler holds no
+# value of its own; only these do.
+reader: lane-inbox
+reader_module: omnimarket.nodes.node_work_ledger_reader_effect
+window_hours: 2
+interval_s: 60
+timeout_s: 30
+cold_wait_s: 15
+max_listed: 5
+interpreter_env: ONEX_LEDGER_BUS_APPEND_COMMAND
+lane_env: ONEX_REMOTE_LANE
+state_file_name: lane-inbox-state.json
+journal_file_name: lane-inbox-journal.jsonl
+cache_file_name: lane-inbox-cache.json
+refresh_log_name: lane-inbox-refresh.log
+refresher_script: skills/queue-status/scripts/queue_status.py
+fallback_inbox_script: skills/ledger-msg/inbox.sh
+# A HOLD to=all that carries one of these cells is scoped to a surface (the lab pool's pre-PR slots), a pull request (pr,
+# after) or a repository and binds the lane that takes that scope, not every lane a to=all HOLD reaches: the listing would
+# otherwise stop every lane once per lease, and a push refusal would stop every lane for one pull request's hold. Measured on
+# the ledger copy of 2026-11-13: 715 HOLD rows to=all, 657 carry a surface cell, 45 more carry pr, after or repo, 13 carry none.
+skip_hold_cells: [surface, pr, after, repo]
+hold_push_pattern: \b(git push|onex scm (pr-create|pr-ready|pr-edit|pr-comment|workflow-run)|gh pr (create|ready|merge))\b
+outbox_env: ONEX_LEDGER_RELAY_OUTBOX
+outbox_kinds: [MSG, ACK, HOLD, RELEASE]
+outbox_append_script: scripts/onex_ledger.py
+outbox_delivered_file_name: lane-outbox-delivered.json
+outbox_timeout_s: 120

@@ -1,0 +1,59 @@
+# Deployment facts of this repository's src/ops_tooling_pkg/handlers/branch_protection_audit/handler_audit_branch_protection.sh (OMN-20955): the fleet
+# our branch-protection audit covers, a branch_protection_audit_overlay.v1 document. The auditor
+# carries a neutral default (public repositories only) and no private repository name;
+# every list below REPLACES the matching default, and a key left out keeps the default.
+#
+# Readers: this repository's branch-protection-audit.yml (same checkout) and the registry
+# workspace's branch-protection-guard.yml and scheduled-gap-detect.yml, which fetch this repository
+# at a pinned commit and point BRANCH_PROTECTION_AUDIT_OVERLAY at this file. The auditor exits 2 on
+# an invalid overlay rather than audit the public default and read green.
+#
+# To change what is audited: edit this file and merge to main. The next audit run uses it; no
+# workflow, variable or pin moves. A repository added here must also be reachable by the audit
+# token (administration:read), or its checks fail by name.
+#
+# Provenance: these lists equal the arrays the auditor carried in onex_change_control before the
+# move (RULING 2026-10-11, consent row OPERATOR-CONSENT 2026-10-11T01:53:13Z), so the first
+# audit from the new home reads the same fleet.
+schema_version: "branch_protection_audit_overlay.v1"
+repos:
+  - omniclaude
+  - omnimarket
+  - omnibase_core
+  - omnibase_infra
+  - omnibase_spi
+  - omnidash
+  - omniintelligence
+  - omnimemory
+  - infra_repo
+# Repos where a Merge Queue ruleset is not expected.
+private_repos:
+  - infra_repo
+# Repos with no protected dev branch (audited on main only).
+dev_exempt_repos:
+# Repos whose main is advanced only by release automation (empty required contexts plus a
+# restricting ruleset with a bypass actor).
+release_synced_main_repos:
+  - omnibase_core
+  - omnibase_infra
+  - omnibase_spi
+  - omnimemory
+  - omnidash
+  - omniintelligence
+  - omnimarket
+  - omniclaude
+# Repos audited on dev only.
+main_audit_exempt_repos: []
+# Repos whose main keeps code-owner review enforcement.
+review_gated_main_repos: []
+# Repos that must directly require the Receipt Gate context.
+receipt_gate_required_repos:
+  - omniclaude
+  - omnimarket
+  - omnibase_core
+  - omnibase_infra
+  - omniintelligence
+  - infra_repo
+# Repos whose dev must directly require the Lane Identity Gate.
+lane_identity_gate_required_repos:
+  - omniclaude

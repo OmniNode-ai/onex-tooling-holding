@@ -1,0 +1,20 @@
+# Authority for onex-lane-closeout (OMN-20148): a lane removing its OWN worktree.
+#
+# Read on every run; nothing is cached. The command saves nothing (OMN-21817) and removes only when the row named here resolves in the rolling ledger
+# to a RULING or an operator-consent row from the operator (both scope lists present). With no
+# stamp, or enabled: false, it does nothing to the tree and prints
+# worktree=kept:<path>:removal-not-authorized, so the lane's TERMINAL still says what became of
+# it and the six-hourly triage stays the only remover.
+#
+# The consent row of 2026-09-30T08:00:03Z (lane=orchestrator-0c2f) covers the triage commands and
+# excludes trees with a change in the last 12 hours, which is every tree a closing lane owns, so it
+# is deliberately not named here. The row named below is the operator's consent for a lane removing
+# its own tree (rolling ledger line 18420, lane=closeout-consent, approved_by=operator): any lane
+# removes the worktree its own CLAIM names, at its TERMINAL, on every lab host. Out
+# of scope there: a tree named by another open CLAIM, a tree with a live process inside, a tree the
+# lane did not CLAIM, a canonical clone, a branch with unpushed commits, bulk age-based deletion.
+
+removal:
+  enabled: true
+  authority_stamp: "2026-09-30T15:01:08Z"
+  authority_lane: "closeout-consent"

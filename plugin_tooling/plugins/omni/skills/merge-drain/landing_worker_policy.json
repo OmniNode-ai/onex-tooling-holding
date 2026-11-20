@@ -1,0 +1,5 @@
+{
+  "ticket": "OMN-21586",
+  "ledger_error_chars": 400,
+  "what": "ledger_error_chars is the most characters of a failed ledger-tool child's stderr (stdout when stderr is empty) that landing_worker_run.append_row records in its refusal text. The text keeps the tail, because a traceback ends with the exception line (controller-claim-traceback-2130, 2026-10-29: the first 400 characters kept only frames). Change the budget here, never in the function."
+}

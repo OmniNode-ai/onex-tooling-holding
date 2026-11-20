@@ -1,0 +1,156 @@
+TLC2 Version 2.19 of 08 August 2024 (rev: 5a47802)
+Running breadth-first search Model-Checking with fp 12 and seed -7612420154471526214 with 12 workers on 32 cores with 3641MB heap and 64MB offheap memory [pid: 1] (Linux 7.0.0-34-generic amd64, Eclipse Adoptium 17.0.20.1 x86_64, MSBDiskFPSet, DiskStateQueue).
+Parsing file /work/LabGroupProver.tla
+Parsing file /tmp/Naturals.tla
+Parsing file /tmp/FiniteSets.tla
+Parsing file /tmp/Sequences.tla
+Parsing file /tmp/TLC.tla
+Semantic processing of module Naturals
+Semantic processing of module Sequences
+Semantic processing of module FiniteSets
+Semantic processing of module TLC
+Semantic processing of module LabGroupProver
+Starting... (2026-09-29 12:46:15)
+Computing initial states...
+Finished computing initial states: 1 distinct state generated at 2026-09-29 12:46:15.
+Error: Invariant NotBisect is violated.
+Error: The behavior up to this point is:
+State 1: <Initial predicate>
+/\ mergedHeads = {}
+/\ job = NONE
+/\ spawning = FALSE
+/\ badSpawn = FALSE
+/\ lease = NONE
+/\ hist = {}
+/\ st = (p1 :> "open" @@ p2 :> "open" @@ p3 :> "open")
+/\ readback = {}
+/\ failRec = {}
+/\ provenPass = {}
+/\ procs = 0
+/\ result = NONE
+/\ held = {}
+/\ budget = [ push |-> 0,
+  hold |-> 0,
+  close |-> 0,
+  crash |-> 0,
+  pdie |-> 0,
+  inc |-> 0,
+  nohost |-> 0,
+  expire |-> 0 ]
+/\ head = (p1 :> 1 @@ p2 :> 1 @@ p3 :> 1)
+
+State 2: <Spawn line 93, col 5 to line 100, col 35 of module LabGroupProver>
+/\ mergedHeads = {}
+/\ job = NONE
+/\ spawning = TRUE
+/\ badSpawn = FALSE
+/\ lease = [m |-> {<<p1, 1>>, <<p2, 1>>, <<p3, 1>>}, pend |-> {}]
+/\ hist = {"spawn"}
+/\ st = (p1 :> "open" @@ p2 :> "open" @@ p3 :> "open")
+/\ readback = {}
+/\ failRec = {}
+/\ provenPass = {}
+/\ procs = 0
+/\ result = NONE
+/\ held = {}
+/\ budget = [ push |-> 0,
+  hold |-> 0,
+  close |-> 0,
+  crash |-> 0,
+  pdie |-> 0,
+  inc |-> 0,
+  nohost |-> 0,
+  expire |-> 0 ]
+/\ head = (p1 :> 1 @@ p2 :> 1 @@ p3 :> 1)
+
+State 3: <StartProc line 103, col 5 to line 107, col 51 of module LabGroupProver>
+/\ mergedHeads = {}
+/\ job = NONE
+/\ spawning = FALSE
+/\ badSpawn = FALSE
+/\ lease = [m |-> {<<p1, 1>>, <<p2, 1>>, <<p3, 1>>}, pend |-> {}]
+/\ hist = {"spawn"}
+/\ st = (p1 :> "open" @@ p2 :> "open" @@ p3 :> "open")
+/\ readback = {}
+/\ failRec = {}
+/\ provenPass = {}
+/\ procs = 1
+/\ result = NONE
+/\ held = {}
+/\ budget = [ push |-> 0,
+  hold |-> 0,
+  close |-> 0,
+  crash |-> 0,
+  pdie |-> 0,
+  inc |-> 0,
+  nohost |-> 0,
+  expire |-> 0 ]
+/\ head = (p1 :> 1 @@ p2 :> 1 @@ p3 :> 1)
+
+State 4: <Begin line 139, col 5 to line 147, col 58 of module LabGroupProver>
+/\ mergedHeads = {}
+/\ job = [ base |-> {},
+  prefix |-> {},
+  passed |-> {},
+  appended |-> {},
+  failed |-> {},
+  queue |-> <<{<<p1, 1>>, <<p2, 1>>, <<p3, 1>>}>>,
+  done |-> FALSE,
+  written |-> FALSE ]
+/\ spawning = FALSE
+/\ badSpawn = FALSE
+/\ lease = [m |-> {<<p1, 1>>, <<p2, 1>>, <<p3, 1>>}, pend |-> {}]
+/\ hist = {"spawn"}
+/\ st = (p1 :> "open" @@ p2 :> "open" @@ p3 :> "open")
+/\ readback = {}
+/\ failRec = {}
+/\ provenPass = {}
+/\ procs = 1
+/\ result = NONE
+/\ held = {}
+/\ budget = [ push |-> 0,
+  hold |-> 0,
+  close |-> 0,
+  crash |-> 0,
+  pdie |-> 0,
+  inc |-> 0,
+  nohost |-> 0,
+  expire |-> 0 ]
+/\ head = (p1 :> 1 @@ p2 :> 1 @@ p3 :> 1)
+
+State 5: <RunUnit line 152, col 5 to line 187, col 37 of module LabGroupProver>
+/\ mergedHeads = {}
+/\ job = [ base |-> {},
+  prefix |-> {},
+  passed |-> {},
+  appended |-> {},
+  failed |-> {},
+  queue |-> <<{<<p1, 1>>}, {<<p2, 1>>, <<p3, 1>>}>>,
+  done |-> FALSE,
+  written |-> FALSE ]
+/\ spawning = FALSE
+/\ badSpawn = FALSE
+/\ lease = [m |-> {<<p1, 1>>, <<p2, 1>>, <<p3, 1>>}, pend |-> {}]
+/\ hist = {"spawn", "bisect"}
+/\ st = (p1 :> "open" @@ p2 :> "open" @@ p3 :> "open")
+/\ readback = {}
+/\ failRec = {}
+/\ provenPass = {}
+/\ procs = 1
+/\ result = NONE
+/\ held = {}
+/\ budget = [ push |-> 0,
+  hold |-> 0,
+  close |-> 0,
+  crash |-> 0,
+  pdie |-> 0,
+  inc |-> 0,
+  nohost |-> 0,
+  expire |-> 0 ]
+/\ head = (p1 :> 1 @@ p2 :> 1 @@ p3 :> 1)
+
+5 states generated, 5 distinct states found, 0 states left on queue.
+The depth of the complete state graph search is 5.
+The average outdegree of the complete state graph is 1 (minimum is 1, the maximum 1 and the 95th percentile is 1).
+Finished in 00s at (2026-09-29 12:46:15)
+rc=12

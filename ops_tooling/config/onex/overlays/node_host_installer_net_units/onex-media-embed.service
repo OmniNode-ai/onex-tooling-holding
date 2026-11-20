@@ -1,0 +1,36 @@
+# onex-media-embed.service: Qwen3-Embedding-0.6B, 1024-dimension vectors on the h907 RTX 4090 (OMN-22757).
+#
+# Settings are the ones measured on the card on 2026-11-06 (lane h907-4090-media-2020). The card is pinned by PCI bus
+# order and never by index alone. Starting the unit waits for the server to answer /v1/models, so the media units start
+# one after another and each one profiles its memory against a card the others have settled on. A resident media unit
+# conflicts with onex-media-video.service: starting the video unit stops every resident one, and stopping it starts them
+# again.
+
+[Unit]
+Description=ONEX media model: Qwen3-Embedding-0.6B, 1024-dimension vectors (RTX 4090, port 8100)
+After=network-online.target
+Wants=network-online.target
+Conflicts=onex-media-video.service
+
+[Service]
+Type=simple
+User=<owner>
+Group=<owner>
+Environment=CUDA_DEVICE_ORDER=PCI_BUS_ID
+Environment=CUDA_VISIBLE_DEVICES=1
+Environment=CUDA_HOME=/opt/vllm-0.27/venv/lib/python3.12/site-packages/nvidia/cu13
+Environment=PATH=/opt/vllm-0.27/venv/lib/python3.12/site-packages/nvidia/cu13/bin:/opt/vllm-0.27/venv/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
+EnvironmentFile=-/etc/vllm/env
+WorkingDirectory=/opt/vllm-0.27
+ExecStart=/opt/vllm-0.27/venv/bin/python -m vllm.entrypoints.openai.api_server --host 0.0.0.0 --port 8100 \
+    --model /data/inference/hf-cache/qwen3-embedding-0.6b --runner pooling --convert embed --served-model-name text-embedding-qwen3 --max-model-len 8192 --max-num-seqs 32 --gpu-memory-utilization 0.13 \
+    --kernel-config '{"enable_flashinfer_autotune":false,"enable_jit_warmup":false,"enable_cutedsl_warmup":false}'
+ExecStartPost=/usr/bin/curl -sf --retry 120 --retry-delay 2 --retry-all-errors -o /dev/null http://127.0.0.1:8100/v1/models
+Restart=on-failure
+RestartSec=10
+LimitMEMLOCK=infinity
+LimitNOFILE=65535
+TimeoutStartSec=600
+
+[Install]
+WantedBy=multi-user.target

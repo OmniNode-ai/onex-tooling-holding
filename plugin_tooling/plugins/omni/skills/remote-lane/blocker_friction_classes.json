@@ -1,0 +1,14 @@
+{
+  "version": 1,
+  "comment": "OMN-23240: the class of the FRICTION row the runner's closeout writes from a blocked or partial lane's BLOCKER line. The first rule whose pattern (case-insensitive regex) is found in the BLOCKER text names the class; a text no rule matches is class 'other'. Add a class by adding a rule here; the order is the precedence.",
+  "default_class": "other",
+  "rules": [
+    {"class": "install-proof", "pattern": "install-first|install-tree|installed revision|install stack|record-clobber"},
+    {"class": "ticket-identity", "pattern": "child ticket|cannot mint|can't mint|no ticket|ticket this lane|body cites|cites no ticket|cites only|title ticket|ticket id"},
+    {"class": "start-false", "pattern": "start criterion|start-criterion|NOT-READY|reads UNKNOWN|verdict=UNKNOWN|no-producer|reads OPEN|reads RED"},
+    {"class": "hook", "pattern": "hook-preflight|hook preflight|HOOK-PREFLIGHT|pre-commit|pre-push|commit hook|commit-hook|src-freeze|canonical-file-shape"},
+    {"class": "clone", "pattern": "NO_CLONE|no canonical clone|no overlays clone|no clone|has no clone|clone refresh"},
+    {"class": "signing", "pattern": "signing|signed commit|unsigned commit|gpg|gitsign|sigstore"},
+    {"class": "ruling", "pattern": "RULING|operator ruling|needs a ruling|operator's ruling|operator ask|operator decision"}
+  ]
+}

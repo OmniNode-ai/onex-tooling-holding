@@ -1,0 +1,34 @@
+[
+  {
+    "provider": "glm",
+    "window_hours": 5,
+    "limit": null,
+    "unit": "prompts",
+    "as_of": "2026-08-30",
+    "source": "z.ai Coding Plan usage page, read by hand on 2026-08-30: a 5-hour window at 0% used. The numeric cap and the plan tier are recorded nowhere; read them from the usage page and put the cap here."
+  },
+  {
+    "provider": "glm",
+    "window_hours": 168,
+    "limit": null,
+    "unit": "prompts",
+    "as_of": "2026-08-30",
+    "source": "z.ai Coding Plan usage page, read by hand on 2026-08-30: a weekly window at 0% used, reset 2026-09-05. A weekly-limit 429 (code 1310) states its own reset instant. The cap is not recorded."
+  },
+  {
+    "provider": "gemini",
+    "window_hours": 24,
+    "limit": 20,
+    "unit": "requests",
+    "as_of": "2026-08-29",
+    "source": "free-tier 429 body on the dev lane, 2026-08-29: limit 20 per day for gemini-2.5-flash (comment on provider_quota_policy in bifrost_delegation.yaml). The counter is per model and per key, so used here is a lower bound."
+  },
+  {
+    "provider": "openrouter",
+    "window_hours": 24,
+    "limit": null,
+    "unit": "requests",
+    "as_of": "2026-08-29",
+    "source": "free tier: rate-limited with no SLA and no structured error code (provider_quota_policy in bifrost_delegation.yaml). No numeric cap is published for the free models in use."
+  }
+]

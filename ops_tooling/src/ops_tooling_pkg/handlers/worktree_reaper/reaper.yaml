@@ -1,0 +1,33 @@
+# Standing authorization for the merged-PR worktree reaper (OMN-19409).
+#
+# Read by reaper.py on every run. This file is the operator's revoke switch:
+# set `enabled: false`, or delete the file, and the next hourly fire still
+# reports every merged-PR worktree but removes NOTHING, and exits non-zero so
+# the tick receipt and the 09:00 watchdog both show it.
+#
+# The consent row is named by its leading UTC stamp and its lane, never by a
+# line number: the rolling ledger is split into docs/tracking/archive/ as it
+# grows, and a line citation stops resolving the day that happens (the older
+# ai.omninode.worktree-prune timer refused every run from 2026-09-20 for that
+# reason). The row must still be an OPERATOR-CONSENT row whose APPROVED SCOPE
+# names MERGED pull request removal and whose OUT OF SCOPE list is non-empty.
+enabled: true
+consent_stamp: "2026-09-24T17:27:52Z"
+consent_lane: "merged-worktree-reaper"
+# A merge younger than this is left alone: the landing lane may still be reading it.
+grace_minutes: 30
+# A worktree whose commits, checkouts or changed files moved within this window is live.
+quiet_minutes: 30
+# --check fails when a merged worktree is still on disk this long after its merge.
+max_age_hours: 2
+# A merged worktree kept because it is locked, a live process or an open claim holds it, or it
+# moved within quiet_minutes, is reported HELD and fails --check only this long after its merge
+# (OMN-17427: one held tree made every hourly run exit 1).
+held_max_age_hours: 24
+# How many merged pull requests to read per repository each run.
+merged_limit: 1500
+# Installed unit definitions (launchd plists, systemd units), comma-separated. A merged tree whose path
+# an installed unit names is HELD (live_unit_root), never removed, because the unit runs from it
+# (OMN-22657). A directory that does not exist is skipped; an unreadable definition, or none declared,
+# holds every tree.
+unit_dirs: ~/Library/LaunchAgents,~/.config/systemd/user,/etc/systemd/system

@@ -1,0 +1,126 @@
+# Every node `onex run-node` is invoked for, with one place each is invoked from (OMN-22362).
+#
+# Operator ruling 2026-11-03: "The default broker should be in the contract overlay." omnibase_core
+# #2254 makes `onex run-node` read the broker only from `event_bus` in the node's overlay,
+# config/onex/overlays/<node>/overlay.yaml, and refuse with that path when it is not there. So a node
+# in this list that lacks `event_bus` is a node whose callers all refuse once a release carries that
+# change. tests/test_omnimarket_deployment_overlays_omn20935.py fails on that.
+#
+# Read from the callers' own files on each repository's default branch on 2026-11-03: skill
+# dispatch commands (omniclaude), the pre-commit hook, the morning launchd units and the documented
+# operator command of this repository, the runbook, and the DoD probe commands of ticket contracts.
+# The architecture-discovery bus callers in omnimarket (kind bus-caller) dial three nodes through the
+# bus without `run-node`; they read the same `event_bus` declaration (omnimarket#4996).
+# The two source-control nodes `onex scm` dispatches to (node_github_repo_gateway_effect for the read
+# verbs, node_github_repo_write_effect for the write verbs; `onex scm verbs` lists them) are listed with
+# one `onex scm` caller each: `onex scm` reads the same `event_bus` declaration (omnimarket scm_cli.py).
+# A node that is only named in prose, a plan, a test or a "do not run this" note is not listed.
+#
+# Add a node here in the same change that gives its caller a `run-node <node>` command. The launchd
+# units of this repository are also scanned by the test, so a unit that gains a run-node call
+# without an entry here fails it.
+
+nodes:
+  node_architecture_discovery_orchestrator:
+    callers:
+      - {repo: omnimarket, path: src/omnimarket/nodes/node_architecture_discovery_orchestrator/handlers/handler_architecture_discovery_cli.py, kind: bus-caller}
+  node_baseline_capture:
+    callers:
+      - {repo: omniclaude, path: plugins/onex/skills/baseline/SKILL.md, kind: skill}
+  node_baseline_compare:
+    callers:
+      - {repo: omniclaude, path: plugins/onex/skills/baseline/SKILL.md, kind: skill}
+  node_ci_watch:
+    callers:
+      - {repo: omniclaude, path: plugins/onex/skills/ci_watch/SKILL.md, kind: skill}
+  node_coding_agent_invoke_effect:
+    callers:
+      - {repo: omnimarket, path: src/omnimarket/nodes/node_architecture_discovery_orchestrator/adapters/handler_coding_agent_bus.py, kind: bus-caller}
+  node_coding_agent_workspace_compute:
+    callers:
+      - {repo: omnimarket, path: src/omnimarket/nodes/node_architecture_discovery_orchestrator/adapters/handler_coding_agent_bus.py, kind: bus-caller}
+  node_context_compaction_orchestrator:
+    callers:
+      - {repo: omnimarket, path: contracts/OMN-21334.yaml, kind: dod-probe}
+  node_create_ticket:
+    callers:
+      - {repo: omnimarket, path: contracts/OMN-21329.yaml, kind: dod-probe}
+  node_dashboard_sweep:
+    callers:
+      - {repo: omniclaude, path: plugins/onex/skills/dashboard_sweep/SKILL.md, kind: skill}
+  node_delegate_fanout_effect:
+    callers:
+      - {repo: ops_tooling_pkg, path: launchd/morning-workflows/morning_workflows_tick.sh, kind: launchd}
+  node_dispatch_queue_drainer:
+    callers:
+      - {repo: omniclaude, path: plugins/onex/skills/dispatch_queue_drainer/SKILL.md, kind: skill}
+  node_gap_compute:
+    callers:
+      - {repo: omniclaude, path: plugins/onex/skills/gap/SKILL.md, kind: skill}
+  node_github_repo_gateway_effect:
+    callers:
+      - {repo: plugin-tooling-pkg, path: plugins/omni/skills/ci-watch/SKILL.md, kind: skill}
+  node_github_repo_write_effect:
+    callers:
+      - {repo: plugin-tooling-pkg, path: plugins/omni/skills/pr-land/SKILL.md, kind: skill}
+  node_handoff_check_effect:
+    callers:
+      - {repo: omniclaude, path: plugins/onex/skills/handoff/SKILL.md, kind: skill}
+  node_launchd_drift_effect:
+    callers:
+      - {repo: ops_tooling_pkg, path: launchd/morning-workflows/launchd/ai.omninode.morning-tick-watchdog.plist.tmpl, kind: launchd}
+  node_linear_triage:
+    callers:
+      - {repo: omniclaude, path: plugins/onex/skills/ticketing_triage/SKILL.md, kind: skill}
+  node_local_review:
+    callers:
+      - {repo: omniclaude, path: plugins/onex/skills/local_review/SKILL.md, kind: skill}
+  node_morning_worktree_prune_effect:
+    callers:
+      - {repo: ops_tooling_pkg, path: docs/workflows/morning-worktree-prune/README.md, kind: operator-command}
+  node_pipeline_fill:
+    callers:
+      - {repo: omniclaude, path: plugins/onex/skills/pipeline_fill/SKILL.md, kind: skill}
+  node_pr_lifecycle_orchestrator:
+    callers:
+      - {repo: omniclaude, path: plugins/onex/skills/status/SKILL.md, kind: skill}
+  node_redeploy_orchestrator:
+    callers:
+      - {repo: omniclaude, path: plugins/onex/skills/redeploy/SKILL.md, kind: skill}
+      - {repo: docs_repo, path: runbooks/prod-promotion.md, kind: runbook}
+  node_release:
+    callers:
+      - {repo: omniclaude, path: plugins/onex/skills/release/SKILL.md, kind: skill}
+  node_runner_fleet_maintain_orchestrator:
+    callers:
+      - {repo: omnibase_infra, path: contracts/OMN-21041.yaml, kind: dod-probe}
+  node_runtime_closeout_orchestrator:
+    callers:
+      - {repo: omniclaude, path: plugins/onex/skills/runtime_closeout/SKILL.md, kind: skill}
+  node_shim_scanner:
+    callers:
+      - {repo: omniclaude, path: .pre-commit-hooks/check-expired-shims.sh, kind: hook}
+  node_skill_dispatch_engine_orchestrator:
+    callers:
+      - {repo: omniclaude, path: plugins/onex/skills/dispatch_engine/SKILL.md, kind: skill}
+  node_ticket_pipeline:
+    callers:
+      - {repo: omniclaude, path: plugins/onex/skills/ticket_pipeline/SKILL.md, kind: skill}
+  node_ticket_research_enrichment_compute:
+    callers:
+      - {repo: omniclaude, path: plugins/onex/skills/ticket_work/SKILL.md, kind: skill}
+  node_ticket_work:
+    callers:
+      - {repo: omniclaude, path: plugins/onex/skills/ticket_work/SKILL.md, kind: skill}
+  node_two_strike_arbiter:
+    callers:
+      - {repo: omniclaude, path: plugins/onex/skills/two_strike_arbiter/SKILL.md, kind: skill}
+  node_verification_receipt_generator:
+    callers:
+      - {repo: omniclaude, path: plugins/onex/skills/verification_receipt_generator/SKILL.md, kind: skill}
+  node_verified_dispatch_orchestrator:
+    callers:
+      - {repo: omniclaude, path: plugins/onex/skills/verified_dispatch/SKILL.md, kind: skill}
+  node_worker_stall_recovery:
+    callers:
+      - {repo: omniclaude, path: plugins/onex/skills/agent_healthcheck/SKILL.md, kind: skill}

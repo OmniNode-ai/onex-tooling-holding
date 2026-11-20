@@ -1,0 +1,32 @@
+# onex-media-video.service: Wan2.2 TI2V 5B video generation on the h907 RTX 4090, on demand only (OMN-22757).
+#
+# Never resident and never enabled: it has no [Install] section, so nothing starts it at boot and the host installer, which
+# enables what it installs, has nothing to enable. Starting it stops every resident media unit (Conflicts) because the model
+# needs about 21 GB of the card at the 832x480 setting; stopping it starts them again in their order. Start it with
+# `systemctl start onex-media-video.service` and stop it with `systemctl stop onex-media-video.service`.
+# Served by vLLM-Omni at /v1/videos with the stage settings its own wan2_2_ti2v deploy config ships (VAE tiling on).
+
+[Unit]
+Description=ONEX media model: Wan2.2 TI2V 5B video generation, on demand (RTX 4090, port 8104)
+After=network-online.target
+Wants=network-online.target
+Conflicts=onex-media-embed.service onex-media-stt.service onex-media-tts.service onex-media-decide.service
+
+[Service]
+Type=simple
+User=<owner>
+Group=<owner>
+Environment=CUDA_DEVICE_ORDER=PCI_BUS_ID
+Environment=CUDA_VISIBLE_DEVICES=1
+Environment=VLLM_USE_FLASHINFER_SAMPLER=0
+Environment=PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True
+Environment=PATH=/opt/onex-media/tts-omni-venv/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
+WorkingDirectory=/opt/onex-media
+ExecStart=/opt/onex-media/tts-omni-venv/bin/vllm-omni serve /data/inference/hf-cache/Wan2.2-TI2V-5B-Diffusers --omni \
+    --host 0.0.0.0 --port 8104 --served-model-name wan2.2-ti2v-5b \
+    --deploy-config /opt/onex-media/tts-omni-venv/lib/python3.12/site-packages/vllm_omni/deploy/wan2_2_ti2v.yaml
+ExecStartPost=/usr/bin/curl -sf --retry 180 --retry-delay 2 --retry-all-errors -o /dev/null http://127.0.0.1:8104/v1/models
+ExecStopPost=+/usr/bin/systemctl --no-block start onex-media-embed.service onex-media-stt.service onex-media-tts.service onex-media-decide.service
+Restart=no
+LimitNOFILE=65535
+TimeoutStartSec=900

@@ -1,0 +1,28 @@
+{
+  "commit": "22055725a47699ff6e72f99d44892e1ae57952ad",
+  "node": "src/omnimarket/nodes/node_throughput_tick_decision_compute",
+  "node_files": [
+    "src/omnimarket/nodes/node_throughput_tick_decision_compute/__init__.py",
+    "src/omnimarket/nodes/node_throughput_tick_decision_compute/handlers/handler_throughput_tick_decision.py",
+    "src/omnimarket/nodes/node_throughput_tick_decision_compute/models/__init__.py",
+    "src/omnimarket/nodes/node_throughput_tick_decision_compute/models/model_throughput_tick_decision.py"
+  ],
+  "package_files": [
+    "src/omnimarket/__init__.py",
+    "src/omnimarket/nodes/__init__.py",
+    "src/omnimarket/handlers/__init__.py",
+    "src/omnimarket/handlers/rules_lab_fill_pr_land.py",
+    "src/omnimarket/models/__init__.py",
+    "src/omnimarket/models/ci_red_triage.py",
+    "src/omnimarket/models/lab_fill/__init__.py",
+    "src/omnimarket/models/lab_fill/enum_lab_fill_skip_reason.py",
+    "src/omnimarket/models/lab_fill/model_lab_fill_launch.py",
+    "src/omnimarket/models/lab_fill/model_lab_fill_pr_land.py",
+    "src/omnimarket/events/pr_state.py",
+    "src/omnimarket/events/pr_landing/__init__.py",
+    "src/omnimarket/events/pr_landing/enum_pr_landing_state.py"
+  ],
+  "repo": "OmniNode-ai/omnimarket",
+  "ticket": "OMN-19998",
+  "what": "The merge-throughput tick decision node (node_throughput_tick_decision_compute) the tick's tests run in process through tests/onex_node_double.py, at the head of the omnimarket pull request that adds its per-repository status check (OMN-19998; the old node rejects the repo_status facts). The tick itself calls the deployed node through onex node; CI fetches exactly these files at this commit: the node's decision handler and model (not its runtime-tick handler, which needs omnibase_infra, nor the handlers/__init__.py that imports it), the pr-land fallback rules and models the decision handler imports, and the PR state and landing state files those import. omnimarket/events and the node's handlers are left without an __init__.py, so they load as namespace packages and the events package's eager imports (which need omnibase_compat) never run."
+}

@@ -1,0 +1,30 @@
+model-sha256: 4dc128716d1286c684046e049622c600700406b5ee79139aaac676e70533ff76
+cfg-sha256: 5298596dbf71da77184d70e28584d57a903d2e890272cbae3fb043eccdff3527
+TLC2 Version 2.19 of 08 August 2024 (rev: 5a47802)
+Running breadth-first search Model-Checking with fp 52 and seed -3575801260945098708 with 3 workers on 4 cores with 4551MB heap and 64MB offheap memory [pid: 28914] (Linux 7.0.0-34-generic amd64, Eclipse Adoptium 21.0.12.1 x86_64, MSBDiskFPSet, DiskStateQueue).
+Parsing file CompactionLifecycle.tla
+Parsing file Naturals.tla
+Parsing file FiniteSets.tla
+Parsing file Sequences.tla
+Semantic processing of module Naturals
+Semantic processing of module Sequences
+Semantic processing of module FiniteSets
+Semantic processing of module CompactionLifecycle
+Starting... (2026-10-15 02:41:03)
+Implied-temporal checking--satisfiability problem has 2 branches.
+Computing initial states...
+Finished computing initial states: 1 distinct state generated at 2026-10-15 02:41:04.
+Checking 2 branches of temporal properties for the current state space with 24352 total distinct states at (2026-10-15 02:41:07)
+Finished checking temporal properties in 00s at 2026-10-15 02:41:07
+Checking 2 branches of temporal properties for the complete state space with 107490 total distinct states at (2026-10-15 02:41:13)
+Finished checking temporal properties in 00s at 2026-10-15 02:41:14
+Model checking completed. No error has been found.
+  Estimates of the probability that TLC did not check all reachable states
+  because two distinct states had the same fingerprint:
+  calculated (optimistic):  val = 5.5E-10
+  based on the actual fingerprints:  val = 2.6E-9
+243314 states generated, 53745 distinct states found, 0 states left on queue.
+The depth of the complete state graph search is 29.
+The average outdegree of the complete state graph is 1 (minimum is 0, the maximum 8 and the 95th percentile is 3).
+Finished in 11s at (2026-10-15 02:41:14)
+rc=0

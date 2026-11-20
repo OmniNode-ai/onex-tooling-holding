@@ -1,0 +1,161 @@
+{
+  "schema": "goal-contract-map/1",
+  "ticket": "OMN-20026",
+  "what": "How each check name in the omnimarket task-class template becomes part of a delegate call's goal contract (delegation_step.py text). A name with no row refuses the call before any engine runs. treatment: item = an executable check (check_type and check_value) that becomes a contract item; gate_reject_only = the quality gate decides it, the receipt records it, it can refuse a call and never makes one DONE; skipped = executable in principle with no executor wired, recorded SKIPPED and not counted.",
+  "template": {
+    "repo": "OmniNode-ai/omnimarket",
+    "commit": "921fd26a48ac17d3e21a172a51bc0f6167a542fa",
+    "path": "src/omnimarket/configs/task_class_contracts.v1.yaml",
+    "what": "The template revision the every_template_name_mapped test reads. CI fetches exactly this commit's file; a local run reads it from the omnimarket clone with git show. Bump it with the rows when the template gains a name."
+  },
+  "names": {
+    "accurate": {
+      "treatment": "gate_reject_only",
+      "why": "heuristic prose check the quality gate scores; no executor can run it"
+    },
+    "accurate_summary": {
+      "treatment": "gate_reject_only",
+      "why": "heuristic prose check the quality gate scores; fires only on an explicit self-disclaimer in a summary, and no executor can run it"
+    },
+    "cites_sources": {
+      "treatment": "gate_reject_only",
+      "why": "heuristic prose check the quality gate scores"
+    },
+    "cites_specific_lines": {
+      "treatment": "gate_reject_only",
+      "why": "heuristic prose check the quality gate scores"
+    },
+    "claims_grounded": {
+      "treatment": "gate_reject_only",
+      "why": "grounding check the quality gate runs against the prompt; reject-only"
+    },
+    "code_artifact_present": {
+      "treatment": "gate_reject_only",
+      "why": "structural check on the answer's shape; reject-only in the quality gate"
+    },
+    "compiles_without_errors": {
+      "treatment": "gate_reject_only",
+      "why": "parse check on the answer; reject-only in the quality gate"
+    },
+    "concise": {
+      "treatment": "gate_reject_only",
+      "why": "heuristic prose check the quality gate scores"
+    },
+    "covers_args_returns_raises": {
+      "treatment": "gate_reject_only",
+      "why": "heuristic prose check the quality gate scores"
+    },
+    "covers_dependencies": {
+      "treatment": "gate_reject_only",
+      "why": "heuristic prose check the quality gate scores"
+    },
+    "covers_edge_cases": {
+      "treatment": "gate_reject_only",
+      "why": "heuristic prose check the quality gate scores"
+    },
+    "covers_error_paths": {
+      "treatment": "gate_reject_only",
+      "why": "heuristic prose check the quality gate scores"
+    },
+    "criteria_covered": {
+      "treatment": "gate_reject_only",
+      "why": "structural check of the evidence comment's entries against the criteria it was built from; reject-only in the quality gate"
+    },
+    "docstring_present": {
+      "treatment": "gate_reject_only",
+      "why": "structural check on the answer's shape; reject-only in the quality gate"
+    },
+    "entry_cites_evidence": {
+      "treatment": "gate_reject_only",
+      "why": "grounding check of each evidence-comment entry against the lane report; reject-only in the quality gate"
+    },
+    "final_artifact_only": {
+      "treatment": "gate_reject_only",
+      "why": "structural check on the answer's shape; reject-only in the quality gate"
+    },
+    "follows_codebase_conventions": {
+      "treatment": "gate_reject_only",
+      "why": "heuristic check the quality gate scores"
+    },
+    "follows_google_style": {
+      "treatment": "gate_reject_only",
+      "why": "heuristic prose check the quality gate scores"
+    },
+    "identifiers_grounded": {
+      "treatment": "gate_reject_only",
+      "why": "grounding check the quality gate runs against the prompt; reject-only"
+    },
+    "methodical_analysis": {
+      "treatment": "gate_reject_only",
+      "why": "heuristic prose check the quality gate scores"
+    },
+    "names_resolve": {
+      "treatment": "gate_reject_only",
+      "why": "static name resolution in the quality gate; reject-only, skipped without a grounding source"
+    },
+    "no_obvious_regressions": {
+      "treatment": "gate_reject_only",
+      "why": "heuristic check the quality gate scores"
+    },
+    "no_refusal": {
+      "treatment": "gate_reject_only",
+      "why": "refusal marker check in the quality gate; reject-only"
+    },
+    "numbers_grounded": {
+      "treatment": "gate_reject_only",
+      "why": "grounding check the quality gate runs against the prompt; reject-only"
+    },
+    "operator_voice": {
+      "treatment": "gate_reject_only",
+      "why": "approval or go-ahead check the quality gate runs against the prompt (OMN-21846); reject-only"
+    },
+    "passes_existing_tests": {
+      "treatment": "skipped",
+      "why": "executable in principle; the quality gate records it SKIPPED because no executor is wired, and it does not count"
+    },
+    "pytest_tests_present": {
+      "treatment": "gate_reject_only",
+      "why": "structural check on generated test code (collectable pytest tests); reject-only in the quality gate"
+    },
+    "required_input_content": {
+      "treatment": "gate_reject_only",
+      "why": "the quality gate compares the contract's explicit input obligations with the answer; skipped inside the gate when no obligation matches, reject-only otherwise"
+    },
+    "response_non_empty": {
+      "treatment": "gate_reject_only",
+      "why": "structural check on the answer's shape; reject-only in the quality gate"
+    },
+    "semantic_adequacy": {
+      "treatment": "gate_reject_only",
+      "why": "the quality gate's adequacy authority; a model judge is never an item"
+    },
+    "short_form_adequacy": {
+      "treatment": "gate_reject_only",
+      "why": "the quality gate's adequacy authority for short-form shapes; never an item"
+    },
+    "step_by_step_explanation": {
+      "treatment": "gate_reject_only",
+      "why": "heuristic prose check the quality gate scores"
+    },
+    "structured_output": {
+      "treatment": "gate_reject_only",
+      "why": "structural check on the answer's shape; reject-only in the quality gate"
+    },
+    "task_completed": {
+      "treatment": "gate_reject_only",
+      "why": "agent_delegation completion marker; the class is not routable and the check is the gate's"
+    },
+    "uses_pytest_mark_unit": {
+      "treatment": "gate_reject_only",
+      "why": "structural check on generated test code; reject-only in the quality gate"
+    },
+    "within_sentence_limit": {
+      "treatment": "gate_reject_only",
+      "why": "countable limit the prompt itself states; reject-only in the quality gate, waived when the prompt states none"
+    },
+    "within_word_limit": {
+      "treatment": "gate_reject_only",
+      "why": "countable limit the prompt itself states; reject-only in the quality gate, waived when the prompt states none"
+    }
+  }
+}

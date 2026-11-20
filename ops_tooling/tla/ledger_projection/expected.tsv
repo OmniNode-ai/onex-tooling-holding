@@ -1,0 +1,21 @@
+# One row per cfg/<config>.cfg: config, kind, expected TLC outcome (OMN-20275).
+# adopted: every mutation flag FALSE, every property checked, must pass.
+# variant: one design alternative that is expected to pass.
+# mutation: exactly one mutation flag TRUE, must violate the named property.
+# witness: an adopted configuration checking a reachability control, must violate it.
+adopted	adopted	pass
+adopted_tail	adopted	pass
+adopted_source_gap	adopted	pass
+adopted_two_crashes	adopted	pass
+commit_on_receive	variant	pass
+skip_gap	mutation	violates:NoRecordLost
+content_identity	mutation	violates:NoRecordLost
+no_seq_dedup	mutation	violates:NoDuplicate
+sidecar_watermark	mutation	violates:NoDuplicate
+arrival_order	mutation	violates:InOrder
+no_repair	mutation	violates:GapRepairedOrBlocks
+no_block	mutation	violates:GapRepairedOrBlocks
+no_head_probe	mutation	violates:EveryRowProjectedOrBlocked
+witness_repair	witness	violates:NotRepairedAfterCrashAndDuplicate
+witness_block	witness	violates:NeverBlocked
+witness_tail	witness	violates:TailNeverRendered

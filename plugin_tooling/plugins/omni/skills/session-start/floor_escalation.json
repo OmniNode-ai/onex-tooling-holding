@@ -1,0 +1,18 @@
+{
+  "ticket": "OMN-19998",
+  "ruling": "RULING 2026-10-15T20:56:54Z lane=orchestrator-bb1a",
+  "under_floor_ticks": 3,
+  "dedupe_window_hours": 2,
+  "stuck_green_minutes": 30,
+  "stuck_green_lines_per_repo": 3,
+  "floor_window_hours": 2,
+  "diagnose_model": "opus",
+  "diagnose_effort": "high",
+  "diagnose_route": "ROUTE: band=B4 score=14 dims=S2A2R2V2N2C2J2 dest=opus-lane model=opus effort=high",
+  "note": "Read by session-start/scripts/loops_check.py (load_contract, check_floor_escalation), which the merge-throughput tick runs after the throughput node answers. Scope is the merge-sweep repo-scope setting (sweep_rules.FLEET_REPOS minus sweep_scope.json out_of_scope), never a list here. A repository in scope with no landing_floors.json entry is UNKNOWN. A repository under its floor for more than under_floor_ticks consecutive ticks with no controller progress (no merge, no new lease, no worker result on its PRs) gets one diagnose lane through the remote-lane runner, at most once per repository per dedupe_window_hours. A PR green on every check and not merged or queued longer than stuck_green_minutes (30) is a CONTROLLER_DEFECT, MISSING stuck-green:<pr>: the tick dispatches one controller fix lane (controller_fix_*) per head, with the PR's decision history in the brief (controller_fix_history_rows rows each, controller_fix_brief_prs PRs at most), and prints the count and the oldest age on its status line (RULING 2026-10-17, OMN-19998). Changing a bound is an edit here.",
+  "controller_fix_history_rows": 6,
+  "controller_fix_brief_prs": 20,
+  "controller_fix_model": "opus",
+  "controller_fix_effort": "high",
+  "controller_fix_route": "ROUTE: band=B4 score=14 dims=S2A2R2V2N2C2J2 dest=opus-lane model=opus effort=high"
+}

@@ -1,0 +1,47 @@
+# Overlay for the landing controller's pre-merge liveness read (OMN-22725).
+#
+# Read by the landing controller at every tick (plugin_tooling_pkg.nodes.node_landing_shared_base_effect, liveness_* functions). `key: scalar` lines and
+# `inert_suffixes:` followed by `- item` lines only. It is its own overlay so a reader that predates it never meets a key it refuses.
+# Absent: the read is off. Present and wrong: the tick says LIVENESS-PRECHECK-UNREAD and the read is off. No value below has a default in code.
+#
+# What it does: a pull request in a registry repository that the private automation-liveness sources declaration scans is held, with the
+# file named, when its head adds a finding the merge base does not have, read with the private repository's own reader and with its
+# overlay and declaration as its main tip holds them (omnimarket#5187 passed its own CI and held every private pull request red for about
+# 83 minutes on 2026-11-06; the check ran only in the private repository's CI). The hold lifts at the tick after the declaration lands.
+overlay_version: "1.0.0"
+ticket: OMN-22725
+basis: "orchestrator brief for OMN-22725 (2026-11-06): hold before merge, no branch protection change; the required-context change is the operator's later"
+
+# The checkout holding the overlay and the sources declaration, relative to the registry root (registry_root): the overlays repository, a sibling
+# of it (they moved there from ops_tooling_pkg, OMN-20804). The reader is omnimarket's console script, the one the overlays repository's CI
+# job runs; a relative path is under that checkout.
+internal_clone: ../overlays
+internal_branch: main
+reader: ../registry_root/omnimarket/.venv/bin/onex-automation-liveness-check
+# Where the overlay and the sources declaration sit in that checkout, at the branch tip (git show, never the working tree).
+overlay_glob: overlays/automation_liveness/overlay.yaml
+sources_glob: overlays/automation_liveness_sources/overlay.yaml
+# The name of that checkout in the reader's flags; a pull request there carries its own CI job and is not read here.
+private_repository: overlays
+
+# Heads read in one tick; a head past it waits one tick unread (pending), never merges unread. The reader takes a few seconds per side
+# (a head is read once per private tip and kept in liveness-precheck.json), so 6 reads keep a cold tick under a minute.
+checks_per_tick: 6
+fetch_timeout_seconds: 60
+git_timeout_seconds: 60
+reader_timeout_seconds: 120
+# How long a kept verdict is held.
+cache_days: 3
+
+# A pull request whose every changed path ends with one of these changes nothing the reader reads (an installer is a unit file, a
+# launchd template, a cron.d file, a drift manifest or code that writes one), so it is not read.
+inert_suffixes:
+- .md
+- .rst
+- .txt
+- .json
+- .lock
+- .toml
+- .png
+- .svg
+- .csv

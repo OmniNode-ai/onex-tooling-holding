@@ -1,0 +1,30 @@
+TLC2 Version 2.19 of 08 August 2024 (rev: 5a47802)
+Running breadth-first search Model-Checking with fp 62 and seed -5786268034366808268 with 8 workers on 32 cores with 7282MB heap and 64MB offheap memory [pid: 1] (Linux 7.0.0-34-generic amd64, Eclipse Adoptium 17.0.20.1 x86_64, MSBDiskFPSet, DiskStateQueue).
+Parsing file /work/LandingController.tla
+Parsing file /tmp/Naturals.tla
+Parsing file /tmp/FiniteSets.tla
+Parsing file /tmp/TLC.tla
+Parsing file /tmp/Sequences.tla
+Semantic processing of module Naturals
+Semantic processing of module Sequences
+Semantic processing of module FiniteSets
+Semantic processing of module TLC
+Semantic processing of module LandingController
+Starting... (2026-10-10 07:13:29)
+Warning: The set Workers has been defined to be a symmetry set but contains less than two elements.
+(Use the -nowarning option to disable this warning.)
+Computing initial states...
+Finished computing initial states: 1 distinct state generated at 2026-10-10 07:13:30.
+Progress(11) at 2026-10-10 07:13:33: 184,123 states generated (184,123 s/min), 45,747 distinct states found (45,747 ds/min), 24,099 states left on queue.
+Progress(22) at 2026-10-10 07:14:33: 15,373,698 states generated (15,189,575 s/min), 2,570,143 distinct states found (2,524,396 ds/min), 517,601 states left on queue.
+Progress(26) at 2026-10-10 07:15:33: 29,621,265 states generated (14,247,567 s/min), 4,894,124 distinct states found (2,323,981 ds/min), 356,108 states left on queue.
+Model checking completed. No error has been found.
+  Estimates of the probability that TLC did not check all reachable states
+  because two distinct states had the same fingerprint:
+  calculated (optimistic):  val = 7.6E-6
+  based on the actual fingerprints:  val = 4.8E-7
+32056110 states generated, 5240716 distinct states found, 0 states left on queue.
+The depth of the complete state graph search is 30.
+The average outdegree of the complete state graph is 1 (minimum is 0, the maximum 12 and the 95th percentile is 3).
+Finished in 02min 16s at (2026-10-10 07:15:45)
+rc=0

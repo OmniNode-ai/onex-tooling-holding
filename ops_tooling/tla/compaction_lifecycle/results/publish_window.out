@@ -1,0 +1,348 @@
+model-sha256: 4dc128716d1286c684046e049622c600700406b5ee79139aaac676e70533ff76
+cfg-sha256: ac47ab8a57b72520841304990614ee6a0228882ea17c410a14b25491d03b3732
+TLC2 Version 2.19 of 08 August 2024 (rev: 5a47802)
+Running breadth-first search Model-Checking with fp 61 and seed 4779206948510167044 with 3 workers on 4 cores with 4551MB heap and 64MB offheap memory [pid: 10845] (Linux 7.0.0-34-generic amd64, Eclipse Adoptium 21.0.12.1 x86_64, MSBDiskFPSet, DiskStateQueue).
+Parsing file CompactionLifecycle.tla
+Parsing file Naturals.tla
+Parsing file FiniteSets.tla
+Parsing file Sequences.tla
+Semantic processing of module Naturals
+Semantic processing of module Sequences
+Semantic processing of module FiniteSets
+Semantic processing of module CompactionLifecycle
+Starting... (2026-10-15 02:40:44)
+Implied-temporal checking--satisfiability problem has 2 branches.
+Computing initial states...
+Finished computing initial states: 1 distinct state generated at 2026-10-15 02:40:44.
+Checking 2 branches of temporal properties for the current state space with 31514 total distinct states at (2026-10-15 02:40:47)
+Error: Temporal properties were violated.
+
+Error: The following behavior constitutes a counter-example:
+
+State 1: <Initial predicate>
+/\ completed = {}
+/\ ist = <<"idle", "idle">>
+/\ actVV = <<0, 0>>
+/\ nb = 0
+/\ cvv = <<0, 0>>
+/\ dups = 0
+/\ pe = <<0, 0>>
+/\ dropped = {}
+/\ rcv = {}
+/\ kind = <<"real", "real">>
+/\ cap = {}
+/\ kept = {}
+/\ bcontent = <<<<"none", 0>>>>
+/\ tb = <<0, 0>>
+/\ acc = <<"none", "none">>
+/\ edgeDone = <<FALSE, FALSE>>
+/\ pub = {}
+/\ capTail = {}
+/\ implAct = <<"none", "none">>
+/\ vv = 1
+/\ pkg = <<FALSE, FALSE>>
+
+State 2: <Start line 133, col 5 to line 140, col 55 of module CompactionLifecycle>
+/\ completed = {}
+/\ ist = <<"started", "idle">>
+/\ actVV = <<0, 0>>
+/\ nb = 0
+/\ cvv = <<0, 0>>
+/\ dups = 0
+/\ pe = <<0, 0>>
+/\ dropped = {}
+/\ rcv = {}
+/\ kind = <<"real", "real">>
+/\ cap = {}
+/\ kept = {}
+/\ bcontent = <<<<"none", 0>>>>
+/\ tb = <<1, 0>>
+/\ acc = <<"none", "none">>
+/\ edgeDone = <<FALSE, FALSE>>
+/\ pub = {}
+/\ capTail = {}
+/\ implAct = <<"none", "none">>
+/\ vv = 1
+/\ pkg = <<FALSE, FALSE>>
+
+State 3: <Build line 143, col 5 to line 150, col 59 of module CompactionLifecycle>
+/\ completed = {}
+/\ ist = <<"built", "idle">>
+/\ actVV = <<0, 0>>
+/\ nb = 0
+/\ cvv = <<1, 0>>
+/\ dups = 0
+/\ pe = <<0, 0>>
+/\ dropped = {}
+/\ rcv = {}
+/\ kind = <<"real", "real">>
+/\ cap = {}
+/\ kept = {1}
+/\ bcontent = <<<<"none", 0>>>>
+/\ tb = <<1, 0>>
+/\ acc = <<"none", "none">>
+/\ edgeDone = <<FALSE, FALSE>>
+/\ pub = {<<"prep", 1, "-">>}
+/\ capTail = {}
+/\ implAct = <<"none", "none">>
+/\ vv = 1
+/\ pkg = <<FALSE, FALSE>>
+
+State 4: <Deliver line 240, col 5 to line 244, col 64 of module CompactionLifecycle>
+/\ completed = {}
+/\ ist = <<"built", "idle">>
+/\ actVV = <<0, 0>>
+/\ nb = 0
+/\ cvv = <<1, 0>>
+/\ dups = 0
+/\ pe = <<0, 0>>
+/\ dropped = {}
+/\ rcv = {<<"prep", 1, "-">>}
+/\ kind = <<"real", "real">>
+/\ cap = {}
+/\ kept = {1}
+/\ bcontent = <<<<"none", 0>>>>
+/\ tb = <<1, 0>>
+/\ acc = <<"none", "none">>
+/\ edgeDone = <<FALSE, FALSE>>
+/\ pub = {<<"prep", 1, "-">>}
+/\ capTail = {}
+/\ implAct = <<"none", "none">>
+/\ vv = 1
+/\ pkg = <<FALSE, FALSE>>
+
+State 5: <Start line 133, col 5 to line 140, col 55 of module CompactionLifecycle>
+/\ completed = {}
+/\ ist = <<"built", "started">>
+/\ actVV = <<0, 0>>
+/\ nb = 0
+/\ cvv = <<1, 0>>
+/\ dups = 0
+/\ pe = <<0, 0>>
+/\ dropped = {}
+/\ rcv = {<<"prep", 1, "-">>}
+/\ kind = <<"real", "pre">>
+/\ cap = {}
+/\ kept = {1}
+/\ bcontent = <<<<"none", 0>>>>
+/\ tb = <<1, 1>>
+/\ acc = <<"none", "none">>
+/\ edgeDone = <<FALSE, TRUE>>
+/\ pub = {<<"prep", 1, "-">>}
+/\ capTail = {}
+/\ implAct = <<"none", "none">>
+/\ vv = 1
+/\ pkg = <<FALSE, FALSE>>
+
+State 6: <Mint line 153, col 5 to line 162, col 59 of module CompactionLifecycle>
+/\ completed = {}
+/\ ist = <<"minted", "started">>
+/\ actVV = <<1, 0>>
+/\ nb = 0
+/\ cvv = <<1, 0>>
+/\ dups = 0
+/\ pe = <<0, 0>>
+/\ dropped = {}
+/\ rcv = {<<"prep", 1, "-">>}
+/\ kind = <<"real", "pre">>
+/\ cap = {}
+/\ kept = {1}
+/\ bcontent = <<<<"none", 0>>>>
+/\ tb = <<1, 1>>
+/\ acc = <<"none", "none">>
+/\ edgeDone = <<FALSE, TRUE>>
+/\ pub = {<<"prep", 1, "-">>}
+/\ capTail = {}
+/\ implAct = <<"none", "none">>
+/\ vv = 1
+/\ pkg = <<FALSE, FALSE>>
+
+State 7: <Build line 143, col 5 to line 150, col 59 of module CompactionLifecycle>
+/\ completed = {}
+/\ ist = <<"minted", "kept">>
+/\ actVV = <<1, 0>>
+/\ nb = 0
+/\ cvv = <<1, 1>>
+/\ dups = 0
+/\ pe = <<0, 0>>
+/\ dropped = {}
+/\ rcv = {<<"prep", 1, "-">>}
+/\ kind = <<"real", "pre">>
+/\ cap = {}
+/\ kept = {1}
+/\ bcontent = <<<<"none", 0>>>>
+/\ tb = <<1, 1>>
+/\ acc = <<"none", "none">>
+/\ edgeDone = <<FALSE, TRUE>>
+/\ pub = {<<"prep", 1, "-">>}
+/\ capTail = {}
+/\ implAct = <<"none", "none">>
+/\ vv = 1
+/\ pkg = <<FALSE, FALSE>>
+
+State 8: <EdgeTimeout line 200, col 5 to line 203, col 73 of module CompactionLifecycle>
+/\ completed = {}
+/\ ist = <<"minted", "kept">>
+/\ actVV = <<1, 0>>
+/\ nb = 0
+/\ cvv = <<1, 1>>
+/\ dups = 0
+/\ pe = <<0, 0>>
+/\ dropped = {}
+/\ rcv = {<<"prep", 1, "-">>}
+/\ kind = <<"real", "pre">>
+/\ cap = {}
+/\ kept = {1}
+/\ bcontent = <<<<"none", 0>>>>
+/\ tb = <<1, 1>>
+/\ acc = <<"none", "none">>
+/\ edgeDone = <<TRUE, TRUE>>
+/\ pub = {<<"prep", 1, "-">>}
+/\ capTail = {}
+/\ implAct = <<"none", "none">>
+/\ vv = 1
+/\ pkg = <<FALSE, FALSE>>
+
+State 9: <Compact line 211, col 5 to line 219, col 64 of module CompactionLifecycle>
+/\ completed = {}
+/\ ist = <<"minted", "kept">>
+/\ actVV = <<1, 0>>
+/\ nb = 1
+/\ cvv = <<1, 1>>
+/\ dups = 0
+/\ pe = <<0, 0>>
+/\ dropped = {}
+/\ rcv = {<<"prep", 1, "-">>}
+/\ kind = <<"real", "pre">>
+/\ cap = {}
+/\ kept = {1}
+/\ bcontent = <<<<"native", 0>>>>
+/\ tb = <<1, 1>>
+/\ acc = <<"none", "none">>
+/\ edgeDone = <<TRUE, TRUE>>
+/\ pub = {<<"prep", 1, "-">>}
+/\ capTail = {}
+/\ implAct = <<"none", "none">>
+/\ vv = 1
+/\ pkg = <<FALSE, FALSE>>
+
+State 10: <CaptureT line 234, col 5 to line 237, col 69 of module CompactionLifecycle>
+/\ completed = {}
+/\ ist = <<"minted", "kept">>
+/\ actVV = <<1, 0>>
+/\ nb = 1
+/\ cvv = <<1, 1>>
+/\ dups = 0
+/\ pe = <<0, 0>>
+/\ dropped = {}
+/\ rcv = {<<"prep", 1, "-">>}
+/\ kind = <<"real", "pre">>
+/\ cap = {}
+/\ kept = {1}
+/\ bcontent = <<<<"native", 0>>>>
+/\ tb = <<1, 1>>
+/\ acc = <<"none", "none">>
+/\ edgeDone = <<TRUE, TRUE>>
+/\ pub = {<<"prep", 1, "-">>}
+/\ capTail = {1}
+/\ implAct = <<"none", "none">>
+/\ vv = 1
+/\ pkg = <<FALSE, FALSE>>
+
+State 11: <PubAct line 178, col 5 to line 183, col 68 of module CompactionLifecycle>
+/\ completed = {}
+/\ ist = <<"published", "kept">>
+/\ actVV = <<1, 0>>
+/\ nb = 1
+/\ cvv = <<1, 1>>
+/\ dups = 0
+/\ pe = <<2, 0>>
+/\ dropped = {}
+/\ rcv = {<<"prep", 1, "-">>}
+/\ kind = <<"real", "pre">>
+/\ cap = {}
+/\ kept = {1}
+/\ bcontent = <<<<"native", 0>>>>
+/\ tb = <<1, 1>>
+/\ acc = <<"none", "none">>
+/\ edgeDone = <<TRUE, TRUE>>
+/\ pub = {<<"act", 1, "-">>, <<"prep", 1, "-">>}
+/\ capTail = {1}
+/\ implAct = <<"none", "none">>
+/\ vv = 1
+/\ pkg = <<FALSE, FALSE>>
+
+State 12: <Send line 186, col 5 to line 190, col 73 of module CompactionLifecycle>
+/\ completed = {}
+/\ ist = <<"sent", "kept">>
+/\ actVV = <<1, 0>>
+/\ nb = 1
+/\ cvv = <<1, 1>>
+/\ dups = 0
+/\ pe = <<2, 0>>
+/\ dropped = {}
+/\ rcv = {<<"prep", 1, "-">>}
+/\ kind = <<"real", "pre">>
+/\ cap = {}
+/\ kept = {1}
+/\ bcontent = <<<<"native", 0>>>>
+/\ tb = <<1, 1>>
+/\ acc = <<"none", "none">>
+/\ edgeDone = <<TRUE, TRUE>>
+/\ pub = {<<"act", 1, "-">>, <<"prep", 1, "-">>}
+/\ capTail = {1}
+/\ implAct = <<"none", "none">>
+/\ vv = 1
+/\ pkg = <<TRUE, FALSE>>
+
+State 13: <Deliver line 240, col 5 to line 244, col 64 of module CompactionLifecycle>
+/\ completed = {}
+/\ ist = <<"sent", "kept">>
+/\ actVV = <<1, 0>>
+/\ nb = 1
+/\ cvv = <<1, 1>>
+/\ dups = 0
+/\ pe = <<2, 0>>
+/\ dropped = {}
+/\ rcv = {<<"act", 1, "-">>, <<"prep", 1, "-">>}
+/\ kind = <<"real", "pre">>
+/\ cap = {}
+/\ kept = {1}
+/\ bcontent = <<<<"native", 0>>>>
+/\ tb = <<1, 1>>
+/\ acc = <<"none", "none">>
+/\ edgeDone = <<TRUE, TRUE>>
+/\ pub = {<<"act", 1, "-">>, <<"prep", 1, "-">>}
+/\ capTail = {1}
+/\ implAct = <<"none", "none">>
+/\ vv = 1
+/\ pkg = <<TRUE, FALSE>>
+
+State 14: <CaptureB line 222, col 5 to line 225, col 73 of module CompactionLifecycle>
+/\ completed = {}
+/\ ist = <<"sent", "kept">>
+/\ actVV = <<1, 0>>
+/\ nb = 1
+/\ cvv = <<1, 1>>
+/\ dups = 0
+/\ pe = <<2, 0>>
+/\ dropped = {}
+/\ rcv = {<<"act", 1, "-">>, <<"prep", 1, "-">>}
+/\ kind = <<"real", "pre">>
+/\ cap = {1}
+/\ kept = {1}
+/\ bcontent = <<<<"native", 0>>>>
+/\ tb = <<1, 1>>
+/\ acc = <<"none", "none">>
+/\ edgeDone = <<TRUE, TRUE>>
+/\ pub = {<<"act", 1, "-">>, <<"prep", 1, "-">>}
+/\ capTail = {1}
+/\ implAct = <<"none", "none">>
+/\ vv = 1
+/\ pkg = <<TRUE, FALSE>>
+
+State 15: Stuttering
+Finished checking temporal properties in 00s at 2026-10-15 02:40:48
+54982 states generated, 15757 distinct states found, 3176 states left on queue.
+Finished in 04s at (2026-10-15 02:40:48)
+rc=13

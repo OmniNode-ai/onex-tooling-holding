@@ -1,0 +1,143 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "description": "idle_slot_fill deployment values read from the sources named on each property (OMN-21373).",
+  "additionalProperties": false,
+  "required": [
+    "process_fix_roles",
+    "mvp_repos",
+    "always_out_roles",
+    "cloud_backlog",
+    "experiment_designs"
+  ],
+  "properties": {
+    "process_fix_roles": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "string",
+        "minLength": 1
+      },
+      "description": "Read from src/plugin_tooling_pkg/nodes/node_idle_slot_fill_effect/handler.py: PROCESS_FIX_REPOS, expressed as repos overlay roles."
+    },
+    "mvp_repos": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "string",
+        "minLength": 1
+      },
+      "description": "Read from src/plugin_tooling_pkg/nodes/node_idle_slot_fill_effect/handler.py: MVP_REPOS in written order."
+    },
+    "always_out_roles": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "string",
+        "minLength": 1
+      },
+      "description": "Read from src/plugin_tooling_pkg/nodes/node_idle_slot_fill_effect/handler.py: ALWAYS_OUT, expressed as repos overlay roles."
+    },
+    "cloud_backlog": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "ruling",
+        "note",
+        "repos",
+        "excluded_repos",
+        "lab_markers",
+        "sprint_state_types",
+        "max_estimate",
+        "window_hours"
+      ],
+      "properties": {
+        "ruling": {
+          "type": "string",
+          "minLength": 1
+        },
+        "note": {
+          "type": "string",
+          "minLength": 1
+        },
+        "repos": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "excluded_repos": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "lab_markers": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "sprint_state_types": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "max_estimate": {
+          "type": "integer"
+        },
+        "window_hours": {
+          "type": "integer"
+        }
+      },
+      "description": "Read from src/plugin_tooling_pkg/nodes/node_idle_slot_fill_effect/cloud_backlog.json: entire object with the prescribed dated ruling paraphrase."
+    },
+    "experiment_designs": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "id",
+          "title",
+          "repo",
+          "design",
+          "measure"
+        ],
+        "properties": {
+          "id": {
+            "type": "string",
+            "minLength": 1
+          },
+          "title": {
+            "type": "string",
+            "minLength": 1
+          },
+          "repo": {
+            "type": "string",
+            "minLength": 1
+          },
+          "design": {
+            "type": "string",
+            "minLength": 1
+          },
+          "measure": {
+            "type": "string",
+            "minLength": 1
+          }
+        }
+      },
+      "description": "Read from src/plugin_tooling_pkg/nodes/node_idle_slot_fill_effect/experiments.json: designs array."
+    }
+  }
+}

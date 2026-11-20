@@ -1,0 +1,16 @@
+{
+  "name": "omni",
+  "description": "Internal OmniNode process skills (lane briefs, ticket creation, PR landing, merge drains, CI triage, release cuts, session resume, friction recording, ledger writes/catchup/messaging, cited questions to the planning corpus and to the work ledger, and the check for who is waiting on the operator for a reply), invoked as /omni:<skill>. Skills, plus the session-start self-start and checkpoint hooks; every other hook stays in the public plugin.",
+  "version": "0.4.486",
+  "author": {
+    "name": "OmniNode",
+    "email": "person@example.com"
+  },
+  "repository": "https://example.invalid/private-repo",
+  "keywords": [
+    "omninode",
+    "internal",
+    "process",
+    "skills"
+  ]
+}

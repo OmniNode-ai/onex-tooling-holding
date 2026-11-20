@@ -1,0 +1,11 @@
+plugin_source: plugin-tooling-pkg
+private_data: ops_tooling_pkg
+knowledge_base: docs_repo
+deploy: infra_repo
+private_data_home_envs:
+- OPS_TOOLING_PKG_HOME
+- OPS_TOOLING_PKG_PATH
+knowledge_base_home_env: DOCS_REPO_PATH
+beside_root:
+- private_data
+- knowledge_base

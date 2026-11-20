@@ -1,0 +1,71 @@
+model_digest=06346a2a5742a3e561bd5d82bae00b3754a32019749d3c3340f9205ed97df559
+TLC2 Version 2026.09.25.163503 (rev: 8f4bc8b)
+Running breadth-first search Model-Checking with fp 93 and seed -4271171112039463962 with 2 workers on 4 cores with 2731MB heap and 64MB offheap memory [pid: 319] (Linux 7.0.0-31-generic amd64, Ubuntu 21.0.12.1 64bit, MSBDiskFPSet, DiskStateQueue).
+Parsing file PreprSlot.tla
+Parsing file Naturals.tla
+Parsing file FiniteSets.tla
+Parsing file Sequences.tla
+Semantic processing of module Naturals
+Semantic processing of module Sequences
+Semantic processing of module FiniteSets
+Semantic processing of module PreprSlot
+Linting of module PreprSlot
+Starting... (2026-10-18 05:45:11)
+Computing initial states...
+Finished computing initial states: 2 distinct states generated at 2026-10-18 05:45:11.
+Error: Invariant NoReceiptEver is violated.
+Error: The behavior up to this point is:
+State 1: <Initial predicate>
+/\ occ = (<<host1, s1>> :> {})
+/\ seen = (p1 :> <<"none", "none">> @@ p2 :> <<"none", "none">>)
+/\ checked = (p1 :> "none" @@ p2 :> "none")
+/\ evicted = FALSE
+/\ approved = {}
+/\ prHead = h1
+/\ receipts = {}
+/\ slotHead = (<<host1, s1>> :> "none")
+
+State 2: <Approve line 104, col 3 to line 106, col 74 of module PreprSlot>
+/\ occ = (<<host1, s1>> :> {})
+/\ seen = (p1 :> <<"none", "none">> @@ p2 :> <<"none", "none">>)
+/\ checked = (p1 :> "none" @@ p2 :> "none")
+/\ evicted = FALSE
+/\ approved = {h1}
+/\ prHead = h1
+/\ receipts = {}
+/\ slotHead = (<<host1, s1>> :> "none")
+
+State 3: <Read(p1,<<host1, s1>>) line 82, col 3 to line 86, col 69 of module PreprSlot>
+/\ occ = (<<host1, s1>> :> {})
+/\ seen = (p1 :> <<host1, s1>> @@ p2 :> <<"none", "none">>)
+/\ checked = (p1 :> h1 @@ p2 :> "none")
+/\ evicted = FALSE
+/\ approved = {h1}
+/\ prHead = h1
+/\ receipts = {}
+/\ slotHead = (<<host1, s1>> :> "none")
+
+State 4: <Enter(p1,<<host1, s1>>) line 93, col 3 to line 101, col 54 of module PreprSlot>
+/\ occ = (<<host1, s1>> :> {p1})
+/\ seen = (p1 :> <<"none", "none">> @@ p2 :> <<"none", "none">>)
+/\ checked = (p1 :> "none" @@ p2 :> "none")
+/\ evicted = FALSE
+/\ approved = {h1}
+/\ prHead = h1
+/\ receipts = {}
+/\ slotHead = (<<host1, s1>> :> h1)
+
+State 5: <Post(p1,<<host1, s1>>) line 129, col 3 to line 133, col 59 of module PreprSlot>
+/\ occ = (<<host1, s1>> :> {})
+/\ seen = (p1 :> <<"none", "none">> @@ p2 :> <<"none", "none">>)
+/\ checked = (p1 :> "none" @@ p2 :> "none")
+/\ evicted = FALSE
+/\ approved = {h1}
+/\ prHead = h1
+/\ receipts = {[head |-> h1, atHead |-> h1]}
+/\ slotHead = (<<host1, s1>> :> "none")
+
+38 states generated, 24 distinct states found, 10 states left on queue.
+The depth of the complete state graph search is 5.
+Finished in 00s at (2026-10-18 05:45:11)
+rc=12

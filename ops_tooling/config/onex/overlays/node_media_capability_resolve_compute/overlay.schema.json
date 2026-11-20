@@ -1,0 +1,26 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "description": "node_media_capability_resolve_compute deployment values (OMN-22781): the lab's media backends the caller injects into the node (omnimarket OMN-22774).",
+  "additionalProperties": false,
+  "required": ["backends"],
+  "properties": {
+    "backends": {
+      "type": "array",
+      "minItems": 1,
+      "description": "omnimarket node_media_capability_resolve_compute models/model_media_capability.py: ModelMediaBackend, one row per backend.",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["backend_id", "capability", "endpoint_url", "served_model_id", "serving"],
+        "properties": {
+          "backend_id": {"type": "string", "minLength": 1, "description": "ModelMediaBackend.backend_id"},
+          "capability": {"type": "string", "enum": ["tts", "stt", "embed", "decide", "video"], "description": "ModelMediaBackend.capability, the node's EnumMediaCapability"},
+          "endpoint_url": {"type": "string", "pattern": "^http://[^/:]+:[0-9]+/v1/[a-z/]+$", "description": "ModelMediaBackend.endpoint_url"},
+          "served_model_id": {"type": "string", "minLength": 1, "description": "ModelMediaBackend.served_model_id"},
+          "serving": {"type": "boolean", "description": "ModelMediaBackend.serving"}
+        }
+      }
+    }
+  }
+}

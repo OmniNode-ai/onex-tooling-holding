@@ -1,0 +1,15 @@
+{
+  "lines": [
+    "A PR that changes a host install, a launchd or systemd unit, a tool, a hook or a plugin is not finished at tests passed (operator 2026-10-31, OMN-21815: \"<removed>\"). Once its tests pass on the branch and the PR is open, install the branch revision on the lab through the declared installer, never a hand edit of a host or a plugin cache: the omni plugin through `python3 \"${CLAUDE_PLUGIN_ROOT}/skills/adopt-merged/scripts/adopt_merged.py\" install-tree --branch <pushed branch>`, a host unit through `onex-host-install`.",
+    "",
+    "Then verify it runs: the unit's next tick, the tool's next call, the hook firing. Record `installed=<host>:<revision>` and `observed=<what ran>` in the PR's `Lab:` line (or in a PR comment that names the head) and in a STATUS row of your lane. `/omni:pr-handoff` refuses such a PR whose Lab line, lab comment or STATUS row names no installed revision of the live head and no observation of it running.",
+    "",
+    "Prod and anything that needs a grant are excluded: they keep their fresh-approval gate. A PR that changes none of these files keeps the lab line it has today. Nobody waits for a merge to deploy a fix to the lab."
+  ],
+  "markers": [
+    "installed=<host>:<revision>",
+    "the declared installer",
+    "never a hand edit of a host or a plugin cache",
+    "/omni:pr-handoff"
+  ]
+}

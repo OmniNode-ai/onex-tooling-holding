@@ -1,0 +1,347 @@
+# Overlay for the landing goal's scope (OMN-19998).
+#
+# Read by node_idle_slot_fill_effect (load_goal_scope) as the "goal_scope" overlay, found under ONEX_SKILL_OVERLAY_ROOTS like every
+# other overlay in this plugin, by the throughput tick's goal check and lab fill, the merge sweep's reader and the idle-turn
+# guard. `key: scalar` lines and `key:` followed by `- item` lines only. An absent or invalid overlay puts nothing in scope and
+# the tick says why; no value below has a default in code.
+#
+# The goal (operator /goal, 2026-11-05 about 12:40Z): landing works for the work we are keeping. In scope means public and private
+# pull requests tied to delegation, the MVP, pilots, the cost estimator or the factory floor, plus the named landing prerequisites;
+# everything else stays paused as draft and is not counted. RULING 2026-11-05T12:36:07Z puts the actual product in scope, registry_root
+# included though private.
+#
+# Source rows, as of the watcher tick 2026-11-05T12:40:52Z:
+#   in_scope_prs      the 45 pull requests the mvp-pr-order-1040 report ranks with an evidenced scope link (report sha256 prefix
+#                     653c97075d17), plus the two product removals the draft pause continuation named
+#   prerequisite_prs  the pull requests the draft pause lane kept ready by name (keep-ready-named in its restore list)
+#   paused_prs        the rows of the draft pause restore lists of lanes draft-pause-our-prs-1220 and draft-pause-continue-1240
+#                     (sha256 prefixes d00944ba9c3a and b2b9b147f102):
+#                     what is out. A pull request in this list that is open and ready is a draft flipped back.
+# 2026-11-06T0935Z (OMN-22602, set by lane scope-enforce-0925 from the classing of lane scope-enforce-0340 at 05:20Z, sha256 prefix c4d6a528dda6 of the added and removed entries):
+# the landing controller reads this file at every tick and holds the operator's own pull request that is paused, unlisted or, when this file
+# cannot be read, any (OMN-22570). The operator's open ready pull requests were read against the goal's words: delegation, MVP, pilots, the cost
+# estimator, product, the floor, landing prerequisites and step 0 are listed; the lane dispatch, grant, blocked-fill and brief gate pull requests
+# the HOLD rows of 2026-11-06T04:29Z to 04:31Z and 03:20Z bar before M0 PASS left in_scope_prs for paused_prs; the rest of the open ready ones that
+# are none of the words were drafted and listed in paused_prs. This edit adds no pull request of a parked repository to either list.
+# A pull request in neither list is outside the goal as well (everything else stays paused). Moving one in is an edit here.
+# 2026-11-06T1210Z (OMN-22570, lane scope-rule-1200): omniclaude#3182 and #3183, the guard fixes (OMN-22559 and OMN-22558, children of OMN-22478,
+# lab-proved with failing controls), moved from paused_prs to in_scope_prs. The ticket rule in goal_scope_ticket_rule/overlay.yaml admits an
+# unlisted pull request of the operator by its ticket from now on, so a new pull request needs no entry here; the paused list still overrides it.
+# 2026-11-13 (OMN-19998, RULING 2026-11-03T18:40:27Z and the operator's machinery-first order of 2026-11-02): omnimarket#6008, the omnimarket
+# home of the Mac lab-fill tick patch (ticket OMN-24109), and overlays#416, its settings overlay, are listed as prerequisite pull requests.
+# The landing controller held 6008 at 2026-11-13T17:54:41Z as KEPT_OUT via unlisted: no entry named it and the ticket rule did not admit it.
+# This is factory machinery, so it is in scope. No other pull request is added.
+# 2026-11-13 (RULING 2026-11-13T21:16:04Z, ticket OMN-19998, lane goal-roots-6802): of the 13 pull requests whose ticket chain ends at OMN-17427
+# (which is no root on purpose), each was read by the subject of its own ticket against the 2026-11-06 categories. Three fit and are listed:
+# omnimarket#5511 (OMN-20689: a host that drifted from main syncs its plugins by revision; category landing prerequisites, prerequisite_prs),
+# omnimarket#5924 (OMN-23983: the factory board's host list reads the one host table reader; category the floor) and plugin-tooling-pkg#1872
+# (OMN-24051: the hourly throughput tick keeps a time floor for its decision step; category the floor). omnimarket#6008 was listed on
+# 2026-11-13 above; omnimarket#6042 and overlays#444 are admitted by the OMN-21611 root in goal_scope_ticket_rule. The other seven stay paused
+# (unlisted) and are not named here as paused: omnibase_infra#5940 (pin refresh policy), omnibase_infra#5948 (a CI runner environment),
+# ops_tooling_pkg#1571 and #1572 (code added to a frozen repository; the lab-fill launcher it re-lands is omnimarket#6008),
+# omnimarket#5972 (alarm re-raise), overlays#195 (the work log's bus setting) and infra_repo#2007 (a beta board criterion): none names a
+# 2026-11-06 category.
+overlay_version: "1.0.0"
+ticket: OMN-19998
+ruling: "operator goal 2026-11-05 about 12:40Z: landing works for the work we are keeping; in scope means pull requests tied to delegation, the MVP, pilots, the cost estimator or the factory floor, plus the named landing prerequisites; RULING 2026-11-05T12:36:07Z puts the product (registry_root) in scope"
+
+# Repositories whose every pull request is in scope: the actual product.
+in_scope_repos:
+
+# Lab-fill item kinds that act on a whole repository (a red landing branch, a shared red). They are in scope only in a repository
+# that holds in-scope work, and stay one lane per repository.
+repo_work_kinds:
+- dev-red
+- cause-red
+
+# Lab-fill item kinds that repair the landing machinery itself (a host that drifted from main, a tick that cannot run). Every other
+# kind (ticket, readback, experiment-design, m4-board-red) is outside the goal and waits.
+prerequisite_kinds:
+- lab-repair
+
+in_scope_prs:
+- omnibase_infra#5501
+- omnibase_infra#5585
+- omnibase_infra#5624
+- omnibase_infra#5663
+- omnibase_infra#5668
+- omnibase_infra#5676
+- omnibase_infra#5677
+- omnibase_infra#5679
+- omnibase_infra#5683
+- omnibase_infra#5687
+- omnibase_infra#5694
+- omnibase_infra#5699
+- omnibase_infra#5700
+- omnibase_infra#5721
+- omnibase_infra#5724
+- omnibase_infra#5725
+- omnibase_infra#5727
+- omniclaude#3152
+- omniclaude#3153
+- omniclaude#3167
+- omniclaude#3182
+- omniclaude#3183
+- plugin-tooling-pkg#1504
+- plugin-tooling-pkg#1647
+- plugin-tooling-pkg#1693
+- plugin-tooling-pkg#1695
+- omnimarket#4904
+- omnimarket#4988
+- omnimarket#4997
+- omnimarket#5039
+- omnimarket#5043
+- omnimarket#5046
+- omnimarket#5058
+- omnimarket#5071
+- omnimarket#5075
+- omnimarket#5078
+- omnimarket#5084
+- omnimarket#5087
+- omnimarket#5097
+- omnimarket#5099
+- omnimarket#5105
+- omnimarket#5108
+- omnimarket#5112
+- omnimarket#5120
+- omnimarket#5123
+- omnimarket#5124
+- omnimarket#5126
+- omnimarket#5127
+- omnimarket#5129
+- omnimarket#5131
+- omnimarket#5132
+- omnimarket#5142
+- omnimarket#5143
+- omnimarket#5144
+- omnimarket#5150
+- omnimarket#5152
+- omnimarket#5153
+- omnimarket#5170
+- omnimarket#5924
+- plugin-tooling-pkg#1872
+
+prerequisite_prs:
+- omnibase_infra#5674
+- omnibase_infra#5688
+- omnibase_infra#5701
+- plugin-tooling-pkg#1586
+- plugin-tooling-pkg#1622
+- plugin-tooling-pkg#1640
+- plugin-tooling-pkg#1662
+- plugin-tooling-pkg#1663
+- plugin-tooling-pkg#1665
+- omnimarket#5101
+- omnimarket#5102
+- omnimarket#5103
+- omnimarket#5107
+- omnimarket#5138
+- omnimarket#6008
+- omnimarket#5511
+- overlays#416
+
+paused_prs:
+- docs_repo#1617
+- omnibase_infra#5555
+- omnibase_infra#5600
+- omnibase_infra#5633
+- omnibase_infra#5644
+- omnibase_infra#5650
+- omnibase_infra#5657
+- omnibase_infra#5659
+- omnibase_infra#5666
+- omnibase_infra#5673
+- omnibase_infra#5678
+- omnibase_infra#5680
+- omnibase_infra#5681
+- omnibase_infra#5682
+- omnibase_infra#5685
+- omnibase_infra#5686
+- omnibase_infra#5695
+- omnibase_infra#5697
+- omnibase_infra#5698
+- ops_tooling_pkg#1421
+- ops_tooling_pkg#1422
+- ops_tooling_pkg#1424
+- ops_tooling_pkg#1425
+- ops_tooling_pkg#1426
+- ops_tooling_pkg#1429
+- ops_tooling_pkg#1431
+- ops_tooling_pkg#1444
+- plugin-tooling-pkg#1190
+- plugin-tooling-pkg#1289
+- plugin-tooling-pkg#1301
+- plugin-tooling-pkg#1304
+- plugin-tooling-pkg#1323
+- plugin-tooling-pkg#1324
+- plugin-tooling-pkg#1325
+- plugin-tooling-pkg#1337
+- plugin-tooling-pkg#1342
+- plugin-tooling-pkg#1344
+- plugin-tooling-pkg#1389
+- plugin-tooling-pkg#1391
+- plugin-tooling-pkg#1416
+- plugin-tooling-pkg#1420
+- plugin-tooling-pkg#1423
+- plugin-tooling-pkg#1424
+- plugin-tooling-pkg#1426
+- plugin-tooling-pkg#1440
+- plugin-tooling-pkg#1441
+- plugin-tooling-pkg#1442
+- plugin-tooling-pkg#1443
+- plugin-tooling-pkg#1445
+- plugin-tooling-pkg#1447
+- plugin-tooling-pkg#1449
+- plugin-tooling-pkg#1454
+- plugin-tooling-pkg#1459
+- plugin-tooling-pkg#1475
+- plugin-tooling-pkg#1482
+- plugin-tooling-pkg#1489
+- plugin-tooling-pkg#1490
+- plugin-tooling-pkg#1493
+- plugin-tooling-pkg#1494
+- plugin-tooling-pkg#1501
+- plugin-tooling-pkg#1503
+- plugin-tooling-pkg#1505
+- plugin-tooling-pkg#1511
+- plugin-tooling-pkg#1512
+- plugin-tooling-pkg#1514
+- plugin-tooling-pkg#1515
+- plugin-tooling-pkg#1516
+- plugin-tooling-pkg#1518
+- plugin-tooling-pkg#1519
+- plugin-tooling-pkg#1521
+- plugin-tooling-pkg#1522
+- plugin-tooling-pkg#1523
+- plugin-tooling-pkg#1524
+- plugin-tooling-pkg#1525
+- plugin-tooling-pkg#1526
+- plugin-tooling-pkg#1532
+- plugin-tooling-pkg#1534
+- plugin-tooling-pkg#1535
+- plugin-tooling-pkg#1537
+- plugin-tooling-pkg#1538
+- plugin-tooling-pkg#1545
+- plugin-tooling-pkg#1546
+- plugin-tooling-pkg#1548
+- plugin-tooling-pkg#1549
+- plugin-tooling-pkg#1550
+- plugin-tooling-pkg#1554
+- plugin-tooling-pkg#1556
+- plugin-tooling-pkg#1557
+- plugin-tooling-pkg#1559
+- plugin-tooling-pkg#1560
+- plugin-tooling-pkg#1561
+- plugin-tooling-pkg#1562
+- plugin-tooling-pkg#1563
+- plugin-tooling-pkg#1564
+- plugin-tooling-pkg#1565
+- plugin-tooling-pkg#1566
+- plugin-tooling-pkg#1567
+- plugin-tooling-pkg#1568
+- plugin-tooling-pkg#1569
+- plugin-tooling-pkg#1570
+- plugin-tooling-pkg#1572
+- plugin-tooling-pkg#1573
+- plugin-tooling-pkg#1574
+- plugin-tooling-pkg#1575
+- plugin-tooling-pkg#1576
+- plugin-tooling-pkg#1578
+- plugin-tooling-pkg#1583
+- plugin-tooling-pkg#1588
+- plugin-tooling-pkg#1592
+- plugin-tooling-pkg#1599
+- plugin-tooling-pkg#1601
+- plugin-tooling-pkg#1602
+- plugin-tooling-pkg#1604
+- plugin-tooling-pkg#1605
+- plugin-tooling-pkg#1606
+- plugin-tooling-pkg#1607
+- plugin-tooling-pkg#1608
+- plugin-tooling-pkg#1609
+- plugin-tooling-pkg#1610
+- plugin-tooling-pkg#1611
+- plugin-tooling-pkg#1612
+- plugin-tooling-pkg#1613
+- plugin-tooling-pkg#1614
+- plugin-tooling-pkg#1615
+- plugin-tooling-pkg#1616
+- plugin-tooling-pkg#1619
+- plugin-tooling-pkg#1620
+- plugin-tooling-pkg#1621
+- plugin-tooling-pkg#1623
+- plugin-tooling-pkg#1624
+- plugin-tooling-pkg#1625
+- plugin-tooling-pkg#1626
+- plugin-tooling-pkg#1627
+- plugin-tooling-pkg#1633
+- plugin-tooling-pkg#1634
+- plugin-tooling-pkg#1635
+- plugin-tooling-pkg#1636
+- plugin-tooling-pkg#1637
+- plugin-tooling-pkg#1642
+- plugin-tooling-pkg#1643
+- plugin-tooling-pkg#1648
+- plugin-tooling-pkg#1649
+- plugin-tooling-pkg#1651
+- plugin-tooling-pkg#1653
+- plugin-tooling-pkg#1654
+- plugin-tooling-pkg#1655
+- plugin-tooling-pkg#1656
+- plugin-tooling-pkg#1657
+- plugin-tooling-pkg#1659
+- plugin-tooling-pkg#1661
+- plugin-tooling-pkg#1667
+- plugin-tooling-pkg#1668
+- plugin-tooling-pkg#1675
+- omnimarket#4808
+- omnimarket#4848
+- omnimarket#4849
+- omnimarket#4858
+- omnimarket#4870
+- omnimarket#4897
+- omnimarket#4906
+- omnimarket#5003
+- omnimarket#5024
+- omnimarket#5047
+- omnimarket#5048
+- omnimarket#5049
+- omnimarket#5054
+- omnimarket#5060
+- omnimarket#5062
+- omnimarket#5064
+- omnimarket#5065
+- omnimarket#5066
+- omnimarket#5069
+- omnimarket#5072
+- omnimarket#5073
+- omnimarket#5074
+- omnimarket#5076
+- omnimarket#5079
+- omnimarket#5080
+- omnimarket#5081
+- omnimarket#5082
+- omnimarket#5083
+- omnimarket#5086
+- omnimarket#5090
+- omnimarket#5091
+- omnimarket#5092
+- omnimarket#5093
+- omnimarket#5096
+- omnimarket#5104
+- omnimarket#5106
+- omnimarket#5109
+- omnimarket#5110
+- omnimarket#5111
+- omnimarket#5114
+- omnimarket#5116
+- omnimarket#5117
+- omnimarket#5118
+- omnimarket#5121
+- omnimarket#5122
+- omnimarket#5128
+- omnimarket#5133
+- omnimarket#5135
+- omnimarket#5137
+- omnimarket#5166
+- registry_root#17

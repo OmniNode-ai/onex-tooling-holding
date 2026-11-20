@@ -1,0 +1,60 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "description": "repos deployment values read from the sources named on each property (OMN-21373).",
+  "additionalProperties": false,
+  "required": [
+    "plugin_source",
+    "private_data",
+    "knowledge_base",
+    "deploy",
+    "private_data_home_envs",
+    "knowledge_base_home_env",
+    "beside_root"
+  ],
+  "properties": {
+    "plugin_source": {
+      "type": "string",
+      "minLength": 1,
+      "description": "Read from plugins/omni/skills/merge-drain/scripts/landing_placement.py: PARITY_PLUGIN_REPO."
+    },
+    "private_data": {
+      "type": "string",
+      "minLength": 1,
+      "description": "Read from plugins/omni/skills/merge-drain/scripts/landing_placement.py: ONEX_WORKSPACE_CONFIG_ROOT and BESIDE_ROOT_CLONES."
+    },
+    "knowledge_base": {
+      "type": "string",
+      "minLength": 1,
+      "description": "Read from plugins/omni/skills/merge-drain/scripts/landing_placement.py: BESIDE_ROOT_CLONES."
+    },
+    "deploy": {
+      "type": "string",
+      "minLength": 1,
+      "description": "Read from plugins/omni/skills/remote-lane/scripts/onex_remote_lane.py: CLOUD_EXCLUDED_REPOS; src/plugin_tooling_pkg/nodes/node_idle_slot_fill_effect/handler.py: ALWAYS_OUT."
+    },
+    "private_data_home_envs": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "string",
+        "minLength": 1
+      },
+      "description": "Read from plugins/omni/skills/remote-lane/scripts/onex_remote_lane.py: ordered internal clone search loop."
+    },
+    "knowledge_base_home_env": {
+      "type": "string",
+      "minLength": 1,
+      "description": "Read from plugins/omni/skills/remote-lane/scripts/onex_remote_lane.py: knowledge-base clone search."
+    },
+    "beside_root": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "string",
+        "minLength": 1
+      },
+      "description": "Read from plugins/omni/skills/merge-drain/scripts/landing_placement.py: BESIDE_ROOT_CLONES, expressed as repos overlay roles."
+    }
+  }
+}

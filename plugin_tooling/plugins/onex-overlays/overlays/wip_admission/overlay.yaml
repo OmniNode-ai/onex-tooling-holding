@@ -1,0 +1,156 @@
+# Overlay for the work-in-progress admission (omnimarket node_wip_admission_compute), OMN-21669.
+#
+# Read as the "wip_admission" overlay under ONEX_SKILL_OVERLAY_ROOTS by omnimarket's remote-lane brief gate
+# (handlers/wip_admission_brief_gate.py, node_dispatch_brief_shape_compute's wip-refused refusal) and by the lab
+# fill's gate (handlers/wip_admission_fill_gate.py). A host whose overlay roots hold no such file judges nothing:
+# the brief gate admits every dispatch and the fill prints UNKNOWN lab-fill-wip. The launching host's overlay root
+# is this plugin tree (the private-repo marketplace), so this file is what turns the gate on.
+#
+# RULING 2026-10-30T00:03:58Z (operator): the daily ticket budget is replaced by a limit on work in progress. New
+# work is not sent to a lane while the count of started tickets a live CLAIM holds (once each) is at the
+# repository's limit or the fleet's. A fix-forward for a red, a repeat break or a landing blocker is never refused,
+# and creating a ticket is never refused by count.
+#
+# RULING 2026-11-07T20:02:38Z (operator, OMN-23028): there is no pull request limit. The work-in-progress limit above
+# applies to the work sent to lanes only. Open pull requests are not counted by the node, in any repository, so this
+# overlay carries no open pull request cap: every limit below bounds claimed tickets (lane work) and its number is
+# unchanged. The watcher state is still read, for its freshness and so that a fix-forward request can name the red or
+# blocked pull request it repairs.
+#
+# Every limit is Little's law from its own measurement, and the node refuses a limit that is not the one its
+# merges_per_hour and lead_time_hours give (the floor is the node contract's limit_floor, 3). Re-measure with the
+# same git log and edit the three numbers of an entry together; tests/test_wip_admission_overlay.py pins the
+# arithmetic. The per-lane numbers of a plan's owning lane (the orchestration alignment plan's D13: four concurrent
+# sub-lanes, two open pull requests per repository from that lane) are that lane's own and sit above this overlay;
+# the overlay schema has no key for them and refuses an unknown key.
+#
+# Process-fix lanes are named with one of fix_forward_lane_prefixes; the brief gate admits them without reading the
+# watcher state, so a defect in the admission read stays repairable.
+enforce_ruling: '2026-10-30T00:03:58Z'
+dispatchable_repos:
+- docs_repo
+- omnibase_core
+- omnibase_infra
+- omnibase_spi
+- omniclaude
+- plugin-tooling-pkg
+- omnidash
+- omniintelligence
+- omnimarket
+- omnimemory
+- infra_repo
+- onex_change_control
+fleet:
+  limit: 14
+  merges_per_hour: 4.42
+  lead_time_hours: 3.0
+  method: 'Little''s law: limit = max(floor, ceil(merges per hour x target lead time hours)); the merge rate is first-parent commits on the default branch over the trailing 7 days (168 hours) to 2026-10-31T08:30:00Z,
+    less version-bump, ledger-row, census and publish commits'
+  evidence: 742 merges in 168 hours in all dispatchable repositories; target lead time 3 hours is config.wip_admission of the 2026-10-26 factory plan's hours_of_landing
+limits:
+  docs_repo:
+    limit: 3
+    merges_per_hour: 0.595
+    lead_time_hours: 3.0
+    method: 'Little''s law: limit = max(floor, ceil(merges per hour x target lead time hours)); the merge rate is first-parent commits on the default branch over the trailing 7 days (168 hours) to 2026-10-31T08:30:00Z,
+      less version-bump, ledger-row, census and publish commits'
+    evidence: 100 merges in 168 hours in docs_repo; target lead time 3 hours is config.wip_admission of the 2026-10-26 factory plan's hours_of_landing
+  omnibase_core:
+    limit: 3
+    merges_per_hour: 0.435
+    lead_time_hours: 3.0
+    method: 'Little''s law: limit = max(floor, ceil(merges per hour x target lead time hours)); the merge rate is first-parent commits on the default branch over the trailing 7 days (168 hours) to 2026-10-31T08:30:00Z,
+      less version-bump, ledger-row, census and publish commits'
+    evidence: 73 merges in 168 hours in omnibase_core; target lead time 3 hours is config.wip_admission of the 2026-10-26 factory plan's hours_of_landing
+  omnibase_infra:
+    limit: 3
+    merges_per_hour: 0.821
+    lead_time_hours: 3.0
+    method: 'Little''s law: limit = max(floor, ceil(merges per hour x target lead time hours)); the merge rate is first-parent commits on the default branch over the trailing 7 days (168 hours) to 2026-10-31T08:30:00Z,
+      less version-bump, ledger-row, census and publish commits'
+    evidence: 138 merges in 168 hours in omnibase_infra; target lead time 3 hours is config.wip_admission of the 2026-10-26 factory plan's hours_of_landing
+  omnibase_spi:
+    limit: 3
+    merges_per_hour: 0.083
+    lead_time_hours: 3.0
+    method: 'Little''s law: limit = max(floor, ceil(merges per hour x target lead time hours)); the merge rate is first-parent commits on the default branch over the trailing 7 days (168 hours) to 2026-10-31T08:30:00Z,
+      less version-bump, ledger-row, census and publish commits'
+    evidence: 14 merges in 168 hours in omnibase_spi; target lead time 3 hours is config.wip_admission of the 2026-10-26 factory plan's hours_of_landing
+  omniclaude:
+    limit: 3
+    merges_per_hour: 0.351
+    lead_time_hours: 3.0
+    method: 'Little''s law: limit = max(floor, ceil(merges per hour x target lead time hours)); the merge rate is first-parent commits on the default branch over the trailing 7 days (168 hours) to 2026-10-31T08:30:00Z,
+      less version-bump, ledger-row, census and publish commits'
+    evidence: 59 merges in 168 hours in omniclaude; target lead time 3 hours is config.wip_admission of the 2026-10-26 factory plan's hours_of_landing
+  plugin-tooling-pkg:
+    limit: 3
+    merges_per_hour: 0.363
+    lead_time_hours: 3.0
+    method: 'Little''s law: limit = max(floor, ceil(merges per hour x target lead time hours)); the merge rate is first-parent commits on the default branch over the trailing 7 days (168 hours) to 2026-10-31T08:30:00Z,
+      less version-bump, ledger-row, census and publish commits'
+    evidence: 61 merges in 168 hours in plugin-tooling-pkg; target lead time 3 hours is config.wip_admission of the 2026-10-26 factory plan's hours_of_landing
+  omnidash:
+    limit: 3
+    merges_per_hour: 0.137
+    lead_time_hours: 3.0
+    method: 'Little''s law: limit = max(floor, ceil(merges per hour x target lead time hours)); the merge rate is first-parent commits on the default branch over the trailing 7 days (168 hours) to 2026-10-31T08:30:00Z,
+      less version-bump, ledger-row, census and publish commits'
+    evidence: 23 merges in 168 hours in omnidash; target lead time 3 hours is config.wip_admission of the 2026-10-26 factory plan's hours_of_landing
+  omniintelligence:
+    limit: 3
+    merges_per_hour: 0.095
+    lead_time_hours: 3.0
+    method: 'Little''s law: limit = max(floor, ceil(merges per hour x target lead time hours)); the merge rate is first-parent commits on the default branch over the trailing 7 days (168 hours) to 2026-10-31T08:30:00Z,
+      less version-bump, ledger-row, census and publish commits'
+    evidence: 16 merges in 168 hours in omniintelligence; target lead time 3 hours is config.wip_admission of the 2026-10-26 factory plan's hours_of_landing
+  omnimarket:
+    limit: 5
+    merges_per_hour: 1.345
+    lead_time_hours: 3.0
+    method: 'Little''s law: limit = max(floor, ceil(merges per hour x target lead time hours)); the merge rate is first-parent commits on the default branch over the trailing 7 days (168 hours) to 2026-10-31T08:30:00Z,
+      less version-bump, ledger-row, census and publish commits'
+    evidence: 226 merges in 168 hours in omnimarket; target lead time 3 hours is config.wip_admission of the 2026-10-26 factory plan's hours_of_landing
+  omnimemory:
+    limit: 3
+    merges_per_hour: 0.101
+    lead_time_hours: 3.0
+    method: 'Little''s law: limit = max(floor, ceil(merges per hour x target lead time hours)); the merge rate is first-parent commits on the default branch over the trailing 7 days (168 hours) to 2026-10-31T08:30:00Z,
+      less version-bump, ledger-row, census and publish commits'
+    evidence: 17 merges in 168 hours in omnimemory; target lead time 3 hours is config.wip_admission of the 2026-10-26 factory plan's hours_of_landing
+  infra_repo:
+    limit: 3
+    merges_per_hour: 0.06
+    lead_time_hours: 3.0
+    method: 'Little''s law: limit = max(floor, ceil(merges per hour x target lead time hours)); the merge rate is first-parent commits on the default branch over the trailing 7 days (168 hours) to 2026-10-31T08:30:00Z,
+      less version-bump, ledger-row, census and publish commits'
+    evidence: 10 merges in 168 hours in infra_repo; target lead time 3 hours is config.wip_admission of the 2026-10-26 factory plan's hours_of_landing
+  registry_root:
+    limit: 3
+    merges_per_hour: 0.024
+    lead_time_hours: 3.0
+    method: 'Little''s law: limit = max(floor, ceil(merges per hour x target lead time hours)); the merge rate is first-parent commits on the default branch over the trailing 7 days (168 hours) to 2026-10-31T08:30:00Z,
+      less version-bump, ledger-row, census and publish commits'
+    evidence: 4 merges in 168 hours in registry_root; target lead time 3 hours is config.wip_admission of the 2026-10-26 factory plan's hours_of_landing
+  onex_change_control:
+    limit: 3
+    merges_per_hour: 0.006
+    lead_time_hours: 3.0
+    method: 'Little''s law: limit = max(floor, ceil(merges per hour x target lead time hours)); the merge rate is first-parent commits on the default branch over the trailing 7 days (168 hours) to 2026-10-31T08:30:00Z,
+      less version-bump, ledger-row, census and publish commits'
+    evidence: 1 merges in 168 hours in onex_change_control; target lead time 3 hours is config.wip_admission of the 2026-10-26 factory plan's hours_of_landing
+fix_forward_classes:
+- red
+- repeat_break
+- landing_blocker
+fix_forward_kinds:
+- dev-red
+- cause-red
+- process-fix
+- lab-repair
+fix_forward_lane_prefixes:
+- pf-drive-
+- cause-
+- repair-
+- dev-red-
+watcher_state_path: ${registry_root}/.claude_scratch/pr-watcher/state.json

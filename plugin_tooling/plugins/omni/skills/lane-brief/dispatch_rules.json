@@ -1,0 +1,19 @@
+{
+  "Premise:": [
+    "verified by: <command> => <observation>",
+    "UNVERIFIED — falsify first",
+    "Premises falsified:"
+  ],
+  "Report to file:": [
+    ".claude_scratch/reports/",
+    "at most 12 lines"
+  ],
+  "Mint authority:": [
+    "Mint authority: delegated by the orchestrator for exactly one ticket"
+  ],
+  "Canonical shape:": [
+    "new capability is a node",
+    "`contract.yaml`, a declarative node and a handler",
+    "Integrate before building: before you write a new file, find the existing node or handler that already does the job and wire it"
+  ]
+}

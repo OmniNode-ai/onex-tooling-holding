@@ -1,0 +1,247 @@
+TLC2 Version 2026.09.25.163503 (rev: 8f4bc8b)
+Running breadth-first search Model-Checking with fp 108 and seed -6840942468116129847 with 16 workers on 32 cores with 12633MB heap and 64MB offheap memory [pid: 3585149] (Linux 7.0.0-31-generic amd64, Ubuntu 21.0.12.1 64bit, MSBDiskFPSet, DiskStateQueue).
+Parsing file LedgerBusAppend.tla
+Parsing file /tmp/tlc-62981408427979455/Naturals.tla (jar:file:tla2tools.jar!/tla2sany/StandardModules/Naturals.tla)
+Parsing file /tmp/tlc-62981408427979455/Sequences.tla (jar:file:tla2tools.jar!/tla2sany/StandardModules/Sequences.tla)
+Parsing file /tmp/tlc-62981408427979455/FiniteSets.tla (jar:file:tla2tools.jar!/tla2sany/StandardModules/FiniteSets.tla)
+Parsing file /tmp/tlc-62981408427979455/TLC.tla (jar:file:tla2tools.jar!/tla2sany/StandardModules/TLC.tla)
+Parsing file /tmp/tlc-62981408427979455/_TLCTrace.tla (jar:file:tla2tools.jar!/tla2sany/StandardModules/_TLCTrace.tla)
+Parsing file /tmp/tlc-62981408427979455/TLCExt.tla (jar:file:tla2tools.jar!/tla2sany/StandardModules/TLCExt.tla)
+Parsing file /tmp/tlc-62981408427979455/Integers.tla (jar:file:tla2tools.jar!/tla2sany/StandardModules/Integers.tla)
+Semantic processing of module Naturals
+Semantic processing of module Sequences
+Semantic processing of module FiniteSets
+Semantic processing of module TLC
+Semantic processing of module Integers
+Semantic processing of module TLCExt
+Semantic processing of module _TLCTrace
+Semantic processing of module LedgerBusAppend
+Linting of module TLCExt
+Linting of module _TLCTrace
+Linting of module LedgerBusAppend
+Starting... (2026-10-04 20:11:41)
+Computing initial states...
+Finished computing initial states: 1 distinct state generated at 2026-10-04 20:11:41.
+Error: Invariant SeqGapless is violated.
+Error: The behavior up to this point is:
+State 1: <Initial predicate>
+/\ events = {}
+/\ offset = 0
+/\ sseq = 0
+/\ replays = (r1 :> 0)
+/\ lpc = (l1 :> "todo")
+/\ counter = 0
+/\ nextReq = 1
+/\ holder = "none"
+/\ inflight = <<0, 0>>
+/\ rcvd = {}
+/\ losses = 0
+/\ sreq = 0
+/\ lseq = (l1 :> 0)
+/\ bus = <<>>
+/\ sent = {}
+/\ crashes = 0
+/\ sstat = "none"
+/\ todo = <<>>
+/\ spc = "idle"
+/\ ledger = <<>>
+/\ receipts = {}
+/\ spool = {}
+
+State 2: <SpoolRow(r1) line 111, col 3 to line 117, col 94 of module LedgerBusAppend>
+/\ events = {}
+/\ offset = 0
+/\ sseq = 0
+/\ replays = (r1 :> 0)
+/\ lpc = (l1 :> "todo")
+/\ counter = 0
+/\ nextReq = 2
+/\ holder = "none"
+/\ inflight = <<0, 0>>
+/\ rcvd = {}
+/\ losses = 0
+/\ sreq = 0
+/\ lseq = (l1 :> 0)
+/\ bus = <<>>
+/\ sent = {r1}
+/\ crashes = 0
+/\ sstat = "none"
+/\ todo = <<>>
+/\ spc = "idle"
+/\ ledger = <<>>
+/\ receipts = {}
+/\ spool = {[req |-> 1, row |-> r1]}
+
+State 3: <Next line 315, col 6 to line 315, col 66 of module LedgerBusAppend>
+/\ events = {}
+/\ offset = 0
+/\ sseq = 0
+/\ replays = (r1 :> 0)
+/\ lpc = (l1 :> "todo")
+/\ counter = 0
+/\ nextReq = 2
+/\ holder = "none"
+/\ inflight = <<0, 0>>
+/\ rcvd = {}
+/\ losses = 0
+/\ sreq = 0
+/\ lseq = (l1 :> 0)
+/\ bus = <<[req |-> 1, row |-> r1]>>
+/\ sent = {r1}
+/\ crashes = 0
+/\ sstat = "none"
+/\ todo = <<>>
+/\ spc = "idle"
+/\ ledger = <<>>
+/\ receipts = {}
+/\ spool = {[req |-> 1, row |-> r1]}
+
+State 4: <Fetch line 173, col 3 to line 179, col 95 of module LedgerBusAppend>
+/\ events = {}
+/\ offset = 0
+/\ sseq = 0
+/\ replays = (r1 :> 0)
+/\ lpc = (l1 :> "todo")
+/\ counter = 0
+/\ nextReq = 2
+/\ holder = "none"
+/\ inflight = <<0, 0>>
+/\ rcvd = {}
+/\ losses = 0
+/\ sreq = 1
+/\ lseq = (l1 :> 0)
+/\ bus = <<[req |-> 1, row |-> r1]>>
+/\ sent = {r1}
+/\ crashes = 0
+/\ sstat = "none"
+/\ todo = <<>>
+/\ spc = "fetched"
+/\ ledger = <<>>
+/\ receipts = {}
+/\ spool = {[req |-> 1, row |-> r1]}
+
+State 5: <Handle line 183, col 3 to line 201, col 95 of module LedgerBusAppend>
+/\ events = {}
+/\ offset = 0
+/\ sseq = 1
+/\ replays = (r1 :> 0)
+/\ lpc = (l1 :> "todo")
+/\ counter = 0
+/\ nextReq = 2
+/\ holder = "none"
+/\ inflight = <<0, 0>>
+/\ rcvd = {}
+/\ losses = 0
+/\ sreq = 1
+/\ lseq = (l1 :> 0)
+/\ bus = <<[req |-> 1, row |-> r1]>>
+/\ sent = {r1}
+/\ crashes = 0
+/\ sstat = "none"
+/\ todo = <<>>
+/\ spc = "seqread"
+/\ ledger = <<>>
+/\ receipts = {}
+/\ spool = {[req |-> 1, row |-> r1]}
+
+State 6: <LocalStart(l1) line 260, col 3 to line 271, col 95 of module LedgerBusAppend>
+/\ events = {}
+/\ offset = 0
+/\ sseq = 1
+/\ replays = (r1 :> 0)
+/\ lpc = (l1 :> "read")
+/\ counter = 0
+/\ nextReq = 2
+/\ holder = "none"
+/\ inflight = <<0, 0>>
+/\ rcvd = {}
+/\ losses = 0
+/\ sreq = 1
+/\ lseq = (l1 :> 1)
+/\ bus = <<[req |-> 1, row |-> r1]>>
+/\ sent = {r1}
+/\ crashes = 0
+/\ sstat = "none"
+/\ todo = <<>>
+/\ spc = "seqread"
+/\ ledger = <<>>
+/\ receipts = {}
+/\ spool = {[req |-> 1, row |-> r1]}
+
+State 7: <AppendLate line 204, col 3 to line 209, col 95 of module LedgerBusAppend>
+/\ events = {}
+/\ offset = 0
+/\ sseq = 1
+/\ replays = (r1 :> 0)
+/\ lpc = (l1 :> "read")
+/\ counter = 0
+/\ nextReq = 2
+/\ holder = "serve"
+/\ inflight = <<0, 0>>
+/\ rcvd = {}
+/\ losses = 0
+/\ sreq = 1
+/\ lseq = (l1 :> 1)
+/\ bus = <<[req |-> 1, row |-> r1]>>
+/\ sent = {r1}
+/\ crashes = 0
+/\ sstat = "accepted"
+/\ todo = <<>>
+/\ spc = "rowwritten"
+/\ ledger = <<[req |-> 1, row |-> r1, seq |-> 1]>>
+/\ receipts = {}
+/\ spool = {[req |-> 1, row |-> r1]}
+
+State 8: <ServeCrash line 249, col 3 to line 255, col 74 of module LedgerBusAppend>
+/\ events = {}
+/\ offset = 0
+/\ sseq = 1
+/\ replays = (r1 :> 0)
+/\ lpc = (l1 :> "read")
+/\ counter = 0
+/\ nextReq = 2
+/\ holder = "none"
+/\ inflight = <<0, 0>>
+/\ rcvd = {}
+/\ losses = 0
+/\ sreq = 1
+/\ lseq = (l1 :> 1)
+/\ bus = <<[req |-> 1, row |-> r1]>>
+/\ sent = {r1}
+/\ crashes = 1
+/\ sstat = "accepted"
+/\ todo = <<>>
+/\ spc = "idle"
+/\ ledger = <<[req |-> 1, row |-> r1, seq |-> 1]>>
+/\ receipts = {}
+/\ spool = {[req |-> 1, row |-> r1]}
+
+State 9: <LocalAppendLate(l1) line 274, col 3 to line 280, col 95 of module LedgerBusAppend>
+/\ events = {}
+/\ offset = 0
+/\ sseq = 1
+/\ replays = (r1 :> 0)
+/\ lpc = (l1 :> "rowwritten")
+/\ counter = 0
+/\ nextReq = 2
+/\ holder = l1
+/\ inflight = <<0, 0>>
+/\ rcvd = {}
+/\ losses = 0
+/\ sreq = 1
+/\ lseq = (l1 :> 1)
+/\ bus = <<[req |-> 1, row |-> r1]>>
+/\ sent = {r1}
+/\ crashes = 1
+/\ sstat = "accepted"
+/\ todo = <<>>
+/\ spc = "idle"
+/\ ledger = <<[req |-> 1, row |-> r1, seq |-> 1], [req |-> 0, row |-> l1, seq |-> 1]>>
+/\ receipts = {}
+/\ spool = {[req |-> 1, row |-> r1]}
+
+538 states generated, 306 distinct states found, 106 states left on queue.
+The depth of the complete state graph search is 12.
+Finished in 00s at (2026-10-04 20:11:41)
+Trace exploration spec path: ./LedgerBusAppend_TTrace_1791159101.tla
+rc=12

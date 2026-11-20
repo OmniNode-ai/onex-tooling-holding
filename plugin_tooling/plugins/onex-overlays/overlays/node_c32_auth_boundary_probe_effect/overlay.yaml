@@ -1,0 +1,18 @@
+# Deployment overlay for node_c32_auth_boundary_probe_effect (OMN-23213, omnimarket), the daily C32 local auth-boundary probe.
+#
+# Read by the node's tick (omnimarket runtime_c32_probe_tick, run by the systemd unit c32-auth-boundary-probe), found under
+# ONEX_SKILL_OVERLAY_ROOTS at <root>/node_c32_auth_boundary_probe_effect/overlay.yaml. No key has a default in the node.
+#
+# The tick profile grades the environment the tick runs in (the host's registry project), so no per-host directory is named here.
+# graded_packages are the packages whose installed versions each run records, for the launch reading (M1) to compare with the
+# launch candidate. result_topic must be a topic the node's contract declares.
+default_profile: tick
+history_file: c32-runs.jsonl
+history_keep: 60
+result_topic: onex.evt.omnimarket.local-auth-boundary-probe-completed.v1
+profiles:
+  inmemory:
+    kind: inmemory
+  tick:
+    kind: tick
+    graded_packages: [omnibase-core, omnibase-infra, omnimarket]

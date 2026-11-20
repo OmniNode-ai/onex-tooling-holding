@@ -1,0 +1,177 @@
+model-sha256: c578a49a94f254326c3ca2c7136dc784f4fbcfba7258cabd79f4f8974f9ba824
+cfg-sha256: 47cf26342b0597352ee606abf4e62e287678202f174ac5f9425d6eb8e5b68e7b
+TLC2 Version 2026.09.25.163503 (rev: 8f4bc8b)
+Running breadth-first search Model-Checking with fp 71 and seed 8408134274179972650 with 4 workers on 4 cores with 1820MB heap and 64MB offheap memory [pid: 3854959] (Linux 7.0.0-31-generic amd64, Ubuntu 21.0.12.1 64bit, MSBDiskFPSet, DiskStateQueue).
+Parsing file LedgerProjection.tla
+Parsing file /tmp/tlc-17380370975865134253/Integers.tla (jar:file:tla2tools.jar!/tla2sany/StandardModules/Integers.tla)
+Parsing file /tmp/tlc-17380370975865134253/Sequences.tla (jar:file:tla2tools.jar!/tla2sany/StandardModules/Sequences.tla)
+Parsing file /tmp/tlc-17380370975865134253/FiniteSets.tla (jar:file:tla2tools.jar!/tla2sany/StandardModules/FiniteSets.tla)
+Parsing file /tmp/tlc-17380370975865134253/_TLCTrace.tla (jar:file:tla2tools.jar!/tla2sany/StandardModules/_TLCTrace.tla)
+Parsing file /tmp/tlc-17380370975865134253/Naturals.tla (jar:file:tla2tools.jar!/tla2sany/StandardModules/Naturals.tla)
+Parsing file /tmp/tlc-17380370975865134253/TLC.tla (jar:file:tla2tools.jar!/tla2sany/StandardModules/TLC.tla)
+Parsing file /tmp/tlc-17380370975865134253/TLCExt.tla (jar:file:tla2tools.jar!/tla2sany/StandardModules/TLCExt.tla)
+Semantic processing of module Naturals
+Semantic processing of module Integers
+Semantic processing of module Sequences
+Semantic processing of module FiniteSets
+Semantic processing of module TLC
+Semantic processing of module TLCExt
+Semantic processing of module _TLCTrace
+Semantic processing of module LedgerProjection
+Linting of module TLCExt
+Linting of module _TLCTrace
+Linting of module LedgerProjection
+Starting... (2026-10-13 08:18:18)
+Computing initial states...
+Finished computing initial states: 1 distinct state generated at 2026-10-13 08:18:18.
+Error: Invariant NoDuplicate is violated.
+Error: The behavior up to this point is:
+State 1: <Initial predicate>
+/\ sidecarDue = FALSE
+/\ offset = [t1 |-> 0, t2 |-> 0]
+/\ blocked = FALSE
+/\ W = 0
+/\ log = [t1 |-> <<>>, t2 |-> <<>>]
+/\ pos = [t1 |-> 0, t2 |-> 0]
+/\ dropped = 0
+/\ sidecar = 0
+/\ file = <<>>
+/\ pending = {}
+/\ appended = 0
+/\ crashes = 0
+/\ up = TRUE
+/\ republished = 0
+/\ lenAtCrash = -1
+/\ head = 0
+
+State 2: <AppendRow line 122, col 5 to line 127, col 71 of module LedgerProjection>
+/\ sidecarDue = FALSE
+/\ offset = [t1 |-> 0, t2 |-> 0]
+/\ blocked = FALSE
+/\ W = 0
+/\ log = [t1 |-> <<1>>, t2 |-> <<>>]
+/\ pos = [t1 |-> 0, t2 |-> 0]
+/\ dropped = 0
+/\ sidecar = 0
+/\ file = <<>>
+/\ pending = {}
+/\ appended = 1
+/\ crashes = 0
+/\ up = TRUE
+/\ republished = 0
+/\ lenAtCrash = -1
+/\ head = 0
+
+State 3: <Receive("t1") line 150, col 5 to line 159, col 59 of module LedgerProjection>
+/\ sidecarDue = FALSE
+/\ offset = [t1 |-> 0, t2 |-> 0]
+/\ blocked = FALSE
+/\ W = 0
+/\ log = [t1 |-> <<1>>, t2 |-> <<>>]
+/\ pos = [t1 |-> 1, t2 |-> 0]
+/\ dropped = 0
+/\ sidecar = 0
+/\ file = <<>>
+/\ pending = {1}
+/\ appended = 1
+/\ crashes = 0
+/\ up = TRUE
+/\ republished = 0
+/\ lenAtCrash = -1
+/\ head = 0
+
+State 4: <Render line 163, col 5 to line 180, col 49 of module LedgerProjection>
+/\ sidecarDue = TRUE
+/\ offset = [t1 |-> 0, t2 |-> 0]
+/\ blocked = FALSE
+/\ W = 1
+/\ log = [t1 |-> <<1>>, t2 |-> <<>>]
+/\ pos = [t1 |-> 1, t2 |-> 0]
+/\ dropped = 0
+/\ sidecar = 0
+/\ file = <<1>>
+/\ pending = {}
+/\ appended = 1
+/\ crashes = 0
+/\ up = TRUE
+/\ republished = 0
+/\ lenAtCrash = -1
+/\ head = 0
+
+State 5: <Crash line 249, col 5 to line 256, col 55 of module LedgerProjection>
+/\ sidecarDue = FALSE
+/\ offset = [t1 |-> 0, t2 |-> 0]
+/\ blocked = FALSE
+/\ W = 1
+/\ log = [t1 |-> <<1>>, t2 |-> <<>>]
+/\ pos = [t1 |-> 1, t2 |-> 0]
+/\ dropped = 0
+/\ sidecar = 0
+/\ file = <<1>>
+/\ pending = {}
+/\ appended = 1
+/\ crashes = 1
+/\ up = FALSE
+/\ republished = 0
+/\ lenAtCrash = 1
+/\ head = 0
+
+State 6: <Recover line 260, col 5 to line 268, col 61 of module LedgerProjection>
+/\ sidecarDue = FALSE
+/\ offset = [t1 |-> 0, t2 |-> 0]
+/\ blocked = FALSE
+/\ W = 0
+/\ log = [t1 |-> <<1>>, t2 |-> <<>>]
+/\ pos = [t1 |-> 0, t2 |-> 0]
+/\ dropped = 0
+/\ sidecar = 0
+/\ file = <<1>>
+/\ pending = {}
+/\ appended = 1
+/\ crashes = 1
+/\ up = TRUE
+/\ republished = 0
+/\ lenAtCrash = 1
+/\ head = 0
+
+State 7: <Receive("t1") line 150, col 5 to line 159, col 59 of module LedgerProjection>
+/\ sidecarDue = FALSE
+/\ offset = [t1 |-> 0, t2 |-> 0]
+/\ blocked = FALSE
+/\ W = 0
+/\ log = [t1 |-> <<1>>, t2 |-> <<>>]
+/\ pos = [t1 |-> 1, t2 |-> 0]
+/\ dropped = 0
+/\ sidecar = 0
+/\ file = <<1>>
+/\ pending = {1}
+/\ appended = 1
+/\ crashes = 1
+/\ up = TRUE
+/\ republished = 0
+/\ lenAtCrash = 1
+/\ head = 0
+
+State 8: <Render line 163, col 5 to line 180, col 49 of module LedgerProjection>
+/\ sidecarDue = TRUE
+/\ offset = [t1 |-> 0, t2 |-> 0]
+/\ blocked = FALSE
+/\ W = 1
+/\ log = [t1 |-> <<1>>, t2 |-> <<>>]
+/\ pos = [t1 |-> 1, t2 |-> 0]
+/\ dropped = 0
+/\ sidecar = 0
+/\ file = <<1, 1>>
+/\ pending = {}
+/\ appended = 1
+/\ crashes = 1
+/\ up = TRUE
+/\ republished = 0
+/\ lenAtCrash = 1
+/\ head = 0
+
+3137 states generated, 1364 distinct states found, 635 states left on queue.
+The depth of the complete state graph search is 9.
+Finished in 00s at (2026-10-13 08:18:18)
+Trace exploration spec path: ./LedgerProjection_TTrace_1791893897.tla
+rc=12

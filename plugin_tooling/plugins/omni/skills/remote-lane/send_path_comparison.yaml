@@ -1,0 +1,178 @@
+# The send path's frozen comparison (OMN-22962; gate OMN-22478 AC-1; rebuild plan 4.2 row 12).
+#
+# Row 12 rewrites the send path: the lane runner that places one lane on a lab host and carries it to a receipt. A rewrite
+# freezes its comparison first, so "did the new send path keep what the old one did" is answered against a list written
+# before the rewrite, not against the rewrite's own idea of itself. This file is that list. It holds three things:
+#
+#   inputs        what the old and the new send path are both run on;
+#   capabilities  every capability of the old runner's run path that the new send path must keep, one id each, with the
+#                 names in the old runner that carry it (anchors, read at the pinned runner);
+#   threshold     what counts as a pass.
+#
+# The hash of this file's content (canonical JSON of inputs, capabilities and threshold; comments and key order do not
+# count) is recorded in the overlay plugins/onex-overlays/overlays/send_path_comparison/overlay.yaml, and
+# tests/unit/test_send_path_comparison_frozen.py refuses a file whose content no longer matches that hash. Dropping,
+# adding or rewording a capability, or moving the threshold, therefore needs the overlay's hash changed in the same pull
+# request, which a reviewer reads as a change to the bar. A capability the rewrite drops on purpose is removed here in
+# that pull request with its reason in the pull request body; it is never dropped silently.
+#
+# Measured counts. The ticket names a 6,646-line runner; the runner at the pinned commit is 6,447 lines (wc -l of the
+# file at that commit, 2026-11-07). The ticket's figure does not match any commit this lane could read; the pin below is
+# the source this list was written from.
+schema_version: "1.0.0"
+ticket: OMN-22962
+frozen_on: "2026-11-07"
+
+inputs:
+  runner:
+    repo: plugin-tooling-pkg
+    path: plugins/omni/skills/remote-lane/scripts/onex_remote_lane.py
+    commit: d7b9cb9a21301bf0a0165c149f09464a27188a0b
+    blob: 0aeae5451e5e79bc4a14568e2e7e0f5216a36b47
+    sha256: 7126f556ad4e851aba1cb678d3679342619002b529770c06d8787192703a4ba1
+    lines: 6447
+  subcommands: [run, wait, child-claim, hook-preflight, commit-patch, cloud-credit, backfill-receipts]
+  # The `run` subcommand's flags, as the parser declares them at the pin (52).
+  run_flags: [--brief, --lane, --model, --risk-class, --effort, --host, --repo, --ref, --sha, --owner, --ticket, --pr,
+    --cause, --priority-class, --escalation-reason, --parent, --done, --max-attempts, --on-time-box, --job-id,
+    --attempt, --ledger, --receipt, --timeout-min, --mem-max, --cpu-quota, --plugin, --no-plugins, --require-kb,
+    --require-capability, --claude-dir, --allow-stale-runner, --session-env, --remote-omni-home, --lane-claim,
+    --no-ledger-snapshot, --base-url, --writable, --check, --context, --max-turns, --keep-remote, --no-publish,
+    --detach, --placement-wait-s, --no-placement-wait, --placement, --run-id, --brief-sha256, --detached-child,
+    --queue-relaunch, --replace]
+  # What a run reads: the brief file, the rolling work ledger (live file and archive), the PR watcher state, the shared
+  # lab host table, the session env of the parent lane, the installed plugin set at its revisions.
+  run_reads: [brief file, rolling work ledger with archive, PR watcher state, required-contexts copy, lab host table,
+    parent session env, installed plugin revisions, runner receipts directory]
+  # The recorded runs both send paths are compared on (the receipts the runner wrote and the repository keeps).
+  recorded_receipts:
+    - plugins/omni/skills/remote-lane/tests/fixtures/duplicate-2026-11-06/receipts.json
+    - plugins/omni/skills/remote-lane/tests/fixtures/lane_ship_scratch_claude_dir_receipt.json
+  # The old runner's own tests (plugins/omni/skills/remote-lane/tests, tests/test_remote_lane_mechanics.py): the new send
+  # path passes the same assertions or the pull request that changes one names the capability it concerns.
+  runner_tests:
+    - plugins/omni/skills/remote-lane/tests
+    - tests/test_remote_lane_mechanics.py
+  exit_codes:
+    0: lane finished and its result is not an error
+    1: lane finished with an error or a nonzero engine exit
+    2: usage
+    3: wait returned before the lane finished, or detached placement timed out
+    70: remote setup or ledger CLAIM failed
+    74: the lane name has a live or queued instance and --replace was not given
+    75: no host qualifies
+    76: the session never started (zero turns, or a hook blocked its prompt)
+    77: the host's Claude account hit a usage limit (the host is marked; retry on another host)
+    78: the brief's ROUTE line names a model or effort the lane was not given
+    79: the host's Claude login expired (the host is marked; retry on another host)
+    96: the host holds no registry root (the remote resolution script's own exit)
+  # The exit codes of the hook-preflight subcommand: 0 pass, 1 fix, 3 blocked, 4 continue.
+  hook_preflight_exit_codes: [0, 1, 3, 4]
+
+capabilities:
+  - id: C01-placement-by-node
+    what: Places the lane on a qualifying lab host (login, capacity, lane slot, lab first, launching host last) through the one placement node; no qualifying host prints REMOTE-LANE-NO-HOST and exits 75; --host still has to qualify.
+    anchors: [place, placement_pick, placement_request, ask_node, node_gate, node_decision, queue_no_host, parity_line]
+  - id: C02-shared-slot-accounting
+    what: A remote lane and a landing worker count against the same host slots (the controller's placement lock and host.id.pid marker); a lane priority class sets its place in the queue.
+    anchors: [place, lane_priority_class, placement_request]
+  - id: C03-host-provisioning
+    what: Provisions a chosen host that lacks a prerequisite before the lane starts, and refuses with the repair named when it cannot.
+    anchors: [provision_script, provision_host, place_provisioning, parse_provision]
+  - id: C04-engine-selection-and-refusals
+    what: Selects the engine (claude -p, GLM through Claude Code, code-edit loop, Codex for review only) and places a GLM or Codex lane only on a host that carries it; work never selects Codex; a refused ask fails before anything is placed or claimed.
+    anchors: [GlmEngine, glm_endpoint, glm_refusal, CodeEditEngine, code_edit_engine, CodeEditRun, CodexEngine, CodexRun, codex_omni_dir]
+  - id: C05-brief-gates-before-placement
+    what: Refuses before placement a brief that is only the pasted standing rules, a driver lane with no PR target, a time limit past the default with no reason line, a ROUTE line that disagrees with --model or --effort, an Opus lane with no escalation reason, and a resource ask over the ceiling.
+    anchors: [brief_prerequisites, timeout_problems, parse_final_check, time_line, pin_refusal]
+    exits: [78]
+  - id: C06-plugin-set-at-installed-revisions
+    what: Loads the enabled plugins at their installed revisions with --plugin-dir, refuses a stale cached runner unless --allow-stale-runner is given, and records the plugin commits in the receipt.
+    anchors: [resolve_plugins, hook_trees, parse_plugin_dirs, shipped_hook_refusal, omni_plugin_dir, PluginSource]
+  - id: C07-host-registry-root
+    what: Resolves the chosen host's own registry root and exports it as registry_root; a host with none is refused with exit 70 before anything is created there.
+    anchors: [registry_root_script, parse_registry_root]
+  - id: C08-session-env-shipping
+    what: Exports the orchestrator's session.env values to the lane (--session-env, else the parent lane's file), dropping path-valued entries that name the launching host's filesystem.
+    anchors: [read_session_env, find_session_env, is_path_valued, session_env_text, session_env_put_script, session_env_target]
+  - id: C09-ledger-snapshot-readonly
+    what: Ships a read-only snapshot of the canonical ledger (live file by whole rows, plus archive) into the run's context directory, exported as ONEX_LEDGER_PATH; an append to it fails loud; --no-ledger-snapshot skips it and the bus mode with it.
+    anchors: [build_ledger_snapshot, ledger_unpack_script]
+  - id: C10-ledger-bus-write-mode
+    what: Probes the host for every piece of the bus write mode and exports it only when all are present, otherwise keeps the relay and records why in the receipt's ledger_write; each accepted row is mirrored into the lane's copy.
+    anchors: [bus_probe_script, parse_bus_probe, bus_ledger_env, ledger_mirror_script]
+  - id: C11-ledger-relay-outbox
+    what: Gives every lane a relay outbox for the broker-down fallback and appends the lane's queued MSG, ACK, HOLD, RELEASE, STATUS, FRICTION, CORRECTION and TERMINAL rows from the launching host when the lane ends, with a via=relay cell, skipping rows already on the ledger.
+    anchors: [ledger_outbox_script, relayable_rows, relay_lane_rows, with_relay_via]
+  - id: C12-claim-before-engine
+    what: Writes the lane's CLAIM (host, run id, cause cells, priority) and copies it into the lane's ledger copy before the engine starts; with no CLAIM there is no lane (exit 70); --lane-claim leaves the CLAIM to the lane and relays one only if the lane wrote none.
+    anchors: [ledger_row, claim_identity, claim_causes, find_ledger_row, ledger_row_line, lane_actor, ledger_model]
+  - id: C13-single-closing-row
+    what: Writes the TERMINAL when the lane ends whatever the outcome, only when the lane wrote none that closes its CLAIM (a STATUS with the end status, engine exit and closeout otherwise), so the ledger never lacks one and never holds two.
+    anchors: [closes_carrier, relay_lane_rows, settle_blocked, landing_cells, queued_notice]
+  - id: C14-child-claim
+    what: child-claim writes ticket and parent_ticket for a child ticket the lane minted, and refuses with exit 3 unless the child's Linear parent is the ticket of the lane's CLAIM.
+    anchors: [child_claim_cli, child_claim_row, lane_carrier_claim, parent_refusal, linear_parent, prove_child_claims]
+  - id: C15-hook-preflight
+    what: hook-preflight runs the repository's commit hooks on the staged files only, in parallel, under a time budget, with the exit codes 0 pass, 1 fix, 4 continue and 3 blocked with the staged change saved as a patch; commit-patch commits a saved patch outside the sandbox with hooks run.
+    anchors: [hook_preflight, hook_preflight_cli, commit_hook_ids, hook_bypass, _hook_preflight]
+  - id: C16-watcher-and-contexts-copies
+    what: Ships the PR watcher's state and the required-contexts copy to a lab host and refreshes the copy while the engine runs; a copy that cannot be shipped is recorded and the lane runs without it.
+    anchors: [build_watcher_snapshot, build_required_contexts_snapshot, put_snapshot, watcher_refresh, refresh_watcher_copy, launching_host_watcher_snapshot, launching_host_required_contexts_snapshot]
+  - id: C17-working-tree-at-sha
+    what: Prepares the lane's hooked worktree at the resolved sha from the host clone or bare cache, or an empty scratch directory with no --repo, refreshes PR clones first, and stages PR head facts.
+    anchors: [run_script, scratch_script, parse_workdir, resolve_sha, resolve_landing_branch, pr_head_facts, pr_head_fetch_script, pr_head_stage_script, dispatch_pr_heads]
+  - id: C18-prompt-rendering
+    what: Renders the lane's prompt from the brief with the headless rules, the watcher line, the PR-close rules, the time-box line and the delegation step.
+    anchors: [render_prompt, watcher_prompt_line, pr_close_rules, time_line, delegation_step, input_probe_script]
+  - id: C19-host-environment
+    what: Exports the lane's environment on the host (tenant, plugin root, overlay roots, relay environment, tier-1 runtime config, stored secrets, knowledge-base lines); a runtime-config failure is recorded and echoed, never fatal.
+    anchors: [lane_extra_env, relay_env, tenant_env, plugin_root_env, runtime_config_script, read_runtime_config, ship_store_secrets, store_secret_lines, host_env_lines, kb_lines, settings_overlay]
+  - id: C20-stream-and-failure-classification
+    what: Streams the engine's output line by line, classifies the end (usage limit as exit 77, expired login as exit 79, a hook that blocked the prompt or zero turns as exit 76) marking the host where it applies, and records the failure kind and reason in the receipt.
+    anchors: [consume_stream, lane_failure, auth_expired_failure, usage_limit_backoff_s, hook_block_text, redact]
+  - id: C21-lane-result-contract
+    what: Reads LANE_RESULT, BLOCKER and DELEGATION from the lane's final message, closes a blocked lane with its BLOCKER line (a blocked result with none closes unknown), and refuses a lane ended with no delegation line.
+    anchors: [lane_blocker, blocker_cell, settle_blocked, parse_delegation_line, delegation_problem, delegation_cells, delegation_cell_text, relay_delegation_receipts]
+  - id: C22-receipt-lifecycle
+    what: Writes the receipt as status running once the host is chosen and rewrites it final at the end with host, duration, final message, engine exit, plugin commits and log path; records the job and its submit command.
+    anchors: [write_receipt, state_dir, record_job, job_record, job_submit_command, job_spec_gaps, parent_notice_row]
+  - id: C23-detach-and-placement-wait
+    what: --detach starts the run in the background, prints DETACHED, waits up to --placement-wait-s for placement and prints a last PLACEMENT line (--no-placement-wait returns at once), and a detached lane that ends in any status but done writes one MSG to its parent lane.
+    anchors: [start_detached, DetachedStream, detach_enabled, parent_notice_row]
+  - id: C24-wait-and-handoff-settle
+    what: wait polls a receipt for up to --max-s (exit 3 if unfinished) and settles a lane's handoff candidates by one pr-handoff call each, reading the watcher view, unless --no-handoff.
+    anchors: [wait, settle_handoffs, attempt_handoff, handoff_argv, watcher_view, watcher_tick, handoff_candidates, lane_handoff_facts, withheld_reason, needs_for]
+  - id: C25-remote-closeout
+    what: When the lane ends, stops the unit and kills what carries its tag, queues the host reaper's kills as FRICTION rows, archives and removes the lane's trees on the host that owns them before the run directory goes, and skips destructive cleanup when the archive or ownership read fails; --keep-remote keeps them.
+    anchors: [close_request, end_proc, execute, compose_project]
+  - id: C26-cloud-overflow
+    what: A repo-only lane may run as a Claude Code cloud session (--placement cloud, or overflow after the lab hosts), with the cloud credit slots read and recorded.
+    anchors: [run_cloud_lane, ask_cloud, cloud_seams, cloud_credit_cli, cloud_cost, cloud_branch, cloud_pr_heads]
+  - id: C27-queue-relaunch
+    what: A lane refused for lack of a host can be queued and relaunched later (--queue-relaunch, --replace, --job-id, --attempt, --max-attempts), keeping one job record per lane.
+    anchors: [queue_no_host, job_record, record_job, job_submit_command]
+  - id: C28-backfill-receipts
+    what: backfill-receipts relays the delegation receipts that older TERMINAL rows cite from the lab hosts (--since, --ledger, --omni-home, --hosts-file, --codex-home).
+    anchors: [backfill_receipts_cli, relay_delegation_receipts]
+  - id: C29-duplicate-lane-guard
+    what: A lane name with a live or queued instance is refused with exit 74 unless --replace, which stops the live runner (SIGTERM) and dequeues its entry before placing this run; a detached child skips the check.
+    anchors: [EXIT_DUPLICATE_LANE, main]
+  - id: C30-codex-landing-artifact
+    what: A Codex review lane's landing artifact is packed on the host and unpacked on the launching host, and the commit step runs outside the sandbox with hooks.
+    anchors: [codex_landing, landing_artifact_script, unpack_landing_artifact, CodexRun]
+
+threshold:
+  # Every capability above is kept: the new send path shows, per capability id, a test or a recorded run that exercises
+  # it. One capability with no such evidence fails the comparison; there is no partial credit and no weighting.
+  capabilities_preserved: all
+  capability_count: 30
+  # Each exit code of inputs.exit_codes is returned for the same situation as before.
+  exit_codes_identical: true
+  # Each recorded receipt in inputs.recorded_receipts replays to the same status, exit code and failure kind.
+  recorded_receipts_replayed: all
+  # The old runner's tests pass against the new send path, or each changed assertion is named in the pull request.
+  runner_tests_pass: all
+  # A new send path may add capabilities. It may not drop one; a deliberate drop changes this file and its hash in the
+  # same pull request.
+  capabilities_dropped_allowed: 0

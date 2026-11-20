@@ -1,0 +1,233 @@
+---
+# Baseline for check-direct-model-call (OMN-20295).
+# A model call must sit inside a sanctioned delegation
+# node package (omnibase_core nodes/node_direct_model_call_check_compute/policy.yaml).
+#
+# RULE: entries only leave. A site not listed here fails. An entry that no
+# longer matches a site fails until it is removed. An entry past its expiry no
+# longer covers its site. CI and the pre-commit hook refuse a change whose copy
+# of this file carries an entry, a later expiry or another ticket that its
+# base did not. Crush sites name OMN-20290 for their removal.
+#
+# Regenerate only to SHRINK it:
+#   python -m omnibase_core.nodes.node_direct_model_call_check_effect.runtime_direct_model_call \
+#     --repo <repo> --baseline <this file> --write-baseline
+
+schema_version: 1
+entries:
+  - path: plugins/omni/scripts/tool_use_rubric.py
+    kind: cli_exec
+    symbol: capture_claude_tools
+    target: claude
+    ticket: OMN-20295
+    expires: '2026-12-31'
+  - path: plugins/omni/skills/harness-delegate/scripts/harness_delegate.py
+    kind: cli_exec
+    symbol: check_login
+    target: codex
+    ticket: OMN-20295
+    expires: '2026-12-31'
+  - path: plugins/omni/skills/lab-run/scripts/install_crush.sh
+    kind: cli_exec
+    symbol: <script>
+    target: crush
+    ticket: OMN-20290
+    expires: '2026-12-31'
+  - path: plugins/omni/skills/lane-brief/scripts/lab_crush.py
+    kind: call_via
+    symbol: survey
+    target: plugins/omni/skills/lane-brief/scripts/lab_endpoints.py::probe_load
+    ticket: OMN-20295
+    expires: '2026-12-31'
+  - path: plugins/omni/skills/lane-brief/scripts/lab_crush.py
+    kind: cli_exec
+    symbol: main
+    target: crush
+    ticket: OMN-20290
+    expires: '2026-12-31'
+  - path: plugins/omni/skills/lane-brief/scripts/lab_crush.py
+    kind: cli_exec
+    symbol: main
+    target: crush
+    ticket: OMN-20290
+    expires: '2026-12-31'
+  - path: plugins/omni/skills/lane-brief/scripts/lab_crush.py
+    kind: http
+    symbol: check_server
+    target: http
+    ticket: OMN-20295
+    expires: '2026-12-31'
+  - path: plugins/omni/skills/lane-brief/scripts/lab_crush.py
+    kind: http
+    symbol: check_server
+    target: http
+    ticket: OMN-20295
+    expires: '2026-12-31'
+  - path: plugins/omni/skills/lane-brief/scripts/lab_crush.py
+    kind: http
+    symbol: check_server
+    target: http
+    ticket: OMN-20295
+    expires: '2026-12-31'
+  - path: plugins/omni/skills/lane-brief/scripts/lab_crush.py
+    kind: http
+    symbol: input_tokens
+    target: http
+    ticket: OMN-20295
+    expires: '2026-12-31'
+  - path: plugins/omni/skills/lane-brief/scripts/lab_crush.py
+    kind: http
+    symbol: survey
+    target: http
+    ticket: OMN-20295
+    expires: '2026-12-31'
+  - path: plugins/omni/skills/lane-brief/scripts/lab_endpoints.py
+    kind: http
+    symbol: _model_and_window
+    target: http
+    ticket: OMN-20295
+    expires: '2026-12-31'
+  - path: plugins/omni/skills/lane-brief/scripts/lab_endpoints.py
+    kind: http
+    symbol: _model_and_window
+    target: http
+    ticket: OMN-20295
+    expires: '2026-12-31'
+  - path: plugins/omni/skills/lane-brief/scripts/lab_endpoints.py
+    kind: http
+    symbol: probe_load
+    target: http
+    ticket: OMN-20295
+    expires: '2026-12-31'
+  - path: plugins/omni/skills/lane-brief/scripts/lab_endpoints.py
+    kind: http
+    symbol: probe_load
+    target: http
+    ticket: OMN-20295
+    expires: '2026-12-31'
+  - path: plugins/omni/skills/lane-brief/tests/test_lab_crush.py
+    kind: exec_via
+    symbol: LabCrush.run_lab
+    target: plugins/omni/skills/lane-brief/scripts/lab_crush.py
+    ticket: OMN-20295
+    expires: '2026-12-31'
+  - path: plugins/omni/skills/lane-brief/tests/test_lab_crush.py
+    kind: exec_via
+    symbol: LabCrush.test_base_url_comes_from_lab_model_url_when_not_passed
+    target: plugins/omni/skills/lane-brief/scripts/lab_crush.py
+    ticket: OMN-20295
+    expires: '2026-12-31'
+  - path: plugins/omni/skills/lane-brief/tests/test_lab_crush.py
+    kind: exec_via
+    symbol: LabCrush.test_refuses_an_unreachable_server
+    target: plugins/omni/skills/lane-brief/scripts/lab_crush.py
+    ticket: OMN-20295
+    expires: '2026-12-31'
+  - path: plugins/omni/skills/lane-brief/tests/test_lab_endpoints.py
+    kind: exec_via
+    symbol: LabEndpoints.run_cli
+    target: plugins/omni/skills/lane-brief/scripts/lab_endpoints.py
+    ticket: OMN-20295
+    expires: '2026-12-31'
+  - path: plugins/omni/skills/merge-drain/scripts/delegation_step.py
+    kind: cli_exec
+    symbol: cmd_code
+    target: codex
+    ticket: OMN-20295
+    expires: '2026-12-31'
+  - path: plugins/omni/skills/merge-drain/scripts/delegation_step.py
+    kind: cli_exec
+    symbol: cmd_code
+    target: codex
+    ticket: OMN-20295
+    expires: '2026-12-31'
+  - path: plugins/omni/skills/merge-drain/scripts/delegation_step.py
+    kind: cli_exec
+    symbol: cmd_code
+    target: codex
+    ticket: OMN-20295
+    expires: '2026-12-31'
+  - path: plugins/omni/skills/merge-drain/scripts/delegation_step.py
+    kind: exec_via
+    symbol: cmd_code
+    target: plugins/omni/skills/lane-brief/scripts/lab_crush.py
+    ticket: OMN-20295
+    expires: '2026-12-31'
+  - path: plugins/omni/skills/merge-drain/scripts/delegation_step.py
+    kind: exec_via
+    symbol: cmd_code
+    target: plugins/omni/skills/lane-brief/scripts/lab_crush.py
+    ticket: OMN-20295
+    expires: '2026-12-31'
+  - path: plugins/omni/skills/merge-drain/scripts/delegation_step.py
+    kind: exec_via
+    symbol: harness_glm
+    target: plugins/omni/skills/harness-delegate/scripts/harness_delegate.py
+    ticket: OMN-20295
+    expires: '2026-12-31'
+  - path: plugins/omni/skills/merge-drain/scripts/landing_worker_run.py
+    kind: cli_exec
+    symbol: main
+    target: claude
+    ticket: OMN-20295
+    expires: '2026-12-31'
+  - path: plugins/omni/skills/operator-ruling/tests/run_dryrun.sh
+    kind: cli_exec
+    symbol: <script>
+    target: claude
+    ticket: OMN-20295
+    expires: '2026-12-31'
+  - path: plugins/omni/skills/session-resume/tests/scenario.sh
+    kind: cli_exec
+    symbol: <script>
+    target: claude
+    ticket: OMN-20295
+    expires: '2026-12-31'
+  - path: plugins/omni/skills/session-resume/tests/scenario.sh
+    kind: cli_exec
+    symbol: <script>
+    target: claude
+    ticket: OMN-20295
+    expires: '2026-12-31'
+  - path: plugins/omni/skills/session-resume/tests/scenario.sh
+    kind: cli_exec
+    symbol: <script>
+    target: claude
+    ticket: OMN-20295
+    expires: '2026-12-31'
+  - path: plugins/omni/skills/verify-claims/tests/run_sandbox.sh
+    kind: cli_exec
+    symbol: <script>
+    target: claude
+    ticket: OMN-20295
+    expires: '2026-12-31'
+  - path: plugins/omni/skills/verify-claims/tests/run_sandbox.sh
+    kind: cli_exec
+    symbol: <script>
+    target: claude
+    ticket: OMN-20295
+    expires: '2026-12-31'
+  - path: plugins/omni/skills/verify-claims/tests/run_sandbox.sh
+    kind: cli_exec
+    symbol: <script>
+    target: claude
+    ticket: OMN-20295
+    expires: '2026-12-31'
+  - path: plugins/omni/skills/way-of-working/tests/run_dryrun.sh
+    kind: cli_exec
+    symbol: <script>
+    target: claude
+    ticket: OMN-20295
+    expires: '2026-12-31'
+  - path: plugins/omni/skills/way-of-working/tests/run_dryrun.sh
+    kind: cli_exec
+    symbol: <script>
+    target: claude
+    ticket: OMN-20295
+    expires: '2026-12-31'
+  - path: plugins/omni/skills/way-of-working/tests/run_dryrun.sh
+    kind: cli_exec
+    symbol: <script>
+    target: claude
+    ticket: OMN-20295
+    expires: '2026-12-31'

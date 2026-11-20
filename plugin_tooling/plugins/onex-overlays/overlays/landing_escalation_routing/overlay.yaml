@@ -1,0 +1,32 @@
+# Overlay for the landing controller's escalation routing (OMN-19998).
+#
+# Read as the "landing_escalation_routing" overlay under ONEX_SKILL_OVERLAY_ROOTS (or the installed onex-overlays plugin) by
+# node_landing_escalation_route_compute, which the controller's head-escalation memory calls when an accepted external blocker
+# names the operator. `key: scalar` lines and `key:` followed by `- item` lines only; no value below has a default in code, and an
+# unreadable overlay routes nothing: every blocker keeps the person its worker named and an operator-named entry carries
+# `routing_unread` with the reason.
+#
+# Why: the controller marks a PR needs_person:operator whenever a gate blocks it, and a standing ruling already answers each such
+# gate (operator, 2026-11-13 about 23:05Z: the held pull requests are not questions waiting on the operator). A refusal class
+# whose ruling routes it goes to a lane kind or an outside owner; only a class with no entry here, no ruling and no owner stays on
+# the operator.
+#
+# classes: `<class>=<regex>`, tried in order, matched case-insensitively against the worker's reason, blocker ref and rule ref.
+# routes:  `<class>=<owner kind>|<ruling stamp>`: the owner kind that class goes to and the ruling that decides it.
+overlay_version: 1
+ticket: OMN-19998
+ruling: RULING 2026-10-16T03:24:42Z
+operator_persons:
+- operator
+classes:
+- no_growth_freeze=no[- ]growth|growth freeze|frozen repo|repository (is )?frozen|freeze gate
+- release_wait=waiting (on|for) (a |the )?release|awaits? (a |the )?release|release (is )?(in progress|pending)|not yet released
+- runner_outage=runner (outage|offline|unavailable|down)|no (self-hosted )?runner|runners (are )?(down|offline|unavailable)
+- reviewer_outage=reviewer (outage|offline|unavailable|down)|review (bot|app) (is )?(down|offline|unavailable)
+- external_check=external (repo|repository|check)|third-party check|outside (the )?organi[sz]ation
+routes:
+- no_growth_freeze=port-lane|2026-11-03T18:40:27Z
+- release_wait=release-lane|2026-11-13T20:34:38Z
+- runner_outage=runner-owner|2026-10-16T03:24:42Z
+- reviewer_outage=reviewer-owner|2026-10-16T03:24:42Z
+- external_check=external-owner|2026-10-16T03:24:42Z

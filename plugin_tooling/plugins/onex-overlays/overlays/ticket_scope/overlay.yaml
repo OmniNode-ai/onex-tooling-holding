@@ -1,0 +1,31 @@
+# Overlay for the shared ticket scope (OMN-23184): the Linear projects whose tickets are in scope.
+#
+# Read by the landing controller at every tick (load_ticket_scope, through landing_goal_read), by the one scope reader (admit_by_scope). `key: scalar` lines and
+# `project_ids:` / `project_names:` followed by `- item` lines only. It is its own overlay so a reader that predates it never meets a
+# key it refuses. Absent: project admission is off and only the goal_scope lists and the goal_scope_ticket_rule roots decide. Present and
+# wrong: the tick says GOAL-TICKET-SCOPE-UNREAD and only the lists and the rule decide. No value below has a default in code.
+#
+# The rule (operator, 2026-11-08 about 14:30Z: "It seems like it's pretty easy to figure out which PRs are red and then compare their
+# ticket numbers to ones that are in our project."; extended 2026-11-09 to the parent chain): a pull request of the operator is in scope when
+# the ticket it declares (the first ticket its title names, else its body's `Ticket:` line), or any ancestor of it up to the
+# goal_scope_ticket_rule overlay's max_depth, is in a project listed here (matched by id or by name) or is a root of that overlay. A child
+# ticket minted with no project is in scope through its parent. The parent and project come from the local Linear mirror
+# (plans-today/linear-YYYY-MM-DD.json); live Linear is read only for a ticket the mirror lacks. The paused list in goal_scope overrides it.
+# The controller maps no stream of its own: the project is the ticket's own field in Linear.
+overlay_version: "1.0.0"
+ticket: OMN-23184
+ruling: "operator 2026-11-08 about 14:30Z: compare the ticket numbers of the red pull requests to the tickets in our project"
+
+# Where a ticket's project is read from (Linear's GraphQL endpoint, or a loopback endpoint in a test), and the bounds of the read.
+endpoint: https://api.linear.app/graphql
+# How long a project read from Linear is kept (1 hour): a ticket changes project rarely, and a stale answer ends at this bound.
+cache_seconds: 3600
+# Linear reads one tick may make; a pull request whose project is not read waits held for the next tick.
+reads_per_tick: 40
+read_timeout_seconds: 5
+
+# The Factory project (the factory floor and the rebuild's work).
+project_ids:
+- 00000000-0000-4000-8000-000000000000
+project_names:
+- Factory

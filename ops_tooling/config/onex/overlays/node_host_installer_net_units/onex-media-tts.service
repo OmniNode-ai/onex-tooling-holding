@@ -1,0 +1,34 @@
+# onex-media-tts.service: Qwen3-TTS 0.6B text to speech on the h907 RTX 4090 (OMN-22757).
+#
+# Served by vLLM-Omni (its own venv, vLLM 0.32.0 beside vllm-omni 0.32.0) at /v1/audio/speech. The stage settings are in
+# onex-media-qwen3-tts.yaml beside this unit: one stage, memory share 0.2, 16 sequences. FlashInfer's sampler is turned off
+# because it compiles a kernel with ninja and nvcc at first use and neither is installed in that venv; the torch sampler
+# gives the same tokens. Measured 2026-11-06: 5.4 GB of the card, 14 times faster than playback.
+
+[Unit]
+Description=ONEX media model: Qwen3-TTS 0.6B text to speech (RTX 4090, port 8102)
+After=network-online.target onex-media-stt.service
+Wants=network-online.target
+Conflicts=onex-media-video.service
+
+[Service]
+Type=simple
+User=<owner>
+Group=<owner>
+Environment=CUDA_DEVICE_ORDER=PCI_BUS_ID
+Environment=CUDA_VISIBLE_DEVICES=1
+Environment=VLLM_USE_FLASHINFER_SAMPLER=0
+Environment=PATH=/opt/onex-media/tts-omni-venv/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
+WorkingDirectory=/opt/onex-media
+ExecStart=/opt/onex-media/tts-omni-venv/bin/vllm-omni serve /data/inference/hf-cache/Qwen3-TTS-12Hz-0.6B-CustomVoice --omni \
+    --host 0.0.0.0 --port 8102 --served-model-name qwen3-tts-0.6b --trust-remote-code \
+    --deploy-config /etc/systemd/system/onex-media-qwen3-tts.yaml
+ExecStartPost=/usr/bin/curl -sf --retry 120 --retry-delay 2 --retry-all-errors -o /dev/null http://127.0.0.1:8102/v1/models
+Restart=on-failure
+RestartSec=10
+LimitMEMLOCK=infinity
+LimitNOFILE=65535
+TimeoutStartSec=600
+
+[Install]
+WantedBy=multi-user.target

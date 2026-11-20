@@ -1,0 +1,178 @@
+# Deployment facts of omnimarket's node_agent_review_dispatch_orchestrator (OMN-22177): the
+# voters an agent review is configured with, the policy that decides which of them may be called,
+# the rung-to-harness map, the quorum, the deadline and the publisher identity. Data only; the node
+# reads no other source for any of these values and refuses to load without them.
+#
+# Readers: the node loads this file from the first root on ONEX_SKILL_OVERLAY_ROOTS that holds
+# node_agent_review_dispatch_orchestrator/overlay.yaml (omnimarket node_overlay_reader). The verifier
+# node of omniintelligence (node_review_agent_receipt_verify_compute) takes the same policy block
+# through its own overlay (review_agent_receipt_verify), and the gate-accept effect of omnimarket
+# (node_agent_review_gate_accept_effect) reads agent_review_gate_accept. These three files change
+# together, in one change: a voter approved in one and not the others is refused at the verifier or
+# never called.
+#
+# Roster (OMN-22345, OMN-19998): four voters on three rungs, two lab voters and one identity per non-lab model.
+# Pull request reviews do not use Codex (RULING 2026-11-05T15:07:26Z: Codex is kept for plan reviews only), so
+# there is no Codex rung or voter here; the Codex identity stays approved in the policy only so that a
+# receipt signed before this change still verifies.
+#   - Lab rung: both Qwen3.8-27B voters (RULING 2026-10-18T15:06:49Z: one lab reviewer and one
+#     Sonnet reviewer, concise output). A lab voter counts only when its delegation route admits
+#     code_review and returns a delegation event, so it qualifies by measurement, never by this file.
+#   - Codex rung: removed (OMN-19998). Codex answered first while it could (OPERATOR-CONSENT
+#     2026-10-09T00:43:41Z, RULING 2026-10-03T00:40:00Z), and the lab rung's measured shortfall (lab Qwen
+#     0/28 and GLM 13/28 on the review adequacy set, run 00000000-0000-4000-8000-000000000000) put it
+#     ahead of the lab rung. The operator ruled on 2026-11-05T15:07:26Z that Codex is used for plan reviews
+#     only, so pull request reviews come off it and the quorum is Sonnet and Opus.
+#   - Claude rung: identity claude-sonnet. The operator row of 2026-11-03T13:07:44Z approves headless
+#     Claude Sonnet on lab hosts through the Claude subscription (claude -p), never the API. A Claude
+#     cloud session is a second transport of the same claude-sonnet identity (it writes endpoint
+#     claude.ai and the session's model), so no cloud roster entry exists.
+#   - Opus rung: identity claude-opus (OMN-19998). The operator said Opus may be a review voter in
+#     place of Codex: "You could also use Opus instead of Codex." and "I already said Opus as a
+#     reviewer voter." (2026-11-05). It runs the same way the Claude rung does, a headless claude -p
+#     on the Claude subscription login through the pool, never the API and never a key. It is a
+#     separate identity from claude-sonnet because the quorum counts a voter by endpoint plus model
+#     and its model differs, so Sonnet and Opus count as two votes. It sits after the Claude rung,
+#     and with no Codex rung Sonnet and Opus are the quorum on every review.
+#
+# One identity per non-lab model. Sonnet reached over two transports is one identity and counts once
+# toward the quorum; a second identity on rung claude is never added (a different Claude model is a different model, so it has its own rung, opus). The two lab voters are the same model on two hosts and count as two identities by
+# endpoint, as the CI gate counts them.
+#
+# The Anthropic API stays out of the agent path. Provider anthropic is not forbidden, because the
+# ruled Sonnet voter is an Anthropic model; the endpoint classes review_gateway and anthropic_api
+# are forbidden, so no voter that reaches a model through the API is approved. The API-key Sonnet
+# route of OPERATOR-CONSENT 2026-10-19T02:15:52Z is not enabled by this file.
+#
+# harness_rungs is the rung-to-harness map the harness rung node of omnimarket reads: for each roster
+# rung it serves (claude, opus) it names the CLI harness, the login it needs, the endpoint it writes,
+# the task class and effort, the call budget, the harness script and the leaf of the run directory.
+#
+# The bar is the CI gate's: a vote per distinct identity (endpoint plus model), a quorum of at least
+# two, and a finding blocks only when at least two distinct voters raise it (omniintelligence
+# review_pairing quorum, review_quorum.min_agreeing_models, bounded at >= 2). quorum below holds
+# the same numbers; the node's parity test holds the two together on recorded outputs.
+#
+# To change a voter: edit roster here and the approved identities and rungs in the policy block,
+# change the verifier overlay (review_agent_receipt_verify) the same way and the gate-accept overlay
+# if the publisher or verifier binding moves, all in the same change, and merge to main. No code
+# changes. A voter whose delegation event does not name the endpoint and model below is not counted,
+# so a wrong value fails closed (lab_rung_insufficient), never as a pass.
+#
+# Strings the rungs write (a cell that differs from what the rung writes is never counted):
+#   claude-sonnet: provider anthropic, endpoint_class harness_subscription, endpoint claude.ai, model
+#     claude-sonnet-5-5, route_key harness-claude.
+#   claude-opus: provider anthropic, endpoint_class harness_subscription, endpoint claude.ai, model
+#     claude-opus-5-5, route_key harness-claude. Measured 2026-11-05 on h901: harness_delegate.py run
+#     --harness claude --model claude-opus-5-5 wrote a receipt with login "claude subscription login
+#     (claude.ai)", outcome done and model claude-opus-5-5, the exact string below.
+#   Measured by run 00000000-0000-4000-8000-000000000000 on a lab host and reported in MSG
+#   2026-11-03T14:30:18Z-claude-rung-1325 and MSG 2026-11-03T13:07:22Z-review-dispatch-1140.
+transport: redpanda
+overlay_revision: "2026-11-05.2"
+reviewer_id: agent-review-dispatch
+receipt_fence: onex-review-receipt
+deadline_seconds: 1500.0
+lab_call_timeout_seconds: 600.0
+post_attempts: 3
+# The chain of responders (RULING 2026-11-03T20:42:53Z: reviews are one ordered chain, like the
+# delegation chain). Rungs are called in this order, one rung at a time: the first alone, each next
+# rung only when the rungs before it left the quorum short. A voter that is unavailable (out of
+# credit, a usage limit, a timeout, a 502/503/504) is skipped and recorded in the terminal's
+# attempts, never a failed run; when the last rung is spent and the quorum is still short the run
+# ends refused, not passed, with every attempt recorded. The order is data: the headless Claude
+# Sonnet first, then headless Claude Opus (OMN-19998: it takes Codex's place in the quorum, because
+# Codex is kept for plan reviews only), and the lab rung last, because the lab Qwen voters measured 0/28 on the
+# review adequacy set (see the roster comment above). The names are exactly the roster's rungs.
+rung_order:
+  - claude
+  - opus
+  - lab
+roster:
+  - identity: lab-gpu-one-qwen
+    provider: lab-local
+    rung: lab
+    endpoint_class: lab_local
+    endpoint: "192.0.2.127:8000"
+    model: Qwen3.8-27B
+    route_key: local-coder
+  - identity: lab-gpu-two-qwen
+    provider: lab-local
+    rung: lab
+    endpoint_class: lab_local
+    endpoint: "192.0.2.128:8000"
+    model: Qwen3.8-27B
+    route_key: local-heavy-reasoning
+  - identity: claude-sonnet
+    provider: anthropic
+    rung: claude
+    endpoint_class: harness_subscription
+    endpoint: "claude.ai"
+    model: claude-sonnet-5-5
+    route_key: harness-claude
+  - identity: claude-opus
+    provider: anthropic
+    rung: opus
+    endpoint_class: harness_subscription
+    endpoint: "claude.ai"
+    model: claude-opus-5-5
+    route_key: harness-claude
+# Rung name -> CLI harness, for every roster rung the harness rung node serves.
+harness_rungs:
+  claude:
+    harness: claude
+    login: claude subscription login (claude.ai)
+    endpoint: "claude.ai"
+    task_class: review
+    effort: high
+    call_budget_seconds: 180.0
+    harness_script: skills/harness-delegate/scripts/harness_delegate.py
+    run_dir_leaf: claude
+  opus:
+    harness: claude
+    login: claude subscription login (claude.ai)
+    endpoint: "claude.ai"
+    task_class: review
+    effort: high
+    call_budget_seconds: 180.0
+    harness_script: skills/harness-delegate/scripts/harness_delegate.py
+    run_dir_leaf: opus
+policy:
+  approved_identities:
+    - lab-gpu-one-qwen
+    - lab-gpu-two-qwen
+    - codex-chatgpt
+    - claude-sonnet
+    - claude-opus
+  approved_rungs:
+    - lab
+    - codex
+    - claude
+    - opus
+  forbidden_providers: []
+  forbidden_endpoint_classes:
+    - review_gateway
+    - anthropic_api
+  forbidden_endpoints: []
+  forbidden_hosts: []
+  publisher_identity: "bot-account[bot]"
+quorum:
+  quorum_size: 2
+  min_agreeing_voters: 2
+  line_proximity_lines: 3
+  blocking_severities:
+    - critical
+    - error
+# The bus the dispatch's source-control calls ride (the head read through the gateway node and the
+# review post through the write node), as `onex scm` names it: kind kafka on the dev lane, whose
+# declaration gives the broker. The runtime and the request entry both read it here (OMN-22345);
+# needs the scm_bus binding of omnimarket's dispatch node.
+scm_bus:
+  kind: kafka
+  lane: dev
+# Where the receipt signing key lives in the secret store (OMN-22345). One secret:// reference
+# (provider, environment, path, name), never a value: the dispatch reads it at bind time through
+# the host's own store identity, so the key is not a file or a setting on any host. Needs the
+# signing_key_store binding of omnimarket's dispatch node.
+signing_key_store:
+  reference: secret://infisical/dev/secret-store-path

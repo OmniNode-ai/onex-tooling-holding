@@ -1,0 +1,27 @@
+runtime_config_rel: config/onex/runtime/runtime_config.yaml
+cloud_excluded_roles:
+- deploy
+- knowledge_base
+# OMN-21672: the secret store is the source of every name a lane gets that this overlay lists (RULING
+# 2026-10-31T11:06:14Z, the Linear credential lives in the lab key store); a host's own env file never is, and a value
+# the file holds for a listed name is ignored and reported by name. Flat keys, because the runner reads this file with
+# the standard library only. Names only: no value is ever written here. The reader host holds the store identity; the
+# folder is the store's own, in the dev environment, next to the Claude Code token pool.
+store_project_id: 00000000-0000-4000-8000-000000000000
+store_environment: dev
+store_folder: /shared/<folder>
+store_identity_env_file: ~/env-dir/env-file
+store_reader_host: h907
+store_lane_env: [LINEAR_API_KEY]
+# RULING 2026-10-31T11:37:05Z: new keys enter through ONE intake .env in one declared place, and a sync step (the
+# headless seed node, `onex skill seed_secrets`, run on the store host with that file as --source-path) pushes them into
+# the store. Every other machine and lane reads secrets from the store with only its store identity: its env file may hold
+# the bootstrap names below and nothing secret. `store_identity_env_file` is where each host keeps that identity (the
+# reader host reads it; every host uses the same path). The host drift check (env_files in the host drift manifest) reads
+# these keys: on any host other than the intake host, an env file that holds a listed lane name, or a name whose
+# underscore-separated tokens match one of `store_sensitive_name_parts` (`*` matches any ending, so PASS* is
+# PASSWORD and PASSWD), is drift once its declared date has passed.
+store_bootstrap_env: [INFISICAL_ADDR, INFISICAL_CLIENT_ID, INFISICAL_CLIENT_SECRET]
+store_intake_host: h907
+store_intake_env_file: ~/env-dir/env-file
+store_sensitive_name_parts: [KEY, TOKEN, SECRET, PASS*, CREDENTIAL*, DSN, PRIVATE, SASL, OAUTH]

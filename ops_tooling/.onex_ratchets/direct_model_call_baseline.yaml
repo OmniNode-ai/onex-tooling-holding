@@ -1,0 +1,35 @@
+---
+# Baseline for check-direct-model-call (OMN-20295).
+# A model call must sit inside a sanctioned delegation
+# node package (omnibase_core nodes/node_direct_model_call_check_compute/policy.yaml).
+#
+# RULE: entries only leave. A site not listed here fails. An entry that no
+# longer matches a site fails until it is removed. An entry past its expiry no
+# longer covers its site. CI and the pre-commit hook refuse a change whose copy
+# of this file carries an entry, a later expiry or another ticket that its
+# base did not. Crush sites name OMN-20290 for their removal.
+#
+# Regenerate only to SHRINK it:
+#   python -m omnibase_core.nodes.node_direct_model_call_check_effect.runtime_direct_model_call \
+#     --repo <repo> --baseline <this file> --write-baseline
+
+schema_version: 1
+entries:
+  - path: scripts/lab-host-login
+    kind: cli_exec
+    symbol: check_claude
+    target: claude
+    ticket: OMN-20295
+    expires: '2026-12-31'
+  - path: scripts/lab-host-login
+    kind: cli_exec
+    symbol: check_claude
+    target: claude
+    ticket: OMN-20295
+    expires: '2026-12-31'
+  - path: scripts/lab-host-login
+    kind: cli_exec
+    symbol: check_claude
+    target: claude
+    ticket: OMN-20295
+    expires: '2026-12-31'

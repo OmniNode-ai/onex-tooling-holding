@@ -1,0 +1,6 @@
+host_tick_fix: |-
+  reinstall it through the host installer (`uv run --project "${{OPS_TOOLING_PKG_PATH:-$registry_root/../ops_tooling_pkg}}" onex-host-install {name} --repo-root <that checkout>`, then --kickstart) and read the unit's err log; never hand-load a plist
+host_tick_owned_fix: |-
+  its own installer owns it and onex-host-install refuses it: run the ops_tooling_pkg checkout's {owner} for {name} (see its usage), then read the run record {record}; never hand-load a plist
+host_ticks_fix: |-
+  set OPS_TOOLING_PKG_PATH (else registry_root) so $registry_root/../ops_tooling_pkg holds the host installer contract

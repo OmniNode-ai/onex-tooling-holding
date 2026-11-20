@@ -1,0 +1,34 @@
+{
+  "$schema": "https://anthropic.com/claude-code/marketplace.schema.json",
+  "name": "private-repo",
+  "version": "0.2.0",
+  "description": "Internal OmniNode plugin marketplace. Private counterpart of the public agent plugin marketplace: ships the omni plugin, which carries the internal process skills, and the onex-overlays plugin, which carries the contract overlays the public onex skills read.",
+  "owner": {
+    "name": "OmniNode",
+    "email": "person@example.com"
+  },
+  "plugins": [
+    {
+      "name": "omni",
+      "description": "Internal OmniNode process skills (lane briefs, ticket creation, PR landing, merge drains, CI triage, release cuts, session resume, friction recording, ledger writes/catchup/messaging, cited questions to the planning corpus and to the work ledger, and the check for who is waiting on the operator for a reply), invoked as /omni:<skill>. Skills only: hooks stay in the public plugin.",
+      "version": "0.4.486",
+      "author": {
+        "name": "OmniNode",
+        "email": "person@example.com"
+      },
+      "source": "./plugins/omni",
+      "category": "development"
+    },
+    {
+      "name": "onex-overlays",
+      "description": "Contract overlays for the public onex plugin's split skills (weekly_review, session_preflight, plans_board_refresh, board_readback, comment_sweep, overseer_verify_tick, lane_dispatch): the organization-specific half that the public skills refuse to run without. Data only: no skills, no hooks.",
+      "version": "0.1.39",
+      "author": {
+        "name": "OmniNode",
+        "email": "person@example.com"
+      },
+      "source": "./plugins/onex-overlays",
+      "category": "development"
+    }
+  ]
+}

@@ -1,0 +1,88 @@
+# Overlay for the lane_dispatch skill — internal.
+#
+# Layered over the skill's committed base by the overlay selector
+# LANE_DISPATCH_OVERLAY_PATH. The base declares structure and no content.
+#
+# Status: shipped in the onex-overlays plugin of the internal marketplace
+# (OMN-19235), moved from docs-repo marketplace-internal/.
+# Nothing sets the selector by default: the skill reads this file only when a
+# session points the selector at it.
+#
+# Catalogue row: lane_dispatch (omniclaude plugins/onex/process_catalogue.yaml)
+#
+# This is the overlay that carries the most organization-specific content of the
+# five, because a dispatch is where the standing rules, the ledger and the model
+# ladder all meet. None of it may appear in the public skill.
+
+overlay_version: "1.0.0"
+catalogue_row: lane_dispatch
+ticket: OMN-18368
+
+workspace_root_env: registry_root
+
+content_repo_env: OPS_TOOLING_PKG_PATH
+content_repo_path: ../ops_tooling_pkg
+brief_directory: src/ops_tooling_pkg/handlers
+
+# The half that matters most. A lane driven by one of the briefs above inherits
+# the standing rules; a raw dispatch does not, and a lane that has never read
+# them writes its report wherever the last one did. Shipping the rules WITH the
+# dispatch is what makes them apply to every lane rather than to whoever
+# remembered. Content paths are relative to the committed ops_tooling_pkg repository.
+# registry_root remains the data/claim root; it owns no brief implementation.
+rules_block_path: lane_rules/lane-rules-block.md
+
+claim_surface: docs/tracking/ROLLING_WORK_LEDGER.md
+claim_command: >-
+  python3 "$registry_root/plugin-tooling-pkg/plugins/omni/scripts/onex_ledger.py" docs/tracking/ROLLING_WORK_LEDGER.md --append '<row>'
+claim_row_shape: >-
+  <ts> | CLAIM | lane=<lane> | ticket=OMN-nnnn | worktree=<path>|none | SCOPE: <list> | OUT OF SCOPE: <list>
+consent_row_requirement: >-
+  Work proceeding on express operator consent cites the consent row by file and
+  line in its CLAIM row, so the authorization is resolvable after the session
+  that granted it is gone. Both scope lists are required; the OUT OF SCOPE half
+  is what bounds the grant, and a row missing it looks identical to a valid one
+  to the next lane that cites it.
+
+# Named explicitly on every dispatch, never inherited. Cheaper is not the same
+# work: a diagnosis moved to a cheaper model to save budget is a different and
+# worse diagnosis, and the saving is invisible in the transcript.
+model_choices:
+  - id: opus
+    use_for: >-
+      diagnosis, adversarial verification, anything where being wrong is
+      expensive to discover later
+  - id: sonnet
+    use_for: discovery fan-out, mechanical edits, readbacks
+
+dispatch_defaults:
+  background: true
+  note: >-
+    No foreground execution. A foreground turn spends the session's own budget
+    and blocks every other lane behind it.
+
+inter_lane_messaging:
+  rule: never
+  why: >-
+    A message to a stopped lane resurrects it and it resumes spending. Lanes
+    report to the orchestrator; the orchestrator relays.
+
+known_failure_modes:
+  - >-
+    The claim is appended after the first write. It then records a lane that was
+    already unobservable to its peers, which is how two lanes end up editing the
+    same shared tracked file.
+  - >-
+    The rules block is assumed rather than resolved. The lane behaves like the
+    last brief it saw, and the omission is invisible until its output lands in
+    the wrong repository.
+  - >-
+    The model is inherited from the dispatching session. The lane cannot be
+    costed and a cheap model silently does expensive work.
+
+verification_contract: >-
+  A claim row is appended before the lane's first write; the rules block is
+  resolved and injected rather than assumed, with its byte count reported; and
+  the model is named explicitly.
+
+mechanical_replacement: none yet

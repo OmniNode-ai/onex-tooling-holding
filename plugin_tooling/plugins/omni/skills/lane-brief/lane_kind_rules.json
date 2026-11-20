@@ -1,0 +1,41 @@
+{
+  "ruling": "RULING 2026-10-27T21:29:22Z",
+  "amends": "RULING 2026-10-14T04:56:52Z, OMN-20864",
+  "open_ended_words": [
+    "diagnose",
+    "diagnosis",
+    "cause",
+    "plan",
+    "investigate",
+    "investigation"
+  ],
+  "escalation_cells": [
+    "escalation_reason"
+  ],
+  "escalation_lines": [
+    "Opus reason"
+  ],
+  "cited_failure_prefix": "sonnet-failed:",
+  "good_outcomes": [
+    "merged",
+    "done",
+    "handed-off",
+    "complete",
+    "completed",
+    "ok",
+    "success"
+  ],
+  "placeholder_reasons": [
+    "",
+    "-",
+    "--",
+    ".",
+    "?",
+    "n/a",
+    "na",
+    "nil",
+    "none",
+    "nothing",
+    "tbd"
+  ]
+}

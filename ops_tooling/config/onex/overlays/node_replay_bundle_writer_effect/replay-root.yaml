@@ -1,0 +1,11 @@
+# The root under which node_replay_bundle_writer_effect (omnimarket) writes a compaction replay
+# bundle, and from which ONEX_CONTEXT_REPLAY_ROOT is read in pinned mode (OMN-21108). The value is
+# data here and in no handler or template; a host with no entry is refused rather than guessed,
+# and there is no default root.
+#
+# root: begins with $registry_root/ or $HOME/ and is expanded on the writing host by the node's
+#   injected environment. Any other form is refused by the node as an undeclared root.
+schema: replay_root.v1
+hosts:
+  h906:
+    root: $registry_root/.onex_state/context_replay

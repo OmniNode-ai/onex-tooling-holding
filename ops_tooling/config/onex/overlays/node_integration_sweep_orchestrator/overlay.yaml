@@ -1,0 +1,10 @@
+# Deployment facts of omnimarket's node_integration_sweep_orchestrator, moved out of its request
+# model: the runtime host, repo path and endpoints its probes reach. Equal to the defaults the
+# request model carried before the node read this overlay; a request value still wins. A reader
+# names the root directory in ONEX_SKILL_OVERLAY_ROOTS.
+runtime_host: 192.0.2.127
+runtime_repo_path: /data/omninode/registry_root/omnimarket
+stability_test_runtime_url: http://192.0.2.127:18085
+container_health_host: 192.0.2.127
+infra_runtime_host: 192.0.2.127
+projection_api_url: http://192.0.2.127:3002

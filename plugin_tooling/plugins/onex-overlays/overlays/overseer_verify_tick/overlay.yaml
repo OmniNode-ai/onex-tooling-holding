@@ -1,0 +1,63 @@
+# Overlay for the overseer_verify_tick skill — internal.
+#
+# Layered over the skill's committed base by the overlay selector
+# OVERSEER_VERIFY_TICK_OVERLAY_PATH. The base declares structure and no content.
+#
+# Status: shipped in the onex-overlays plugin of the internal marketplace
+# (OMN-19235), moved from docs-repo marketplace-internal/.
+# Nothing sets the selector by default: the skill reads this file only when a
+# session points the selector at it.
+#
+# Catalogue row: overseer_verify_tick (omniclaude plugins/onex/process_catalogue.yaml)
+
+overlay_version: "1.0.0"
+catalogue_row: overseer_verify_tick
+ticket: OMN-18368
+
+workspace_root_env: registry_root
+
+wraps_skill: onex:dispatch_watchdog
+
+# A lane is live when it holds an open CLAIM row with no matching TERMINAL row.
+# The ledger is the coordination surface, so it is also the lane inventory.
+lane_inventory_command: >-
+  read the append-only coordination ledger for CLAIM rows with no matching
+  TERMINAL row, and report each lane name with the timestamp of its claim
+last_write_locator: >-
+  the most recent ledger row carrying the lane name, of any kind
+positive_control_command: >-
+  the same read scoped to a lane known to have written within the hour, so a
+  zero can be told apart from a ledger that was not read
+
+claim_surface: docs/tracking/ROLLING_WORK_LEDGER.md
+finding_surface: >-
+  a FRICTION or PROGRESS row on the same ledger, appended through the lock,
+  naming the stalled lane and the age of its last write
+
+stall_threshold_minutes: 45
+
+cadence:
+  interval: every 15 minutes
+  note: >-
+    Session-bound today. The tick fires only while a session is open and idle
+    and expires after seven days, which is the same fragility the board refresh
+    already removed by moving its trigger off the laptop. This row is prose
+    until the tick has a durable trigger of its own.
+
+known_failure_modes:
+  - >-
+    The enumeration returns nothing because the ledger read failed, and the tick
+    reports zero stalled lanes. That sentence is identical to the healthy case.
+  - >-
+    A stall is acted on by matching processes on a command substring. One
+    measured instance stopped every governed pre-push on the host, killing seven
+    live pushes belonging to other lanes, when the intent was to stop one. A
+    stall is named by its own identifier, and a process is stopped by its own
+    identifier, traced from the caller's own process ancestry.
+
+verification_contract: >-
+  Every stalled lane is named with the age of its last write, or a zero is
+  proven by a positive control against a lane known to be live. The tick adds to
+  or subtracts from the live lane set, or says plainly why it did neither.
+
+mechanical_replacement: none yet

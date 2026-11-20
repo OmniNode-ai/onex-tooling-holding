@@ -1,0 +1,22 @@
+# One row per cfg/<config>.cfg: config, kind, expected TLC outcome (OMN-18531, plan task TA.1).
+# adopted: every mutation flag FALSE, every property checked, must pass.
+# mutation: exactly one mutation flag TRUE, must violate the named property.
+# witness: an adopted configuration checking a reachability control, must violate it.
+adopted	adopted	pass
+adopted_drop	adopted	pass
+adopted_live	adopted	pass
+no_revalidate	mutation	violates:StaleCandidateNeverInstalled
+last_wins	mutation	violates:OneStatePerIdentityUnderAnyArrivalOrder
+fallback_by_candidate	mutation	violates:FallbackNeverConflictsWithAnotherInvocation
+complete_on_reply	mutation	violates:NoCompleteBeforeInstalled
+trust_boundary_line	mutation	violates:NoInstallWithoutActivation
+publish_window	mutation	violates:EveryActivationResolves
+no_gap_rule	mutation	violates:EveryActivationResolves
+witness_installed	witness	violates:NeverInstalled
+witness_mismatch	witness	violates:NeverMismatch
+witness_native	witness	violates:NeverNativeNotInstalled
+witness_not_selected	witness	violates:NeverNotSelected
+witness_stale_built	witness	violates:NeverStaleBuilt
+witness_fallback_beside	witness	violates:NeverFallbackBesideActivation
+witness_gap	witness	violates:NeverGap
+witness_gap_then_installed	witness	violates:NeverGapThenInstalled
